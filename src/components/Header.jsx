@@ -1,8 +1,8 @@
 export default function Header() {
   return (
     <header className="sticky top-0 z-50">
-      <p className="bg-fadezone-black px-4 py-2 text-center text-xs font-semibold tracking-[0.18em] text-fadezone-light">
-        <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-fadezone-silver align-middle" />
+      <p className="flex items-center justify-center bg-fadezone-black px-4 py-2 text-center text-xs font-semibold tracking-[0.18em] text-fadezone-light">
+        <span className="mr-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-fadezone-silver" />
         NOW ACCEPTING BOOKINGS — SECURE YOUR NEXT CUT TODAY.
       </p>
 
@@ -10,7 +10,7 @@ export default function Header() {
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6">
           <a href="/" aria-label="FadeZone home" className="shrink-0">
             <p className="font-heading text-3xl tracking-wide text-fadezone-black">
-              FadeZone
+              FadeZone.
             </p>
           </a>
 
