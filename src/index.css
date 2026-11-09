@@ -1,1 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+
+@theme {
+  /* Color Palettes */
+  --color-fadezone-black: #101010; /* Main text and headings */
+  --color-fadezone-charcoal: #292929; /* Cards */
+  --color-fadezone-silver: #a6a6a6; /* Muted texts, borders, and accents */
+  --color-fadezone-light: #ffff; /* Main background */
+
+  /* Fonts */
+  --font-heading: "Bebas Neue", sans-serif; /* Headings / Title */
+  --font-body: "Inter", sans-serif; /* Body texts */
+}
