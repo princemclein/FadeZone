@@ -51,14 +51,14 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex h-11 w-11 items-center justify-center text-3xl leading-none text-fadezone-black lg:hidden"
+            className="flex h-11 w-11 items-center justify-center text-3xl leading-none text-fadezone-black min-[900px]:hidden"
             aria-label="Toggle navigation"
             aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? "✕" : "☰"}
           </button>
 
-          <nav className="hidden lg:block" aria-label="Main navigation">
+          <nav className="hidden min-[900px]:block" aria-label="Main navigation">
             <ul className="flex items-center gap-8">
               {links.map((item) => (
                 <li key={item}>
@@ -75,14 +75,14 @@ export default function Header() {
 
           <a
             href="/booking"
-            className="hidden lg:block bg-fadezone-black px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:-translate-y-0.5 hover:bg-fadezone-charcoal"
+            className="hidden min-[900px]:block bg-fadezone-black px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:-translate-y-0.5 hover:bg-fadezone-charcoal"
           >
             Book Now
           </a>
         </Container>
 
         <nav
-          className={`absolute right-0 top-full z-50 h-[calc(100dvh-100%-2rem)] w-[60vw] max-w-xs overflow-y-auto border-l border-fadezone-black/10 bg-fadezone-light text-fadezone-black shadow-[-10px_0_14px_-12px_rgba(16,16,16,0.16)] transition-transform duration-300 ease-out lg:hidden ${
+          className={`absolute right-0 top-full z-50 h-[calc(100dvh-100%-2rem)] w-[60vw] max-w-xs overflow-y-auto border-l border-fadezone-black/10 bg-fadezone-light text-fadezone-black shadow-[-10px_0_14px_-12px_rgba(16,16,16,0.16)] transition-transform duration-300 ease-out min-[900px]:hidden ${
             isMenuOpen ? "visible translate-x-0" : "invisible translate-x-full"
           }`}
           aria-label="Responsive navigation"
