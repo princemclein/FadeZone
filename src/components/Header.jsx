@@ -48,7 +48,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden"
+            className="flex h-11 w-11 items-center justify-center text-3xl leading-none text-fadezone-black lg:hidden"
             aria-label="Toggle navigation"
           >
             {isMenuOpen ? "✕" : "☰"}
