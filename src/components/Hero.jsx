@@ -32,14 +32,14 @@ export default function Hero() {
         </div>
 
         {/* Right: staggered collage */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-4">
-            <div className="aspect-3/4 w-full bg-gray-300" />
-            <div className="aspect-3/4 w-full bg-gray-300" />
-          </div>
-          <div className="mt-12 flex flex-col gap-4 lg:mt-16">
-            <div className="aspect-3/4 w-full bg-gray-300" />
+        <div className="grid w-full max-w-sm grid-cols-2 gap-3 justify-self-center lg:justify-self-end">
+          <div className="flex flex-col gap-3">
             <div className="aspect-4/5 w-full bg-gray-300" />
+            <div className="aspect-4/5 w-full bg-gray-300" />
+          </div>
+          <div className="mt-10 flex flex-col gap-3">
+            <div className="aspect-4/5 w-full bg-gray-300" />
+            <div className="aspect-3/4 w-full bg-gray-300" />
           </div>
         </div>
       </div>
