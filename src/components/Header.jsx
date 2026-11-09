@@ -1,12 +1,23 @@
+import { useEffect, useState } from "react";
+
 export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
+
   return (
     <header className="sticky top-0 z-50">
       <p className="flex items-center justify-center bg-fadezone-black px-4 py-2 text-center text-xs font-semibold tracking-[0.18em] text-fadezone-light">
-        <span className="mr-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-fadezone-silver" />
         NOW ACCEPTING BOOKINGS — SECURE YOUR NEXT CUT TODAY.
       </p>
 
-      <div className="border-b border-fadezone-black/10 bg-fadezone-light/95 px-12 backdrop-blur-md">
+      <div className="relative border-b border-fadezone-black/10 bg-fadezone-light/95 px-4 backdrop-blur-md sm:px-6 lg:px-12">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6">
           <a href="/" aria-label="FadeZone home" className="shrink-0">
             <p className="font-heading text-3xl tracking-wide text-fadezone-black">
@@ -14,7 +25,15 @@ export default function Header() {
             </p>
           </a>
 
-          <nav aria-label="Main navigation">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden"
+            aria-label="Toggle navigation"
+          >
+            {isMenuOpen ? "✕" : "☰"}
+          </button>
+
+          <nav className="hidden lg:block" aria-label="Main navigation">
             <ul className="flex items-center gap-8">
               <li>
                 <a
@@ -60,11 +79,40 @@ export default function Header() {
           </nav>
           <a
             href="/booking"
-            className="bg-fadezone-black px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:-translate-y-0.5 hover:bg-fadezone-charcoal"
+            className="hidden lg:block bg-fadezone-black px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:-translate-y-0.5 hover:bg-fadezone-charcoal"
           >
             Book Now
           </a>
         </div>
+        <nav
+          className={`absolute right-0 top-full z-50 h-[calc(100dvh-100%)] w-[60vw] max-w-xs overflow-hidden border-l border-fadezone-black/10 bg-fadezone-light text-fadezone-black shadow-[-10px_0_14px_-12px_rgba(16,16,16,0.16)] transition-transform duration-300 ease-out lg:hidden ${
+            isMenuOpen ? "visible translate-x-0" : "invisible translate-x-full"
+          }`}
+          aria-label="Responsive navigation"
+          aria-hidden={!isMenuOpen}
+        >
+          <ul className="flex flex-col">
+            {["home", "about", "services", "barbers", "contact"].map((item) => (
+              <li key={item}>
+                <a
+                  href={`#${item}`}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block border-b border-fadezone-light/10 py-5 text-center text-sm font-semibold uppercase tracking-[0.16em]"
+                >
+                  {item}
+                </a>
+              </li>
+            ))}
+            <li className="p-6">
+              <a
+                href="/booking"
+                className="block bg-fadezone-black px-6 py-4 text-center text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:-translate-y-0.5"
+              >
+                Book Now
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
   );
