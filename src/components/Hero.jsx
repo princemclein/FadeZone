@@ -6,8 +6,8 @@ import Haircut4 from "../assets/home-images/haircut4.jpg";
 
 export default function Hero() {
   return (
-    <section id="home" className="bg-fadezone-light py-12 lg:py-20">
-      <Container className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+    <section id="home" className="bg-fadezone-light py-12 md:py-16 lg:py-20">
+      <Container className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
         {/* Left */}
         <div className="flex flex-col items-start gap-6">
           <h1 className="font-heading text-5xl uppercase leading-none text-fadezone-black sm:text-6xl lg:text-7xl">
@@ -38,7 +38,7 @@ export default function Hero() {
         </div>
 
         {/* Right: staggered collage */}
-        <div className="grid w-full max-w-sm grid-cols-2 gap-3 justify-self-center lg:justify-self-end">
+        <div className="grid w-full max-w-md grid-cols-2 gap-3 justify-self-center md:justify-self-end">
           <div className="flex flex-col gap-3">
             <img
               src={Haircut1}
