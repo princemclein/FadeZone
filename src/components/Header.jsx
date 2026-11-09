@@ -4,10 +4,30 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    if (!isMenuOpen) {
+      return undefined;
+    }
+
+    const { body } = document;
+    const scrollY = window.scrollY;
+    const previousStyles = {
+      overflow: body.style.overflow,
+      position: body.style.position,
+      top: body.style.top,
+      width: body.style.width,
+    };
+
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
 
     return () => {
-      document.body.style.overflow = "";
+      body.style.overflow = previousStyles.overflow;
+      body.style.position = previousStyles.position;
+      body.style.top = previousStyles.top;
+      body.style.width = previousStyles.width;
+      window.scrollTo(0, scrollY);
     };
   }, [isMenuOpen]);
 
@@ -26,6 +46,7 @@ export default function Header() {
           </a>
 
           <button
+            type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="lg:hidden"
             aria-label="Toggle navigation"
