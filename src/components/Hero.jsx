@@ -24,13 +24,13 @@ export default function Hero() {
           <div className="flex flex-wrap gap-4">
             <a
               href="/booking"
-              className="bg-fadezone-black px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:-translate-y-0.5 hover:bg-fadezone-charcoal"
+              className="bg-fadezone-black px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:bg-fadezone-charcoal"
             >
               Book Your Appointment
             </a>
             <a
               href="#services"
-              className="border border-fadezone-black px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-black transition-transform hover:-translate-y-0.5"
+              className="border border-fadezone-black px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-black transition-transform hover:bg-fadezone-black hover:text-fadezone-light"
             >
               Explore Our Services
             </a>
