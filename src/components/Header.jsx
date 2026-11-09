@@ -1,7 +1,11 @@
 export default function Header() {
   return (
-    <header>
-      <div></div>
-    </header>
+    <>
+      <div className="announcement-bar">
+        NOW ACCEPTING BOOKINGS — SECURE YOUR NEXT CUT TODAY.
+      </div>
+
+      <header></header>
+    </>
   );
 }
