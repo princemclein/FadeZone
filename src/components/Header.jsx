@@ -40,7 +40,7 @@ export default function Header() {
         NOW ACCEPTING BOOKINGS — SECURE YOUR NEXT CUT TODAY.
       </p>
 
-      <div className="relative overflow-x-clip border-b border-fadezone-black/10 bg-fadezone-light/95 backdrop-blur-md">
+      <div className="relative overflow-x-clip bg-fadezone-light/95 shadow-sm backdrop-blur-md">
         <Container className="flex h-20 items-center justify-between gap-6">
           <a href="/" aria-label="FadeZone home" className="shrink-0">
             <p className="font-heading text-3xl tracking-wide text-fadezone-black">
