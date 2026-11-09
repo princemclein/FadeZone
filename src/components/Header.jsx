@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Container from "./Container";
 
 const links = ["home", "about", "services", "barbers", "contact"];
 
@@ -39,8 +40,8 @@ export default function Header() {
         NOW ACCEPTING BOOKINGS — SECURE YOUR NEXT CUT TODAY.
       </p>
 
-      <div className="relative overflow-x-clip border-b border-fadezone-black/10 bg-fadezone-light/95 px-4 backdrop-blur-md sm:px-6 lg:px-12">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6">
+      <div className="relative overflow-x-clip border-b border-fadezone-black/10 bg-fadezone-light/95 backdrop-blur-md">
+        <Container className="flex h-20 items-center justify-between gap-6">
           <a href="/" aria-label="FadeZone home" className="shrink-0">
             <p className="font-heading text-3xl tracking-wide text-fadezone-black">
               FadeZone.
@@ -78,7 +79,7 @@ export default function Header() {
           >
             Book Now
           </a>
-        </div>
+        </Container>
 
         <nav
           className={`absolute right-0 top-full z-50 h-[calc(100dvh-100%-2rem)] w-[60vw] max-w-xs overflow-y-auto border-l border-fadezone-black/10 bg-fadezone-light text-fadezone-black shadow-[-10px_0_14px_-12px_rgba(16,16,16,0.16)] transition-transform duration-300 ease-out lg:hidden ${

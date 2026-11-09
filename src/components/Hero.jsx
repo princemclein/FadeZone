@@ -1,7 +1,9 @@
+import Container from "./Container";
+
 export default function Hero() {
   return (
     <section id="home" className="bg-fadezone-light py-12 lg:py-20">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-12">
+      <Container className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
         {/* Left */}
         <div className="flex flex-col items-start gap-6">
           <h1 className="font-heading text-5xl uppercase leading-none text-fadezone-black sm:text-6xl lg:text-7xl">
@@ -42,7 +44,7 @@ export default function Hero() {
             <div className="aspect-3/4 w-full bg-gray-300" />
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
