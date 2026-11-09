@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const links = ["home", "about", "services", "barbers", "contact"];
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -37,7 +39,7 @@ export default function Header() {
         NOW ACCEPTING BOOKINGS — SECURE YOUR NEXT CUT TODAY.
       </p>
 
-      <div className="relative border-b border-fadezone-black/10 bg-fadezone-light/95 px-4 backdrop-blur-md sm:px-6 lg:px-12">
+      <div className="relative overflow-x-clip border-b border-fadezone-black/10 bg-fadezone-light/95 px-4 backdrop-blur-md sm:px-6 lg:px-12">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6">
           <a href="/" aria-label="FadeZone home" className="shrink-0">
             <p className="font-heading text-3xl tracking-wide text-fadezone-black">
@@ -50,54 +52,26 @@ export default function Header() {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="flex h-11 w-11 items-center justify-center text-3xl leading-none text-fadezone-black lg:hidden"
             aria-label="Toggle navigation"
+            aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? "✕" : "☰"}
           </button>
 
           <nav className="hidden lg:block" aria-label="Main navigation">
             <ul className="flex items-center gap-8">
-              <li>
-                <a
-                  href="#home"
-                  className="text-s font-semibold uppercase tracking-[0.16em] text-fadezone-black transition-colors hover:text-fadezone-silver"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#about"
-                  className="text-s font-semibold uppercase tracking-[0.16em] text-fadezone-black transition-colors hover:text-fadezone-silver"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#services"
-                  className="text-s font-semibold uppercase tracking-[0.16em] text-fadezone-black transition-colors hover:text-fadezone-silver"
-                >
-                  Services
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#barbers"
-                  className="text-s font-semibold uppercase tracking-[0.16em] text-fadezone-black transition-colors hover:text-fadezone-silver"
-                >
-                  Barbers
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contact"
-                  className="text-s font-semibold uppercase tracking-[0.16em] text-fadezone-black transition-colors hover:text-fadezone-silver"
-                >
-                  Contact
-                </a>
-              </li>
+              {links.map((item) => (
+                <li key={item}>
+                  <a
+                    href={`#${item}`}
+                    className="text-sm font-semibold uppercase tracking-[0.16em] text-fadezone-black transition-colors hover:text-fadezone-silver"
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
             </ul>
           </nav>
+
           <a
             href="/booking"
             className="hidden lg:block bg-fadezone-black px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:-translate-y-0.5 hover:bg-fadezone-charcoal"
@@ -105,20 +79,21 @@ export default function Header() {
             Book Now
           </a>
         </div>
+
         <nav
-          className={`absolute right-0 top-full z-50 h-[calc(100dvh-100%)] w-[60vw] max-w-xs overflow-hidden border-l border-fadezone-black/10 bg-fadezone-light text-fadezone-black shadow-[-10px_0_14px_-12px_rgba(16,16,16,0.16)] transition-transform duration-300 ease-out lg:hidden ${
+          className={`absolute right-0 top-full z-50 h-[calc(100dvh-100%-2rem)] w-[60vw] max-w-xs overflow-y-auto border-l border-fadezone-black/10 bg-fadezone-light text-fadezone-black shadow-[-10px_0_14px_-12px_rgba(16,16,16,0.16)] transition-transform duration-300 ease-out lg:hidden ${
             isMenuOpen ? "visible translate-x-0" : "invisible translate-x-full"
           }`}
           aria-label="Responsive navigation"
           aria-hidden={!isMenuOpen}
         >
           <ul className="flex flex-col">
-            {["home", "about", "services", "barbers", "contact"].map((item) => (
+            {links.map((item) => (
               <li key={item}>
                 <a
                   href={`#${item}`}
                   onClick={() => setIsMenuOpen(false)}
-                  className="block border-b border-fadezone-light/10 py-5 text-center text-sm font-semibold uppercase tracking-[0.16em]"
+                  className="block py-5 text-center text-sm font-semibold uppercase tracking-[0.16em]"
                 >
                   {item}
                 </a>
