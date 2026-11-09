@@ -1,4 +1,8 @@
 import Container from "./Container";
+import Haircut1 from "../assets/home-images/haircut1.jpeg";
+import Haircut2 from "../assets/home-images/haircut2.jpeg";
+import Haircut3 from "../assets/home-images/haircut3.jpg";
+import Haircut4 from "../assets/home-images/haircut4.jpg";
 
 export default function Hero() {
   return (
@@ -36,12 +40,28 @@ export default function Hero() {
         {/* Right: staggered collage */}
         <div className="grid w-full max-w-sm grid-cols-2 gap-3 justify-self-center lg:justify-self-end">
           <div className="flex flex-col gap-3">
-            <div className="aspect-4/5 w-full bg-gray-300" />
-            <div className="aspect-4/5 w-full bg-gray-300" />
+            <img
+              src={Haircut1}
+              alt="Fresh FadeZone haircut"
+              className="aspect-4/5 w-full object-cover"
+            />
+            <img
+              src={Haircut2}
+              alt="Barber styling a haircut"
+              className="aspect-4/5 w-full object-cover"
+            />
           </div>
           <div className="mt-10 flex flex-col gap-3">
-            <div className="aspect-4/5 w-full bg-gray-300" />
-            <div className="aspect-3/4 w-full bg-gray-300" />
+            <img
+              src={Haircut3}
+              alt="Detailed barber haircut"
+              className="aspect-4/5 w-full object-cover"
+            />
+            <img
+              src={Haircut4}
+              alt="Finished FadeZone haircut"
+              className="aspect-3/4 w-full object-cover"
+            />
           </div>
         </div>
       </Container>
