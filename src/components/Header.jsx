@@ -58,7 +58,10 @@ export default function Header() {
             {isMenuOpen ? "✕" : "☰"}
           </button>
 
-          <nav className="hidden min-[900px]:block" aria-label="Main navigation">
+          <nav
+            className="hidden min-[900px]:block"
+            aria-label="Main navigation"
+          >
             <ul className="flex items-center gap-8">
               {links.map((item) => (
                 <li key={item}>
@@ -75,7 +78,7 @@ export default function Header() {
 
           <a
             href="/booking"
-            className="hidden min-[900px]:block bg-fadezone-black px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:-translate-y-0.5 hover:bg-fadezone-charcoal"
+            className="hidden min-[900px]:block bg-fadezone-black px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:bg-fadezone-charcoal"
           >
             Book Now
           </a>
