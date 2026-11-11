@@ -83,10 +83,16 @@ export default function Footer() {
             2209
           </p>
           <div className="mt-3 flex gap-5 text-xs font-bold uppercase tracking-[0.2em]">
-            <a href="" className="transition hover:text-gray-400">
+            <a
+              href="https://www.facebook.com/profile.php?id=61590669484136"
+              className="transition hover:text-gray-400"
+            >
               Facebook
             </a>
-            <a href="#" className="transition hover:text-gray-400">
+            <a
+              href="https://www.instagram.com/fadezone.m/?hl=en"
+              className="transition hover:text-gray-400"
+            >
               Instagram
             </a>
           </div>
