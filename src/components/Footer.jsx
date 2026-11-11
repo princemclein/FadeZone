@@ -200,7 +200,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom line */}
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-white/15 px-6 py-5 text-xs uppercase tracking-[0.2em] text-gray-400 sm:flex-row">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-3 border-t border-white/15 px-6 py-5 text-xs uppercase tracking-[0.2em] text-gray-400 sm:flex-row">
         <span>© 2026 FadeZone</span>
       </div>
     </footer>
