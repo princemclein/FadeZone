@@ -46,7 +46,8 @@ export default function GallerySection() {
           Gallery
         </h2>
         <p className="mx-auto mt-3 max-w-md text-center font-body text-fadezone-charcoal">
-          Pick a style, then book your spot. Walk-ins welcome.
+          Choose your preferred haircut and book your appointment. All haircuts
+          are ₱120, and walk-ins are always welcome.
         </p>
 
         <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:mx-auto lg:max-w-5xl">
