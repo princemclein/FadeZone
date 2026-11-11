@@ -5,8 +5,8 @@ import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 const OPEN_HOUR = 10; // 10 AM
 const CLOSE_HOUR = 20; // 8 PM
 const TIMEZONE = "Asia/Manila"; // status follows the shop's time, not the visitor's
-const PHONE_DISPLAY = "0900 000 0000"; // TODO: client's real number
-const PHONE_TEL = "+639000000000"; // TODO: same number, international format
+const PHONE_DISPLAY = "0946803476";
+const PHONE_TEL = "+639461803476";
 const ADDRESS =
   "14D Soriano Street, Wawandue, near Subic Park, Subic, Zambales 2209";
 const MAPS_URL =
@@ -78,12 +78,6 @@ export default function Footer() {
               className="bg-white px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] text-black transition hover:bg-gray-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
             >
               Book now
-            </a>
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="border border-white px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] transition hover:bg-white hover:text-black focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-            >
-              Call us
             </a>
           </div>
         </div>
