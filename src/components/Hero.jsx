@@ -6,7 +6,7 @@ import Haircut4 from "../assets/home-images/haircut4.jpg";
 
 export default function Hero() {
   return (
-    <section id="home" className="bg-fadezone-light py-12 md:py-4">
+    <section id="home" className="scroll-mt-[6.75rem] bg-fadezone-light py-12 md:py-4">
       <Container className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
         {/* Left */}
         <div className="flex flex-col items-start gap-6">

@@ -3,7 +3,10 @@ import AboutImg from "../assets/about-images/about-img.png";
 
 export default function About() {
   return (
-    <section id="about" className="bg-fadezone-light py-16 md:py-24">
+    <section
+      id="about"
+      className="scroll-mt-8 bg-fadezone-light py-16 md:py-24"
+    >
       <Container className="flex flex-col gap-10 md:gap-14">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-fadezone-black/60">
