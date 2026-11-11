@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 const OPEN_HOUR = 10; // 10 AM
 const CLOSE_HOUR = 20; // 8 PM
@@ -187,6 +189,12 @@ export default function Footer() {
                 className={linkClass}
               >
                 Prince Mclein J. Gonzales
+                <FontAwesomeIcon
+                  icon={faArrowUp}
+                  className="ml-2"
+                  style={{ transform: "rotate(60deg)" }}
+                  aria-hidden="true"
+                />
               </a>
             </li>
           </ul>
