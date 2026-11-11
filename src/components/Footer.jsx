@@ -21,14 +21,6 @@ const NAV = [
   { label: "Contact", href: "#contact" },
 ];
 
-const SERVICES = [
-  "Haircut",
-  "Fade",
-  "Beard trim",
-  "Hot towel shave",
-  "Kids cut",
-]; // TODO: match real service list
-
 function shopHour() {
   const parts = new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
@@ -184,16 +176,19 @@ export default function Footer() {
 
         <div>
           <h2 className="mb-3 font-[Bebas_Neue] text-xl tracking-wide">
-            Services
+            Developer
           </h2>
           <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-300">
-            {SERVICES.map((s) => (
-              <li key={s}>
-                <a href="#services" className={linkClass}>
-                  {s}
-                </a>
-              </li>
-            ))}
+            <li>
+              <a
+                href="https://github.com/princemclein"
+                target="_blank"
+                rel="noreferrer"
+                className={linkClass}
+              >
+                Prince Mclein J. Gonzales
+              </a>
+            </li>
           </ul>
         </div>
       </div>
