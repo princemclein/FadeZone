@@ -81,13 +81,13 @@ export default function Footer() {
           <div className="flex flex-wrap gap-4">
             <a
               href="#contact"
-              className="bg-white px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] text-black transition hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              className="bg-white px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] text-black transition hover:bg-gray-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
             >
               Book now
             </a>
             <a
               href={`tel:${PHONE_TEL}`}
-              className="border border-white px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] transition hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              className="border border-white px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] transition hover:bg-white hover:text-black focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
             >
               Call us
             </a>
