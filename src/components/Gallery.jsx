@@ -58,7 +58,7 @@ export default function GallerySection() {
         <div className="mt-8 text-center">
           <a
             href="#gallery"
-            className="inline-block bg-fadezone-black px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-fadezone-charcoal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-black"
+            className="w-45 inline-block bg-fadezone-black px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-fadezone-charcoal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-black"
           >
             View all
           </a>
