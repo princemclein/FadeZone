@@ -6,7 +6,7 @@ import Haircut4 from "../assets/home-images/haircut4.jpg";
 
 export default function Hero() {
   return (
-    <section id="home" className="scroll-mt-[6.75rem] bg-fadezone-light py-12 md:py-4">
+    <section id="home" className="scroll-mt-27 bg-fadezone-light py-12 md:py-4">
       <Container className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
         {/* Left */}
         <div className="flex flex-col items-start gap-6">
@@ -26,7 +26,7 @@ export default function Hero() {
               href="/booking"
               className="bg-fadezone-black px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:bg-fadezone-charcoal"
             >
-              Book Your Appointment
+              Meet Our Barbers
             </a>
             <a
               href="#services"
