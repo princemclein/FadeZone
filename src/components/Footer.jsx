@@ -83,7 +83,7 @@ export default function Footer() {
             2209
           </p>
           <div className="mt-3 flex gap-5 text-xs font-bold uppercase tracking-[0.2em]">
-            <a href="#" className="transition hover:text-gray-400">
+            <a href="" className="transition hover:text-gray-400">
               Facebook
             </a>
             <a href="#" className="transition hover:text-gray-400">
