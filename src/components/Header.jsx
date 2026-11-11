@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Container from "./Container";
 
-const links = ["home", "about", "services", "barbers", "contact"];
+const links = ["home", "about", "Gallery", "barbers", "contact"];
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

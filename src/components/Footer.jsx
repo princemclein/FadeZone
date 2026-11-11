@@ -18,7 +18,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/fadezone.m/?hl=en";
 const NAV = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
+  { label: "Gallery", href: "#gallery" },
   { label: "Barbers", href: "#barbers" },
   { label: "Contact", href: "#contact" },
 ];
