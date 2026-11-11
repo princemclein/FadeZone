@@ -31,9 +31,11 @@ export default function About() {
               Founded on June 12, 2026, FadeZone was established with a passion
               for barbering and personal style. What started as a vision to
               provide quality haircuts became a place where customers can
-              express themselves through their look. <br />
-              At FadeZone, every cut is an opportunity to bring out confidence,
-              individuality, and style.
+              express themselves through their look.
+              <span className="mt-4 block">
+                At FadeZone, every cut is an opportunity to bring out
+                confidence, individuality, and style.
+              </span>
             </p>
           </div>
         </div>
