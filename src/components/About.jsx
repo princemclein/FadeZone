@@ -5,7 +5,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="scroll-mt-8 bg-fadezone-light py-16 md:py-24"
+      className="scroll-mt-28 bg-fadezone-light py-16 md:py-24 sm:scroll-mt-80"
     >
       <Container className="flex flex-col gap-10 md:gap-14">
         <div className="text-center">

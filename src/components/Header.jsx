@@ -66,7 +66,7 @@ export default function Header() {
               {links.map((item) => (
                 <li key={item}>
                   <a
-                    href={item === "home" ? "/" : `#${item}`}
+                    href={item === "home" ? "/" : `#${item.toLowerCase()}`}
                     className="relative inline-block pb-1 text-sm font-semibold uppercase tracking-[0.16em] text-fadezone-black after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-fadezone-black after:transition-transform after:duration-300 hover:after:scale-x-100"
                   >
                     {item}
@@ -95,7 +95,7 @@ export default function Header() {
             {links.map((item) => (
               <li key={item}>
                 <a
-                  href={item === "home" ? "/" : `#${item}`}
+                  href={item === "home" ? "/" : `#${item.toLowerCase()}`}
                   onClick={() => setIsMenuOpen(false)}
                   className="group relative block py-5 text-center text-sm font-semibold uppercase tracking-[0.16em] after:absolute after:bottom-3 after:left-1/4 after:h-px after:w-1/2 after:origin-center after:scale-x-0 after:bg-fadezone-black after:content-[''] after:transition-transform after:duration-300 group-hover:after:scale-x-100"
                 >
