@@ -1,17 +1,11 @@
-import buzzCut from "../assets/gallery-section-images/buzz-cut.jpg";
-import classicCut from "../assets/gallery-section-images/classic-cut.jpg";
 import highFade from "../assets/gallery-section-images/high-fade.jpg";
-import lowFade from "../assets/gallery-section-images/low-fade.jpg";
 import midFade from "../assets/gallery-section-images/mid-fade.jpg";
 import taperFade from "../assets/gallery-section-images/taper-fade.jpg";
 
 const HAIRCUTS = [
-  { name: "Classic cut", image: classicCut },
-  { name: "Low fade", image: lowFade },
   { name: "Mid fade", image: midFade },
   { name: "High fade", image: highFade },
   { name: "Taper fade", image: taperFade },
-  { name: "Buzz cut", image: buzzCut },
 ];
 
 function HaircutCard({ name, image }) {
