@@ -100,8 +100,8 @@ export default function Footer() {
       </div>
 
       {/* Bottom line */}
-      <div className="mx-auto flex max-w-6xl items-center justify-between border-t border-white/10 px-6 py-5 text-xs uppercase tracking-[0.2em] text-gray-500">
-        <span>© 2026 FadeZone</span>
+      <div className="mx-auto flex max-w-6xl items-center justify-center border-t border-white/10 px-6 py-5 text-xs uppercase tracking-[0.2em] text-gray-500">
+        <span className="text-center">© 2026 FadeZone</span>
       </div>
     </footer>
   );
