@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-// ---- Edit these ----
 const OPEN_HOUR = 10; // 10 AM
 const CLOSE_HOUR = 20; // 8 PM
 const TIMEZONE = "Asia/Manila"; // status follows the shop's time, not the visitor's
@@ -9,7 +8,7 @@ const PHONE_TEL = "+639000000000"; // TODO: same number, international format
 const ADDRESS =
   "14D Soriano Street, Wawandue, near Subic Park, Subic, Zambales 2209";
 const MAPS_URL =
-  "https://www.google.com/maps/search/?api=1&query=" +
+  "https://www.google.com/maps/place/Fadezone/@14.8781131,120.2223896,15z/data=!4m15!1m8!3m7!1s0x339671f613c374e7:0xc32420218d8dd21b!2sFadezone!8m2!3d14.8781028!4d120.2326308!10e5!16s%2Fg%2F11zgpljwn4!3m5!1s0x339671f613c374e7:0xc32420218d8dd21b!8m2!3d14.8781028!4d120.2326308!16s%2Fg%2F11zgpljwn4?entry=ttu&g_ep=EgoyMDI2MTEwOC4wIKXMDSoASAFQAw%3D%3D" +
   encodeURIComponent(ADDRESS);
 const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61590669484136";
 const INSTAGRAM_URL = "https://www.instagram.com/fadezone.m/?hl=en";
