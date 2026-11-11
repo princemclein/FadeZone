@@ -48,10 +48,10 @@ export default function GallerySection() {
       className="scroll-mt-24 bg-fadezone-light py-16 sm:py-20"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="font-heading text-5xl leading-none tracking-wide text-fadezone-black md:text-6xl">
+        <h2 className="font-heading text-center text-5xl leading-none tracking-wide text-fadezone-black md:text-6xl">
           Gallery
         </h2>
-        <p className="mt-3 max-w-md font-body text-fadezone-charcoal">
+        <p className="mx-auto mt-3 max-w-md text-center font-body text-fadezone-charcoal">
           Pick a style, then book your spot. Walk-ins welcome.
         </p>
 
