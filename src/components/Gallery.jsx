@@ -39,7 +39,7 @@ export default function GallerySection() {
   return (
     <section
       id="gallery"
-      className="scroll-mt-20 bg-fadezone-light py-16 sm:py-20 sm:scroll-mt-20"
+      className="scroll-mt-20 bg-fadezone-light py-16 sm:py-20 lg:scroll-mt-10"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <h2 className="font-heading text-center text-5xl leading-none tracking-wide text-fadezone-black md:text-6xl">
