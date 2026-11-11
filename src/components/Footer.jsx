@@ -47,9 +47,6 @@ export default function Footer() {
             <span className="font-[Bebas_Neue] text-3xl tracking-wide">
               Next!
             </span>
-            <span className="text-xs tracking-[0.2em] text-gray-400">
-              NO. 001
-            </span>
           </div>
 
           <div className="my-4 border-t border-dashed border-white/40" />
@@ -82,7 +79,8 @@ export default function Footer() {
 
           {/* Address + socials */}
           <p className="text-sm text-gray-400">
-            Your address here, City, Philippines
+            14D Soriano Street. Wawandue near at subic park, Subic, Philippines,
+            2209
           </p>
           <div className="mt-3 flex gap-5 text-xs font-bold uppercase tracking-[0.2em]">
             <a href="#" className="transition hover:text-gray-400">
