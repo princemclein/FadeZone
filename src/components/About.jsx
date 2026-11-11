@@ -22,7 +22,7 @@ export default function About() {
             <img
               src={AboutImg}
               alt="FadeZone Interior"
-              className="aspect-square w-full object-cover"
+              className="aspect-square w-full border-2 border-dashed border-fadezone-black object-cover"
             />
           </div>
 
