@@ -7,7 +7,7 @@ const STATS = [
     description: "Since June 12, 2026",
   },
   {
-    value: "₱120",
+    value: "₱150",
     label: "Fixed Haircut Price",
     description: "One straightforward price",
   },
