@@ -106,7 +106,7 @@ export default function Header() {
             <li className="p-6">
               <a
                 href="/booking"
-                className="block bg-fadezone-black px-6 py-4 text-center text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:-translate-y-0.5"
+                className="block bg-fadezone-black px-6 py-4 text-center text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:fadezone-charcoal"
               >
                 Book Now
               </a>

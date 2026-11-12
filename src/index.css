@@ -1,14 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Lora:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  /* Color Palettes */
-  --color-fadezone-black: #101010; /* Main text and headings */
-  --color-fadezone-charcoal: #292929; /* Cards */
-  --color-fadezone-silver: #a6a6a6; /* Muted texts, borders, and accents */
-  --color-fadezone-light: #ffff; /* Main background */
+  /* Vintage Color Palette */
+  --color-fadezone-black: #292016; /* Main text and headings */
+  --color-fadezone-charcoal: #783f35; /* Cards and buttons */
+  --color-fadezone-silver: #a58a5c; /* Borders and accents */
+  --color-fadezone-light: #f2e8d5; /* Main background */
 
-  /* Fonts */
-  --font-heading: "Bebas Neue", sans-serif; /* Headings / Title */
-  --font-body: "Inter", sans-serif; /* Body texts */
+  --font-heading: "Playfair Display", serif;
+  --font-body: "Lora", serif;
 }
