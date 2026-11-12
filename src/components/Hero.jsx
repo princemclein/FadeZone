@@ -14,7 +14,7 @@ export default function Hero() {
     >
       <Container className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
         {/* Left */}
-        <div className="flex w-full max-w-120 flex-col gap-6">
+        <div className="flex w-full max-w-115 flex-col gap-6">
           <h1 className="font-heading text-[clamp(1.75rem,6.2vw,4rem)] uppercase leading-none text-fadezone-text">
             <span className="block whitespace-nowrap">Stay Sharp.</span>
             <span className="block whitespace-nowrap">Stay Fresh.</span>
