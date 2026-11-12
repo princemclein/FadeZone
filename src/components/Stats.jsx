@@ -32,7 +32,7 @@ export default function Stats() {
             <p className="font-heading text-xl leading-none text-fadezone-text sm:text-2xl">
               {stat.value}
             </p>
-            <h2 className="font-body text-xs font-bold uppercase tracking-[0.1em] text-fadezone-text">
+            <h2 className="font-body text-xs font-bold uppercase tracking-widest text-fadezone-text">
               {stat.label}
             </h2>
             <p className="font-body text-[0.7rem] text-fadezone-text/70">

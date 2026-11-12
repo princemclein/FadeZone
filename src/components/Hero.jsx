@@ -19,7 +19,7 @@ export default function Hero() {
             <span className="block whitespace-nowrap">Stay FadeZone.</span>
           </h1>
 
-          <p className="max-w-md text-base font-body text-fadezone-text/70">
+          <p className="w-11/12 max-w-sm text-base font-body text-fadezone-text/70 text-justify">
             Experience precision cuts tailored to your style. Every detail
             matters in giving you a clean, confident look. Stay sharp, stay
             fresh, stay FadeZone.
