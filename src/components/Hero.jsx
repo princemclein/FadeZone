@@ -13,7 +13,7 @@ export default function Hero() {
       <Container className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
         {/* Left */}
         <div className="flex flex-col items-start gap-6">
-          <h1 className="font-heading text-5xl uppercase leading-none text-fadezone-text sm:text-6xl lg:text-6xl xl:text-7xl">
+          <h1 className="font-heading text-[2.4rem] uppercase leading-none text-fadezone-text sm:text-6xl lg:text-6xl xl:text-7xl">
             <span className="block whitespace-nowrap">Stay Sharp.</span>
             <span className="block whitespace-nowrap">Stay Fresh.</span>
             <span className="block whitespace-nowrap">Stay FadeZone.</span>
@@ -25,16 +25,16 @@ export default function Hero() {
             fresh, stay FadeZone.
           </p>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="flex w-full flex-wrap gap-4">
             <a
               href="/booking"
-              className="bg-fadezone-surface px-6 py-4 text-xs font-body font-bold uppercase tracking-[0.14em] text-fadezone-text transition-transform hover:bg-fadezone-accent"
+              className="w-full bg-fadezone-surface px-6 py-4 text-center text-xs font-body font-bold uppercase tracking-[0.14em] text-fadezone-text transition-transform hover:bg-fadezone-accent sm:w-auto"
             >
               Meet Our Barbers
             </a>
             <a
               href="#services"
-              className="border border-fadezone-text px-6 py-4 text-xs font-body font-bold uppercase tracking-[0.14em] text-fadezone-text transition-transform hover:bg-fadezone-surface hover:text-fadezone-text"
+              className="w-full border border-fadezone-text px-6 py-4 text-center text-xs font-body font-bold uppercase tracking-[0.14em] text-fadezone-text transition-transform hover:bg-fadezone-surface hover:text-fadezone-text sm:w-auto"
             >
               Explore Our Services
             </a>
