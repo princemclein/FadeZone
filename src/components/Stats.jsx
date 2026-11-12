@@ -25,7 +25,7 @@ const STATS = [
 
 export default function Stats() {
   return (
-    <section className="bg-fadezone-surface py-6 sm:py-8">
+    <section className="mt-5 bg-fadezone-surface py-6 sm:py-8">
       <Container className="grid grid-cols-2 gap-5 text-center lg:grid-cols-4">
         {STATS.map((stat) => (
           <div key={stat.label} className="flex flex-col items-center gap-0.5">
