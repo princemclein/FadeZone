@@ -26,3 +26,12 @@
     @apply font-heading font-normal;
   }
 }
+
+@layer utilities {
+  .bg-fadezone-texture {
+    background-color: var(--color-fadezone-background);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.16'/%3E%3C/svg%3E");
+    background-blend-mode: soft-light;
+    background-size: 180px 180px;
+  }
+}
