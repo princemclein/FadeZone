@@ -6,19 +6,23 @@ import Haircut4 from "../assets/home-images/haircut4.jpg";
 
 export default function Hero() {
   return (
-    <section id="home" className="scroll-mt-27 bg-fadezone-background py-12 md:py-4">
+    <section
+      id="home"
+      className="scroll-mt-27 bg-fadezone-background py-12 md:py-4"
+    >
       <Container className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
         {/* Left */}
         <div className="flex flex-col items-start gap-6">
-          <h1 className="font-heading text-5xl uppercase leading-none text-fadezone-text sm:text-6xl lg:text-7xl">
-            <span className="block">Stay Sharp.</span>
-            <span className="block">Stay Fresh.</span>
-            <span className="block">Stay FadeZone.</span>
+          <h1 className="font-heading text-5xl uppercase leading-none text-fadezone-text sm:text-6xl lg:text-6xl xl:text-7xl">
+            <span className="block whitespace-nowrap">Stay Sharp.</span>
+            <span className="block whitespace-nowrap">Stay Fresh.</span>
+            <span className="block whitespace-nowrap">Stay FadeZone.</span>
           </h1>
 
           <p className="max-w-md text-base font-body text-fadezone-text/70">
-            Experience precision cuts and expert grooming tailored to your
-            style. Look sharp, feel fresh, and leave with confidence.
+            Experience precision cuts tailored to your style. Every detail
+            matters in giving you a clean, confident look. Stay sharp, stay
+            fresh, stay FadeZone.
           </p>
 
           <div className="flex flex-wrap gap-4">
