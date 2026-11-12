@@ -3,10 +3,10 @@
 
 @theme {
   /* Dark Vintage Color Palette (your original colors) */
-  --color-fadezone-black: #292016; /* Main background */
-  --color-fadezone-charcoal: #514536; /* Cards and buttons */
-  --color-fadezone-silver: #a58a5c; /* Borders and accents */
-  --color-fadezone-light: #f2e8d5; /* Main text and headings */
+  --color-fadezone-background: #292016; /* Main background */
+  --color-fadezone-surface: #514536; /* Cards and buttons */
+  --color-fadezone-accent: #a58a5c; /* Borders and accents */
+  --color-fadezone-text: #f2e8d5; /* Main text and headings */
 
   --font-heading: "Abril Fatface", serif;
   --font-body: "Lora", serif;
@@ -14,7 +14,7 @@
 
 @layer base {
   body {
-    @apply bg-fadezone-black text-fadezone-light font-body;
+    @apply bg-fadezone-background text-fadezone-text font-body;
   }
 
   h1,

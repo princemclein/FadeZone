@@ -8,8 +8,8 @@ const BARBERS = [
 
 function BarberCard({ name, role, image }) {
   return (
-    <article className="flex flex-col bg-fadezone-charcoal text-fadezone-light">
-      <div className="aspect-4/5 overflow-hidden bg-fadezone-black">
+    <article className="flex flex-col bg-fadezone-surface text-fadezone-text">
+      <div className="aspect-4/5 overflow-hidden bg-fadezone-background">
         <img
           src={image}
           alt={name}
@@ -23,13 +23,13 @@ function BarberCard({ name, role, image }) {
           <h3 className="font-heading text-xl leading-none tracking-wide sm:text-2xl">
             {name}
           </h3>
-          <p className="mt-1 font-body text-xs text-fadezone-silver sm:text-sm">
+          <p className="mt-1 font-body text-xs text-fadezone-accent sm:text-sm">
             {role}
           </p>
         </div>
         <a
           href="#contact"
-          className="bg-fadezone-light px-4 py-2 text-center font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-black transition hover:bg-fadezone-silver focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-light"
+          className="bg-fadezone-text px-4 py-2 text-center font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-background transition hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-text"
         >
           Book Me
         </a>
@@ -42,13 +42,13 @@ export default function BarbersSection() {
   return (
     <section
       id="barbers"
-      className="scroll-mt-24 bg-fadezone-black py-16 sm:py-20"
+      className="scroll-mt-24 bg-fadezone-background py-16 sm:py-20"
     >
       <div className="mx-auto max-w-[76rem] px-4 sm:px-6">
-        <h2 className="font-heading text-5xl leading-none tracking-wide text-fadezone-light md:text-6xl">
+        <h2 className="font-heading text-5xl leading-none tracking-wide text-fadezone-text md:text-6xl">
           Meet the barbers
         </h2>
-        <p className="mt-3 max-w-md font-body text-fadezone-charcoal">
+        <p className="mt-3 max-w-md font-body text-fadezone-surface">
           The hands behind every cut.
         </p>
         <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
@@ -60,7 +60,7 @@ export default function BarbersSection() {
         <div className="mt-8 text-center">
           <a
             href="#barbers"
-            className="w-55 inline-block bg-fadezone-charcoal px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-light transition hover:bg-fadezone-silver focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-light"
+            className="w-55 inline-block bg-fadezone-surface px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-text"
           >
             Meet Our Barbers
           </a>

@@ -10,8 +10,8 @@ const HAIRCUTS = [
 
 function HaircutCard({ name, image }) {
   return (
-    <article className="flex flex-col bg-fadezone-charcoal text-fadezone-light">
-      <div className="aspect-4/5 overflow-hidden bg-fadezone-black">
+    <article className="flex flex-col bg-fadezone-surface text-fadezone-text">
+      <div className="aspect-4/5 overflow-hidden bg-fadezone-background">
         <img
           src={image}
           alt={name}
@@ -26,7 +26,7 @@ function HaircutCard({ name, image }) {
         </h3>
         <a
           href="#contact"
-          className="bg-fadezone-light px-4 py-2 text-center font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-black transition hover:bg-fadezone-silver focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-light"
+          className="bg-fadezone-text px-4 py-2 text-center font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-background transition hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-text"
         >
           Book now
         </a>
@@ -39,13 +39,13 @@ export default function GallerySection() {
   return (
     <section
       id="gallery"
-      className="scroll-mt-20 bg-fadezone-black py-16 sm:py-20 lg:scroll-mt-10"
+      className="scroll-mt-20 bg-fadezone-background py-16 sm:py-20 lg:scroll-mt-10"
     >
       <div className="mx-auto max-w-[76rem] px-4 sm:px-6">
-        <h2 className="font-heading text-center text-5xl leading-none tracking-wide text-fadezone-light md:text-6xl">
+        <h2 className="font-heading text-center text-5xl leading-none tracking-wide text-fadezone-text md:text-6xl">
           Gallery
         </h2>
-        <p className="mx-auto mt-3 max-w-md text-center font-body text-fadezone-charcoal">
+        <p className="mx-auto mt-3 max-w-md text-center font-body text-fadezone-surface">
           Choose your preferred haircut and book your appointment. All haircuts
           are ₱120, and walk-ins are always welcome.
         </p>
@@ -59,7 +59,7 @@ export default function GallerySection() {
         <div className="mt-8 text-center">
           <a
             href="#gallery"
-            className="w-45 inline-block bg-fadezone-charcoal px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-light transition hover:bg-fadezone-silver focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-light"
+            className="w-45 inline-block bg-fadezone-surface px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-text"
           >
             View all
           </a>
