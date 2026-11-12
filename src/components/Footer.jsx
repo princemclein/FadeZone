@@ -58,7 +58,7 @@ export default function Footer() {
       />
 
       {/* Main block */}
-      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 md:grid-cols-2 md:items-center">
+      <div className="mx-auto grid max-w-[76rem] gap-12 px-6 py-16 md:grid-cols-2 md:items-center">
         {/* Left: headline + CTAs */}
         <div className="flex flex-col gap-8">
           {/* LOGO SLOT: drop your <img> here */}
@@ -154,7 +154,7 @@ export default function Footer() {
       </div>
 
       {/* Link row */}
-      <div className="mx-auto grid max-w-6xl gap-8 border-t border-fadezone-light/15 px-6 py-10 sm:grid-cols-2">
+      <div className="mx-auto grid max-w-[76rem] gap-8 border-t border-fadezone-light/15 px-6 py-10 sm:grid-cols-2">
         <nav aria-label="Footer">
           <h2 className="mb-3 font-heading text-xl tracking-wide">
             Explore
@@ -196,7 +196,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom line */}
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-3 border-t border-fadezone-light/15 px-6 py-5 text-xs uppercase tracking-[0.2em] text-fadezone-light/60 sm:flex-row">
+      <div className="mx-auto flex max-w-[76rem] flex-col items-center justify-center gap-3 border-t border-fadezone-light/15 px-6 py-5 text-xs uppercase tracking-[0.2em] text-fadezone-light/60 sm:flex-row">
         <span>© 2026 FadeZone</span>
       </div>
     </footer>

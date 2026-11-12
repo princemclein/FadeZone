@@ -40,7 +40,7 @@ export default function Header() {
         NOW ACCEPTING BOOKINGS — SECURE YOUR NEXT CUT TODAY.
       </p>
 
-      <div className="relative overflow-x-clip bg-fadezone-black/95 shadow-sm backdrop-blur-md">
+      <div className="relative overflow-x-clip bg-fadezone-charcoal/95 shadow-sm backdrop-blur-md">
         <Container className="flex h-19 items-center justify-between gap-6">
           <a href="/" aria-label="FadeZone home" className="shrink-0">
             <p className="font-heading text-3xl tracking-wide text-fadezone-light">
@@ -85,7 +85,7 @@ export default function Header() {
         </Container>
 
         <nav
-          className={`absolute right-0 top-full z-50 h-[calc(100dvh-100%-2rem)] w-[60vw] max-w-xs overflow-y-auto border-l border-fadezone-light/10 bg-fadezone-black text-fadezone-light shadow-[-10px_0_14px_-12px_var(--color-fadezone-black)] transition-transform duration-300 ease-out min-[900px]:hidden ${
+          className={`absolute right-0 top-full z-50 h-[calc(100dvh-100%-2rem)] w-[60vw] max-w-xs overflow-y-auto border-l border-fadezone-light/10 bg-fadezone-charcoal text-fadezone-light shadow-[-10px_0_14px_-12px_var(--color-fadezone-black)] transition-transform duration-300 ease-out min-[900px]:hidden ${
             isMenuOpen ? "visible translate-x-0" : "invisible translate-x-full"
           }`}
           aria-label="Responsive navigation"

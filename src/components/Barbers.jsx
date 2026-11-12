@@ -44,7 +44,7 @@ export default function BarbersSection() {
       id="barbers"
       className="scroll-mt-24 bg-fadezone-black py-16 sm:py-20"
     >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="mx-auto max-w-[76rem] px-4 sm:px-6">
         <h2 className="font-heading text-5xl leading-none tracking-wide text-fadezone-light md:text-6xl">
           Meet the barbers
         </h2>
