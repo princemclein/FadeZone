@@ -10,9 +10,9 @@ export default function Hero() {
     <section
       id="home"
       style={{ backgroundImage: `url(${Background})` }}
-      className="scroll-mt-27 bg-cover bg-center bg-no-repeat py-12 md:py-4"
+      className="scroll-mt-27 flex min-h-168 items-center bg-cover bg-center bg-no-repeat py-12 md:py-4"
     >
-      <Container className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
+      <Container className="grid w-full grid-cols-1 items-center gap-10 md:grid-cols-2">
         {/* Left */}
         <div className="flex w-full max-w-115 flex-col gap-6">
           <h1 className="font-heading text-[clamp(2.75rem,11vw,4rem)] uppercase leading-none text-fadezone-text">
