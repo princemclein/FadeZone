@@ -107,7 +107,7 @@ export default function Footer() {
           {/* Hours */}
           <div className="flex justify-between text-sm text-fadezone-text/70">
             <span>Mon – Sun</span>
-            <span className="text-fadezone-text">10AM – 8PM</span>
+            <span className="text-fadezone-text">10AM – 10PM</span>
           </div>
 
           <div className="my-4 border-t border-dashed border-white/50" />
