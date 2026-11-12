@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 const OPEN_HOUR = 10; // 10 AM
-const CLOSE_HOUR = 20; // 8 PM
+const CLOSE_HOUR = 22; // 10 PM
 const TIMEZONE = "Asia/Manila"; // status follows the shop's time, not the visitor's
 const PHONE_DISPLAY = "0946803476";
 const PHONE_TEL = "+639461803476";
@@ -58,7 +58,7 @@ export default function Footer() {
       />
 
       {/* Main block */}
-      <div className="mx-auto grid max-w-[76rem] gap-12 px-6 py-16 md:grid-cols-2 md:items-center">
+      <div className="mx-auto grid max-w-304 gap-12 px-6 py-16 md:grid-cols-2 md:items-center">
         {/* Left: headline + CTAs */}
         <div className="flex flex-col gap-8">
           {/* LOGO SLOT: drop your <img> here */}
@@ -84,9 +84,7 @@ export default function Footer() {
 
         {/* Right: ticket card */}
         <div className="border border-dashed border-white/50 p-6 md:ml-auto md:w-full md:max-w-md">
-          <span className="font-heading text-3xl tracking-wide">
-            Next!
-          </span>
+          <span className="font-heading text-3xl tracking-wide">Next!</span>
 
           <div className="my-4 border-t border-dashed border-white/50" />
 
@@ -98,10 +96,10 @@ export default function Footer() {
             <span
               aria-hidden="true"
               className={`h-2.5 w-2.5 rounded-full ${
-                isOpen ? "animate-pulse bg-fadezone-accent" : "bg-fadezone-surface"
+                isOpen ? "animate-pulse bg-[#41f041]" : "bg-[#FF2E2E]"
               }`}
             />
-            {isOpen ? "Open now · closes 8PM" : "Closed · opens 10AM"}
+            {isOpen ? "Open now · closes 10PM" : "Closed · opens 10AM"}
           </div>
 
           <div className="my-4 border-t border-dashed border-white/50" />
@@ -154,11 +152,9 @@ export default function Footer() {
       </div>
 
       {/* Link row */}
-      <div className="mx-auto grid max-w-[76rem] gap-8 border-t border-fadezone-text/15 px-6 py-10 sm:grid-cols-2">
+      <div className="mx-auto grid max-w-304 gap-8 border-t border-fadezone-text/15 px-6 py-10 sm:grid-cols-2">
         <nav aria-label="Footer">
-          <h2 className="mb-3 font-heading text-xl tracking-wide">
-            Explore
-          </h2>
+          <h2 className="mb-3 font-heading text-xl tracking-wide">Explore</h2>
           <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-fadezone-text/70">
             {NAV.map((item) => (
               <li key={item.href}>
@@ -171,9 +167,7 @@ export default function Footer() {
         </nav>
 
         <div>
-          <h2 className="mb-3 font-heading text-xl tracking-wide">
-            Developer
-          </h2>
+          <h2 className="mb-3 font-heading text-xl tracking-wide">Developer</h2>
           <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-fadezone-text/70">
             <li>
               <a
@@ -196,7 +190,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom line */}
-      <div className="mx-auto flex max-w-[76rem] flex-col items-center justify-center gap-3 border-t border-fadezone-text/15 px-6 py-5 text-xs uppercase tracking-[0.2em] text-fadezone-text/60 sm:flex-row">
+      <div className="mx-auto flex max-w-304 flex-col items-center justify-center gap-3 border-t border-fadezone-text/15 px-6 py-5 text-xs uppercase tracking-[0.2em] text-fadezone-text/60 sm:flex-row">
         <span>© 2026 FadeZone</span>
       </div>
     </footer>
