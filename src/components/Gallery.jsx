@@ -45,7 +45,7 @@ export default function GallerySection() {
         <h2 className="font-heading text-center text-5xl leading-none tracking-wide text-fadezone-text md:text-6xl">
           Gallery
         </h2>
-        <p className="mx-auto mt-3 max-w-md text-center font-body text-fadezone-surface">
+        <p className="mx-auto mt-3 max-w-md text-center font-body text-fadezone-text">
           Choose your preferred haircut and book your appointment. All haircuts
           are ₱120, and walk-ins are always welcome.
         </p>
