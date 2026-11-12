@@ -6,17 +6,17 @@ import Haircut4 from "../assets/home-images/haircut4.jpg";
 
 export default function Hero() {
   return (
-    <section id="home" className="scroll-mt-27 bg-fadezone-light py-12 md:py-4">
+    <section id="home" className="scroll-mt-27 bg-fadezone-black py-12 md:py-4">
       <Container className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
         {/* Left */}
         <div className="flex flex-col items-start gap-6">
-          <h1 className="font-heading text-5xl uppercase leading-none text-fadezone-black sm:text-6xl lg:text-7xl">
+          <h1 className="font-heading text-5xl uppercase leading-none text-fadezone-light sm:text-6xl lg:text-7xl">
             <span className="block">Stay Sharp.</span>
             <span className="block">Stay Fresh.</span>
             <span className="block">Stay FadeZone.</span>
           </h1>
 
-          <p className="max-w-md text-base text-fadezone-black/70">
+          <p className="max-w-md text-base font-body text-fadezone-light/70">
             Experience precision cuts and expert grooming tailored to your
             style. Look sharp, feel fresh, and leave with confidence.
           </p>
@@ -24,13 +24,13 @@ export default function Hero() {
           <div className="flex flex-wrap gap-4">
             <a
               href="/booking"
-              className="bg-fadezone-black px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:bg-fadezone-charcoal"
+              className="bg-fadezone-charcoal px-6 py-4 text-xs font-body font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:bg-fadezone-silver"
             >
               Meet Our Barbers
             </a>
             <a
               href="#services"
-              className="border border-fadezone-black px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-black transition-transform hover:bg-fadezone-black hover:text-fadezone-light"
+              className="border border-fadezone-light px-6 py-4 text-xs font-body font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:bg-fadezone-charcoal hover:text-fadezone-light"
             >
               Explore Our Services
             </a>

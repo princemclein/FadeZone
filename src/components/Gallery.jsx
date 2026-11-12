@@ -10,7 +10,7 @@ const HAIRCUTS = [
 
 function HaircutCard({ name, image }) {
   return (
-    <article className="flex flex-col bg-fadezone-charcoal text-white">
+    <article className="flex flex-col bg-fadezone-charcoal text-fadezone-light">
       <div className="aspect-4/5 overflow-hidden bg-fadezone-black">
         <img
           src={image}
@@ -26,7 +26,7 @@ function HaircutCard({ name, image }) {
         </h3>
         <a
           href="#contact"
-          className="bg-white px-4 py-2 text-center font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-black transition hover:bg-fadezone-silver focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="bg-fadezone-light px-4 py-2 text-center font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-black transition hover:bg-fadezone-silver focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-light"
         >
           Book now
         </a>
@@ -39,10 +39,10 @@ export default function GallerySection() {
   return (
     <section
       id="gallery"
-      className="scroll-mt-20 bg-fadezone-light py-16 sm:py-20 lg:scroll-mt-10"
+      className="scroll-mt-20 bg-fadezone-black py-16 sm:py-20 lg:scroll-mt-10"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="font-heading text-center text-5xl leading-none tracking-wide text-fadezone-black md:text-6xl">
+        <h2 className="font-heading text-center text-5xl leading-none tracking-wide text-fadezone-light md:text-6xl">
           Gallery
         </h2>
         <p className="mx-auto mt-3 max-w-md text-center font-body text-fadezone-charcoal">
@@ -59,7 +59,7 @@ export default function GallerySection() {
         <div className="mt-8 text-center">
           <a
             href="#gallery"
-            className="w-45 inline-block bg-fadezone-black px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-fadezone-charcoal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-black"
+            className="w-45 inline-block bg-fadezone-charcoal px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-light transition hover:bg-fadezone-silver focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-light"
           >
             View all
           </a>

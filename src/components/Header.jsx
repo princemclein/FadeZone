@@ -36,14 +36,14 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50">
-      <p className="flex items-center justify-center bg-fadezone-black px-4 py-2 text-center text-xs font-semibold tracking-[0.18em] text-fadezone-light">
+      <p className="flex items-center justify-center bg-fadezone-black px-4 py-2 text-center text-xs font-body font-semibold tracking-[0.18em] text-fadezone-light">
         NOW ACCEPTING BOOKINGS — SECURE YOUR NEXT CUT TODAY.
       </p>
 
-      <div className="relative overflow-x-clip bg-fadezone-light/95 shadow-sm backdrop-blur-md">
+      <div className="relative overflow-x-clip bg-fadezone-black/95 shadow-sm backdrop-blur-md">
         <Container className="flex h-19 items-center justify-between gap-6">
           <a href="/" aria-label="FadeZone home" className="shrink-0">
-            <p className="font-heading text-3xl tracking-wide text-fadezone-black">
+            <p className="font-heading text-3xl tracking-wide text-fadezone-light">
               FadeZone.
             </p>
           </a>
@@ -51,7 +51,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex h-11 w-11 items-center justify-center text-3xl leading-none text-fadezone-black min-[900px]:hidden"
+            className="flex h-11 w-11 items-center justify-center text-3xl leading-none text-fadezone-light min-[900px]:hidden"
             aria-label="Toggle navigation"
             aria-expanded={isMenuOpen}
           >
@@ -67,7 +67,7 @@ export default function Header() {
                 <li key={item}>
                   <a
                     href={item === "home" ? "/" : `#${item.toLowerCase()}`}
-                    className="relative inline-block pb-1 text-sm font-semibold uppercase tracking-[0.16em] text-fadezone-black after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-fadezone-black after:transition-transform after:duration-300 hover:after:scale-x-100"
+                    className="relative inline-block pb-1 text-sm font-body font-semibold uppercase tracking-[0.16em] text-fadezone-light after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-fadezone-light after:transition-transform after:duration-300 hover:after:scale-x-100"
                   >
                     {item}
                   </a>
@@ -78,14 +78,14 @@ export default function Header() {
 
           <a
             href="/booking"
-            className="hidden min-[900px]:block bg-fadezone-black px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:bg-fadezone-charcoal"
+            className="hidden min-[900px]:block bg-fadezone-charcoal px-6 py-3 text-xs font-body font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:bg-fadezone-silver"
           >
             Book Now
           </a>
         </Container>
 
         <nav
-          className={`absolute right-0 top-full z-50 h-[calc(100dvh-100%-2rem)] w-[60vw] max-w-xs overflow-y-auto border-l border-fadezone-black/10 bg-fadezone-light text-fadezone-black shadow-[-10px_0_14px_-12px_rgba(16,16,16,0.16)] transition-transform duration-300 ease-out min-[900px]:hidden ${
+          className={`absolute right-0 top-full z-50 h-[calc(100dvh-100%-2rem)] w-[60vw] max-w-xs overflow-y-auto border-l border-fadezone-light/10 bg-fadezone-black text-fadezone-light shadow-[-10px_0_14px_-12px_var(--color-fadezone-black)] transition-transform duration-300 ease-out min-[900px]:hidden ${
             isMenuOpen ? "visible translate-x-0" : "invisible translate-x-full"
           }`}
           aria-label="Responsive navigation"
@@ -97,7 +97,7 @@ export default function Header() {
                 <a
                   href={item === "home" ? "/" : `#${item.toLowerCase()}`}
                   onClick={() => setIsMenuOpen(false)}
-                  className="group relative block py-5 text-center text-sm font-semibold uppercase tracking-[0.16em] after:absolute after:bottom-3 after:left-1/4 after:h-px after:w-1/2 after:origin-center after:scale-x-0 after:bg-fadezone-black after:content-[''] after:transition-transform after:duration-300 group-hover:after:scale-x-100"
+                  className="group relative block py-5 text-center text-sm font-semibold uppercase tracking-[0.16em] after:absolute after:bottom-3 after:left-1/4 after:h-px after:w-1/2 after:origin-center after:scale-x-0 after:bg-fadezone-light after:content-[''] after:transition-transform after:duration-300 group-hover:after:scale-x-100"
                 >
                   {item}
                 </a>
@@ -106,7 +106,7 @@ export default function Header() {
             <li className="p-6">
               <a
                 href="/booking"
-                className="block bg-fadezone-black px-6 py-4 text-center text-xs font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:fadezone-charcoal"
+                className="block bg-fadezone-charcoal px-6 py-4 text-center text-xs font-body font-bold uppercase tracking-[0.14em] text-fadezone-light transition-transform hover:bg-fadezone-silver"
               >
                 Book Now
               </a>

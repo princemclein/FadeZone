@@ -8,7 +8,7 @@ const BARBERS = [
 
 function BarberCard({ name, role, image }) {
   return (
-    <article className="flex flex-col bg-fadezone-charcoal text-white">
+    <article className="flex flex-col bg-fadezone-charcoal text-fadezone-light">
       <div className="aspect-4/5 overflow-hidden bg-fadezone-black">
         <img
           src={image}
@@ -29,7 +29,7 @@ function BarberCard({ name, role, image }) {
         </div>
         <a
           href="#contact"
-          className="bg-white px-4 py-2 text-center font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-black transition hover:bg-fadezone-silver focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="bg-fadezone-light px-4 py-2 text-center font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-black transition hover:bg-fadezone-silver focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-light"
         >
           Book Me
         </a>
@@ -42,10 +42,10 @@ export default function BarbersSection() {
   return (
     <section
       id="barbers"
-      className="scroll-mt-24 bg-fadezone-light py-16 sm:py-20"
+      className="scroll-mt-24 bg-fadezone-black py-16 sm:py-20"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="font-heading text-5xl leading-none tracking-wide text-fadezone-black md:text-6xl">
+        <h2 className="font-heading text-5xl leading-none tracking-wide text-fadezone-light md:text-6xl">
           Meet the barbers
         </h2>
         <p className="mt-3 max-w-md font-body text-fadezone-charcoal">
@@ -60,7 +60,7 @@ export default function BarbersSection() {
         <div className="mt-8 text-center">
           <a
             href="#barbers"
-            className="w-55 inline-block bg-fadezone-black px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-fadezone-charcoal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-black"
+            className="w-55 inline-block bg-fadezone-charcoal px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-light transition hover:bg-fadezone-silver focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-light"
           >
             Meet Our Barbers
           </a>

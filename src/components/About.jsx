@@ -5,14 +5,14 @@ export default function About() {
   return (
     <section
       id="about"
-      className="lg:scroll-mt-10 bg-fadezone-light py-16 md:py-24 sm:scroll-mt-20"
+      className="lg:scroll-mt-10 bg-fadezone-black py-16 md:py-24 sm:scroll-mt-20"
     >
       <Container className="flex flex-col gap-10 md:gap-14">
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-fadezone-black/60">
+          <p className="text-sm font-semibold uppercase font-body tracking-[0.2em] text-fadezone-light/60">
             Who We Are
           </p>
-          <h2 className="mt-2 font-heading text-4xl uppercase leading-none text-fadezone-black sm:text-5xl lg:text-6xl">
+          <h2 className="mt-2 font-heading text-4xl uppercase leading-none text-fadezone-light sm:text-5xl lg:text-6xl">
             More than just a haircut
           </h2>
         </div>
@@ -27,10 +27,10 @@ export default function About() {
           </div>
 
           <div className="max-w-xl text-left">
-            <h3 className="font-heading text-justify text-3xl uppercase leading-none text-fadezone-black sm:text-4xl">
+            <h3 className="font-heading text-left text-3xl uppercase leading-none text-fadezone-light sm:text-4xl">
               Built on style. Defined by precision.
             </h3>
-            <p className="mt-5 text-sm leading-7 text-fadezone-black sm:text-base">
+            <p className="mt-5 text-sm leading-7 font-body text-fadezone-light text-justify sm:text-base">
               Founded on June 12, 2026, FadeZone was established with a passion
               for barbering and personal style. What started as a vision to
               provide quality haircuts became a place where customers can

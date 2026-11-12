@@ -1,13 +1,28 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Lora:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lora:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  /* Vintage Color Palette */
-  --color-fadezone-black: #292016; /* Main text and headings */
-  --color-fadezone-charcoal: #783f35; /* Cards and buttons */
+  /* Dark Vintage Color Palette (your original colors) */
+  --color-fadezone-black: #292016; /* Main background */
+  --color-fadezone-charcoal: #514536; /* Cards and buttons */
   --color-fadezone-silver: #a58a5c; /* Borders and accents */
-  --color-fadezone-light: #f2e8d5; /* Main background */
+  --color-fadezone-light: #f2e8d5; /* Main text and headings */
 
-  --font-heading: "Playfair Display", serif;
+  --font-heading: "Abril Fatface", serif;
   --font-body: "Lora", serif;
+}
+
+@layer base {
+  body {
+    @apply bg-fadezone-black text-fadezone-light font-body;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-normal;
+  }
 }

@@ -47,14 +47,14 @@ export default function Footer() {
   }, []);
 
   const linkClass =
-    "transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
+    "transition hover:text-fadezone-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fadezone-light";
 
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-fadezone-black text-fadezone-light">
       {/* Barber pole strip */}
       <div
         aria-hidden="true"
-        className="h-3 w-full bg-[repeating-linear-gradient(135deg,#fff_0_12px,#000_12px_24px)]"
+        className="h-3 w-full bg-[repeating-linear-gradient(135deg,var(--color-fadezone-light)_0_12px,var(--color-fadezone-black)_12px_24px)]"
       />
 
       {/* Main block */}
@@ -62,20 +62,20 @@ export default function Footer() {
         {/* Left: headline + CTAs */}
         <div className="flex flex-col gap-8">
           {/* LOGO SLOT: drop your <img> here */}
-          <p className="font-[Bebas_Neue] text-5xl leading-none tracking-wide md:text-7xl">
+          <p className="font-heading text-5xl leading-none tracking-wide md:text-7xl">
             Stay sharp.
             <br />
             Book your cut.
           </p>
 
-          <p className="max-w-sm text-base text-gray-300">
+          <p className="max-w-sm text-base text-fadezone-light/70">
             Walk-ins welcome. Book ahead to skip the wait.
           </p>
 
           <div className="flex flex-wrap gap-4">
             <a
               href="#contact"
-              className="bg-white px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] text-black transition hover:bg-gray-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              className="bg-fadezone-charcoal px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] text-fadezone-light transition hover:bg-fadezone-silver focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fadezone-light"
             >
               Book now
             </a>
@@ -84,7 +84,7 @@ export default function Footer() {
 
         {/* Right: ticket card */}
         <div className="border border-dashed border-white/50 p-6 md:ml-auto md:w-full md:max-w-md">
-          <span className="font-[Bebas_Neue] text-3xl tracking-wide">
+          <span className="font-heading text-3xl tracking-wide">
             Next!
           </span>
 
@@ -93,12 +93,12 @@ export default function Footer() {
           {/* Live status */}
           <div
             role="status"
-            className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em]"
+            className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-fadezone-light"
           >
             <span
               aria-hidden="true"
               className={`h-2.5 w-2.5 rounded-full ${
-                isOpen ? "animate-pulse bg-green-500" : "bg-red-500"
+                isOpen ? "animate-pulse bg-fadezone-silver" : "bg-fadezone-charcoal"
               }`}
             />
             {isOpen ? "Open now · closes 8PM" : "Closed · opens 10AM"}
@@ -107,15 +107,15 @@ export default function Footer() {
           <div className="my-4 border-t border-dashed border-white/50" />
 
           {/* Hours */}
-          <div className="flex justify-between text-sm text-gray-300">
+          <div className="flex justify-between text-sm text-fadezone-light/70">
             <span>Mon – Sun</span>
-            <span className="text-white">10AM – 8PM</span>
+            <span className="text-fadezone-light">10AM – 8PM</span>
           </div>
 
           <div className="my-4 border-t border-dashed border-white/50" />
 
           {/* Address + contact */}
-          <address className="text-sm not-italic text-gray-300">
+          <address className="text-sm not-italic text-fadezone-light/70">
             <a
               href={MAPS_URL}
               target="_blank"
@@ -126,13 +126,13 @@ export default function Footer() {
             </a>
             <a
               href={`tel:${PHONE_TEL}`}
-              className={`mt-2 block text-white underline-offset-4 hover:underline ${linkClass}`}
+              className={`mt-2 block text-fadezone-light underline-offset-4 hover:underline ${linkClass}`}
             >
               {PHONE_DISPLAY}
             </a>
           </address>
 
-          <div className="mt-4 flex gap-5 text-xs font-bold uppercase tracking-[0.2em] text-gray-200">
+          <div className="mt-4 flex gap-5 text-xs font-bold uppercase tracking-[0.2em] text-fadezone-light/80">
             <a
               href={FACEBOOK_URL}
               target="_blank"
@@ -154,12 +154,12 @@ export default function Footer() {
       </div>
 
       {/* Link row */}
-      <div className="mx-auto grid max-w-6xl gap-8 border-t border-white/15 px-6 py-10 sm:grid-cols-2">
+      <div className="mx-auto grid max-w-6xl gap-8 border-t border-fadezone-light/15 px-6 py-10 sm:grid-cols-2">
         <nav aria-label="Footer">
-          <h2 className="mb-3 font-[Bebas_Neue] text-xl tracking-wide">
+          <h2 className="mb-3 font-heading text-xl tracking-wide">
             Explore
           </h2>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-300">
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-fadezone-light/70">
             {NAV.map((item) => (
               <li key={item.href}>
                 <a href={item.href} className={linkClass}>
@@ -171,10 +171,10 @@ export default function Footer() {
         </nav>
 
         <div>
-          <h2 className="mb-3 font-[Bebas_Neue] text-xl tracking-wide">
+          <h2 className="mb-3 font-heading text-xl tracking-wide">
             Developer
           </h2>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-300">
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-fadezone-light/70">
             <li>
               <a
                 href="https://github.com/princemclein"
@@ -196,7 +196,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom line */}
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-3 border-t border-white/15 px-6 py-5 text-xs uppercase tracking-[0.2em] text-gray-400 sm:flex-row">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-3 border-t border-fadezone-light/15 px-6 py-5 text-xs uppercase tracking-[0.2em] text-fadezone-light/60 sm:flex-row">
         <span>© 2026 FadeZone</span>
       </div>
     </footer>
