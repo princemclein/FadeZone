@@ -3,23 +3,25 @@ import Haircut1 from "../assets/home-images/haircut1.jpeg";
 import Haircut2 from "../assets/home-images/haircut2.jpeg";
 import Haircut3 from "../assets/home-images/haircut3.jpg";
 import Haircut4 from "../assets/home-images/haircut4.jpg";
+import Background from "../assets/background.png";
 
 export default function Hero() {
   return (
     <section
       id="home"
-      className="scroll-mt-27 bg-fadezone-background py-12 md:py-4"
+      style={{ backgroundImage: `url(${Background})` }}
+      className="scroll-mt-27 bg-cover bg-center bg-no-repeat py-12 md:py-4"
     >
       <Container className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
         {/* Left */}
-        <div className="flex flex-col items-start gap-6">
-          <h1 className="font-heading text-[2.4rem] uppercase leading-none text-fadezone-text sm:text-6xl lg:text-6xl xl:text-7xl">
+        <div className="flex w-full max-w-120 flex-col gap-6">
+          <h1 className="font-heading text-[clamp(1.75rem,6.2vw,4rem)] uppercase leading-none text-fadezone-text">
             <span className="block whitespace-nowrap">Stay Sharp.</span>
             <span className="block whitespace-nowrap">Stay Fresh.</span>
             <span className="block whitespace-nowrap">Stay FadeZone.</span>
           </h1>
 
-          <p className="w-11/12 max-w-sm text-base font-body text-fadezone-text/70 text-justify">
+          <p className="w-full text-base font-body text-fadezone-text/70 text-justify">
             Experience precision cuts tailored to your style. Every detail
             matters in giving you a clean, confident look. Stay sharp, stay
             fresh, stay FadeZone.
@@ -40,7 +42,6 @@ export default function Hero() {
             </a>
           </div>
         </div>
-
         {/* Right: staggered collage */}
         <div className="grid w-full max-w-md grid-cols-2 gap-3 justify-self-center md:justify-self-end">
           <div className="flex flex-col gap-3">

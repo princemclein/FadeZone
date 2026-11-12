@@ -3,9 +3,9 @@
 
 @theme {
   /* Dark Vintage Color Palette (your original colors) */
-  --color-fadezone-background: #292016; /* Main background */
-  --color-fadezone-surface: #514536; /* Cards and buttons */
-  --color-fadezone-accent: #a58a5c; /* Borders and accents */
+  --color-fadezone-background: #231d19; /* Main background */
+  --color-fadezone-surface: #342a23; /* Cards and buttons */
+  --color-fadezone-accent: #a8693f; /* Borders and accents */
   --color-fadezone-text: #f2e8d5; /* Main text and headings */
 
   --font-heading: "Abril Fatface", serif;
