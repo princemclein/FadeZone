@@ -15,7 +15,7 @@ export default function Hero() {
       <Container className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
         {/* Left */}
         <div className="flex w-full max-w-115 flex-col gap-6">
-          <h1 className="font-heading text-[clamp(2.25rem,9vw,4rem)] uppercase leading-none text-fadezone-text">
+          <h1 className="font-heading text-[clamp(2.75rem,11vw,4rem)] uppercase leading-none text-fadezone-text">
             <span className="block whitespace-nowrap">Stay Sharp.</span>
             <span className="block whitespace-nowrap">Stay Fresh.</span>
             <span className="block whitespace-nowrap">Stay FadeZone.</span>
@@ -43,7 +43,7 @@ export default function Hero() {
           </div>
         </div>
         {/* Right: staggered collage */}
-        <div className="grid w-full max-w-md grid-cols-2 gap-3 justify-self-center md:justify-self-end">
+        <div className="grid w-full max-w-md grid-cols-2 gap-3 justify-self-center md:max-w-xs md:justify-self-end xl:max-w-md">
           <div className="flex flex-col gap-3">
             <img
               src={Haircut1}
