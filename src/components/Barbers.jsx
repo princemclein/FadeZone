@@ -1,9 +1,11 @@
 import barber1 from "../assets/barbers-section-images/MelbenJay.jpg";
 import barber2 from "../assets/barbers-section-images/SiegfredOpiana.jpg";
+import barber3 from "../assets/barbers-section-images/MarkEito.jpg";
 
 const BARBERS = [
-  { name: "Melben Jay", role: "Head barber", image: barber1 },
-  { name: "Siegfred Opiana", role: "Regular Barber", image: barber2 },
+  { name: "Melben Jay", role: "Master barber", image: barber1 },
+  { name: "Siegfred Opiana", role: " Barber", image: barber2 },
+  { name: "Mark Eito", role: " Barber", image: barber3 },
 ];
 
 function BarberCard({ name, role, image }) {
@@ -23,7 +25,7 @@ function BarberCard({ name, role, image }) {
           <h3 className="font-heading text-xl leading-none tracking-wide sm:text-2xl">
             {name}
           </h3>
-          <p className="mt-1 font-body text-xs text-fadezone-accent sm:text-sm">
+          <p className="mt-1 font-body text-xs text-fadezone-text sm:text-sm">
             {role}
           </p>
         </div>
@@ -44,11 +46,11 @@ export default function BarbersSection() {
       id="barbers"
       className="scroll-mt-24 bg-fadezone-background py-16 sm:py-20"
     >
-      <div className="mx-auto max-w-[76rem] px-4 sm:px-6">
+      <div className="mx-auto max-w-304 px-4 sm:px-6">
         <h2 className="font-heading text-5xl leading-none tracking-wide text-fadezone-text md:text-6xl">
           Meet the barbers
         </h2>
-        <p className="mt-3 max-w-md font-body text-fadezone-surface">
+        <p className="mt-3 max-w-md font-body text-fadezone-text">
           The hands behind every cut.
         </p>
         <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
