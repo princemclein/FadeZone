@@ -1,6 +1,7 @@
 import barber1 from "../assets/barbers-section-images/MelbenJay.jpg";
 import barber2 from "../assets/barbers-section-images/SiegfredOpiana.jpg";
 import barber3 from "../assets/barbers-section-images/MarkEito.jpg";
+import Container from "./Container";
 
 const BARBERS = [
   { name: "Melben Jay", role: "Master barber", image: barber1 },
@@ -44,30 +45,32 @@ export default function BarbersSection() {
   return (
     <section
       id="barbers"
-      className="scroll-mt-24 bg-fadezone-background py-16 sm:py-20"
+      className="scroll-mt-10 bg-fadezone-background py-16 sm:py-20"
     >
-      <div className="mx-auto max-w-304 px-4 sm:px-6">
-        <h2 className="font-heading text-5xl leading-none tracking-wide text-fadezone-text md:text-6xl">
-          Meet the barbers
-        </h2>
-        <p className="mt-3 max-w-md font-body text-fadezone-text">
-          The hands behind every cut.
-        </p>
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          {BARBERS.map((b) => (
-            <BarberCard key={b.name} {...b} />
-          ))}
-        </div>
+      <Container>
+        <div className="mx-auto max-w-304 px-4 sm:px-6">
+          <h2 className="font-heading text-5xl leading-none tracking-wide text-fadezone-text md:text-6xl">
+            Meet the barbers
+          </h2>
+          <p className="mt-3 max-w-md font-body text-fadezone-text">
+            The hands behind every cut.
+          </p>
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            {BARBERS.map((b) => (
+              <BarberCard key={b.name} {...b} />
+            ))}
+          </div>
 
-        <div className="mt-8 text-center">
-          <a
-            href="#barbers"
-            className="w-55 inline-block bg-fadezone-surface px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-text"
-          >
-            Meet Our Barbers
-          </a>
+          <div className="mt-8 text-center">
+            <a
+              href="#barbers"
+              className="w-55 inline-block bg-fadezone-surface px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-text"
+            >
+              Meet Our Barbers
+            </a>
+          </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
