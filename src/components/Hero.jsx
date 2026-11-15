@@ -29,16 +29,16 @@ export default function Hero() {
 
           <div className="flex w-full flex-wrap gap-4">
             <a
-              href="/booking"
+              href="#barbers"
               className="w-full bg-fadezone-surface px-6 py-4 text-center text-xs font-body font-bold uppercase tracking-[0.14em] text-fadezone-text transition-transform hover:bg-fadezone-accent sm:w-auto"
             >
               Meet Our Barbers
             </a>
             <a
-              href="#services"
+              href="#gallery"
               className="w-full border border-fadezone-text px-6 py-4 text-center text-xs font-body font-bold uppercase tracking-[0.14em] text-fadezone-text transition-transform hover:bg-fadezone-surface hover:text-fadezone-text sm:w-auto"
             >
-              Explore Our Services
+              Our Craftmanship
             </a>
           </div>
         </div>
