@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import Container from "./Container";
 
 const OPEN_HOUR = 10; // 10 AM
 const CLOSE_HOUR = 22; // 10 PM
 const TIMEZONE = "Asia/Manila"; // status follows the shop's time, not the visitor's
-const PHONE_DISPLAY = "0946803476";
+const PHONE_DISPLAY = "09461803476";
 const PHONE_TEL = "+639461803476";
 const ADDRESS =
   "14D Soriano Street, Wawandue, near Subic Park, Subic, Zambales 2209";
 const MAPS_URL =
-  "https://www.google.com/maps/place/Fadezone/@14.8781131,120.2223896,15z/data=!4m15!1m8!3m7!1s0x339671f613c374e7:0xc32420218d8dd21b!2sFadezone!8m2!3d14.8781028!4d120.2326308!10e5!16s%2Fg%2F11zgpljwn4!3m5!1s0x339671f613c374e7:0xc32420218d8dd21b!8m2!3d14.8781028!4d120.2326308!16s%2Fg%2F11zgpljwn4?entry=ttu&g_ep=EgoyMDI2MTEwOC4wIKXMDSoASAFQAw%3D%3D" +
-  encodeURIComponent(ADDRESS);
+  "https://www.google.com/maps/place/Fadezone/@14.8781131,120.2223896,15z/data=!4m15!1m8!3m7!1s0x339671f613c374e7:0xc32420218d8dd21b!2sFadezone!8m2!3d14.8781028!4d120.2326308!10e5!16s%2Fg%2F11zgpljwn4!3m5!1s0x339671f613c374e7:0xc32420218d8dd21b!8m2!3d14.8781028!4d120.2326308!16s%2Fg%2F11zgpljwn4";
 const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61590669484136";
 const INSTAGRAM_URL = "https://www.instagram.com/fadezone.m/?hl=en";
 
@@ -47,152 +47,197 @@ export default function Footer() {
   }, []);
 
   const linkClass =
-    "transition hover:text-fadezone-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fadezone-text";
+    "transition-colors hover:text-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fadezone-text";
 
   return (
-    <footer className="bg-fadezone-background text-fadezone-text">
-      {/* Barber pole strip */}
+    <footer className="border-t border-fadezone-accent/30 bg-fadezone-background text-fadezone-text">
+      {/* Vintage Barber Pole / Accent Strip */}
       <div
         aria-hidden="true"
-        className="h-3 w-full bg-[repeating-linear-gradient(135deg,var(--color-fadezone-text)_0_12px,var(--color-fadezone-background)_12px_24px)]"
+        className="h-3 w-full border-b border-fadezone-accent/30 bg-[repeating-linear-gradient(135deg,var(--color-fadezone-accent)_0_12px,var(--color-fadezone-background)_12px_24px)]"
       />
 
-      {/* Main block */}
-      <div className="mx-auto grid max-w-304 gap-12 px-6 py-16 md:grid-cols-2 md:items-center">
-        {/* Left: headline + CTAs */}
-        <div className="flex flex-col gap-8">
-          {/* LOGO SLOT: drop your <img> here */}
-          <p className="font-heading text-5xl leading-none tracking-wide md:text-7xl">
-            Stay sharp.
-            <br />
-            Book your cut.
-          </p>
+      {/* Main Editorial Footer Split */}
+      <Container className="py-16 sm:py-20 lg:py-24">
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-10">
+          {/* Left: Brand Headline + CTA (7 cols) */}
+          <div className="flex flex-col gap-6 lg:col-span-7">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-8 bg-fadezone-accent" />
+              <p className="font-body text-xs font-bold uppercase tracking-[0.3em] text-fadezone-accent">
+                FadeZone Barbershop • Est. 2026
+              </p>
+            </div>
 
-          <p className="max-w-sm text-base text-fadezone-text/70">
-            Walk-ins welcome. Book ahead to skip the wait.
-          </p>
+            <p className="font-heading text-5xl uppercase leading-[0.95] tracking-wide sm:text-6xl lg:text-7xl">
+              Stay Sharp.{" "}
+              <span className="block text-fadezone-accent">Book Your Cut.</span>
+            </p>
 
-          <div className="flex flex-wrap gap-4">
-            <a
-              href="#contact"
-              className="bg-fadezone-surface px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] text-fadezone-text transition hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fadezone-text"
-            >
-              Book now
-            </a>
+            <p className="max-w-md font-body text-sm leading-7 text-fadezone-text/75 sm:text-base">
+              Walk-ins welcome. Book ahead to lock in your chair and skip the
+              wait.
+            </p>
+
+            <div className="pt-2">
+              <a
+                href="/booking"
+                className="group inline-flex items-center gap-4 border border-fadezone-accent bg-fadezone-surface px-8 py-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fadezone-text"
+              >
+                <span>Claim Your Chair</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-1">
+                  →
+                </span>
+              </a>
+            </div>
+          </div>
+
+          {/* Right: Vintage "Next!" Ticket Stub Plate (5 cols) */}
+          <div className="lg:col-span-5">
+            <div className="relative border border-fadezone-accent/50 bg-fadezone-surface/90 p-6 sm:p-8">
+              {/* Corner Viewfinder Brackets */}
+              <span className="pointer-events-none absolute top-2.5 left-2.5 h-3 w-3 border-t border-l border-fadezone-accent/70" />
+              <span className="pointer-events-none absolute top-2.5 right-2.5 h-3 w-3 border-t border-r border-fadezone-accent/70" />
+              <span className="pointer-events-none absolute bottom-2.5 left-2.5 h-3 w-3 border-b border-l border-fadezone-accent/70" />
+              <span className="pointer-events-none absolute bottom-2.5 right-2.5 h-3 w-3 border-b border-r border-fadezone-accent/70" />
+
+              {/* Ticket Header */}
+              <div className="flex items-center justify-between gap-2 border-b border-dashed border-fadezone-text/25 pb-4">
+                <span className="font-heading text-3xl uppercase tracking-wide text-fadezone-text">
+                  Next!
+                </span>
+                <span className="font-body text-[11px] font-bold uppercase tracking-[0.25em] text-fadezone-accent">
+                  TICKET NO. 150
+                </span>
+              </div>
+
+              {/* Live Shop Status */}
+              <div
+                role="status"
+                className="my-4 flex items-center justify-between gap-3 border border-fadezone-text/15 bg-fadezone-background/60 px-4 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text"
+              >
+                <div className="flex items-center gap-3">
+                  <span
+                    aria-hidden="true"
+                    className={`h-2.5 w-2.5 ${
+                      isOpen ? "animate-pulse bg-[#2EFF2E]" : "bg-[#FF2E2E]"
+                    }`}
+                  />
+                  <span>
+                    {isOpen
+                      ? "Open Now · Closes 10 PM"
+                      : "Closed · Opens 10 AM"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="my-4 border-t border-dashed border-fadezone-text/25" />
+
+              {/* Hours & Rate */}
+              <div className="space-y-2 font-body text-xs uppercase tracking-[0.2em]">
+                <div className="flex justify-between text-fadezone-text/70">
+                  <span>Mon – Sun</span>
+                  <span className="font-bold text-fadezone-text">
+                    10 AM – 10 PM
+                  </span>
+                </div>
+                <div className="flex justify-between text-fadezone-text/70">
+                  <span>Standard Cut</span>
+                  <span className="font-bold text-fadezone-accent">₱150</span>
+                </div>
+              </div>
+
+              <div className="my-4 border-t border-dashed border-fadezone-text/25" />
+
+              {/* Address + Contact */}
+              <address className="font-body text-xs leading-6 not-italic text-fadezone-text/75 sm:text-sm">
+                <a
+                  href={MAPS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`block ${linkClass}`}
+                >
+                  {ADDRESS}
+                </a>
+                <a
+                  href={`tel:${PHONE_TEL}`}
+                  className={`mt-2 inline-block font-heading text-lg tracking-wider text-fadezone-text ${linkClass}`}
+                >
+                  {PHONE_DISPLAY}
+                </a>
+              </address>
+
+              {/* Social Links */}
+              <div className="mt-5 flex items-center gap-6 border-t border-dashed border-fadezone-text/25 pt-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-accent">
+                <a
+                  href={FACEBOOK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={linkClass}
+                >
+                  Facebook ↗
+                </a>
+                <a
+                  href={INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={linkClass}
+                >
+                  Instagram ↗
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Right: ticket card */}
-        <div className="border border-dashed border-white/50 p-6 md:ml-auto md:w-full md:max-w-md">
-          <span className="font-heading text-3xl tracking-wide">Next!</span>
+        {/* Navigation & Developer Directory Row */}
+        <div className="mt-14 grid gap-8 border-t border-dashed border-fadezone-text/25 pt-10 sm:grid-cols-2">
+          <nav aria-label="Footer">
+            <h2 className="mb-3 font-body text-xs font-bold uppercase tracking-[0.25em] text-fadezone-accent">
+              01 / Explore
+            </h2>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 font-body text-sm text-fadezone-text/75">
+              {NAV.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} className={linkClass}>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-          <div className="my-4 border-t border-dashed border-white/50" />
-
-          {/* Live status */}
-          <div
-            role="status"
-            className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text"
-          >
-            <span
-              aria-hidden="true"
-              className={`h-2.5 w-2.5 rounded-full ${
-                isOpen ? "animate-pulse bg-[#41f041]" : "bg-[#FF2E2E]"
-              }`}
-            />
-            {isOpen ? "Open now · closes 10PM" : "Closed · opens 10AM"}
-          </div>
-
-          <div className="my-4 border-t border-dashed border-white/50" />
-
-          {/* Hours */}
-          <div className="flex justify-between text-sm text-fadezone-text/70">
-            <span>Mon – Sun</span>
-            <span className="text-fadezone-text">10AM – 10PM</span>
-          </div>
-
-          <div className="my-4 border-t border-dashed border-white/50" />
-
-          {/* Address + contact */}
-          <address className="text-sm not-italic text-fadezone-text/70">
-            <a
-              href={MAPS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`block underline-offset-4 hover:underline ${linkClass}`}
-            >
-              {ADDRESS}
-            </a>
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className={`mt-2 block text-fadezone-text underline-offset-4 hover:underline ${linkClass}`}
-            >
-              {PHONE_DISPLAY}
-            </a>
-          </address>
-
-          <div className="mt-4 flex gap-5 text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text/80">
-            <a
-              href={FACEBOOK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`underline underline-offset-4 ${linkClass}`}
-            >
-              Facebook
-            </a>
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`underline underline-offset-4 ${linkClass}`}
-            >
-              Instagram
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Link row */}
-      <div className="mx-auto grid max-w-304 gap-8 border-t border-fadezone-text/15 px-6 py-10 sm:grid-cols-2">
-        <nav aria-label="Footer">
-          <h2 className="mb-3 font-heading text-xl tracking-wide">Explore</h2>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-fadezone-text/70">
-            {NAV.map((item) => (
-              <li key={item.href}>
-                <a href={item.href} className={linkClass}>
-                  {item.label}
+          <div className="sm:text-right">
+            <h2 className="mb-3 font-body text-xs font-bold uppercase tracking-[0.25em] text-fadezone-accent">
+              02 / Developed By
+            </h2>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 font-body text-sm text-fadezone-text/75 sm:justify-end">
+              <li>
+                <a
+                  href="https://github.com/princemclein"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={linkClass}
+                >
+                  Prince Mclein J. Gonzales
+                  <FontAwesomeIcon
+                    icon={faArrowUp}
+                    className="ml-2 text-fadezone-accent"
+                    style={{ transform: "rotate(60deg)" }}
+                    aria-hidden="true"
+                  />
                 </a>
               </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div>
-          <h2 className="mb-3 font-heading text-xl tracking-wide">Developer</h2>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-fadezone-text/70">
-            <li>
-              <a
-                href="https://github.com/princemclein"
-                target="_blank"
-                rel="noreferrer"
-                className={linkClass}
-              >
-                Prince Mclein J. Gonzales
-                <FontAwesomeIcon
-                  icon={faArrowUp}
-                  className="ml-2"
-                  style={{ transform: "rotate(60deg)" }}
-                  aria-hidden="true"
-                />
-              </a>
-            </li>
-          </ul>
+            </ul>
+          </div>
         </div>
-      </div>
 
-      {/* Bottom line */}
-      <div className="mx-auto flex max-w-304 flex-col items-center justify-center gap-3 border-t border-fadezone-text/15 px-6 py-5 text-xs uppercase tracking-[0.2em] text-fadezone-text/60 sm:flex-row">
-        <span>© 2026 FadeZone</span>
-      </div>
+        {/* Bottom Copyright & Stamp Line */}
+        <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t border-fadezone-text/15 pt-6 text-center font-body text-[11px] uppercase tracking-[0.25em] text-fadezone-text/50 sm:flex-row sm:text-left">
+          <span>© 2026 FadeZone Barbershop • All Rights Reserved</span>
+          <span className="text-fadezone-accent/80">Subic, Zambales 2209</span>
+        </div>
+      </Container>
     </footer>
   );
 }
