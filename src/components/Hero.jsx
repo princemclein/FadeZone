@@ -13,7 +13,7 @@ export default function Hero() {
       className="relative scroll-mt-27 flex min-h-0 items-center overflow-hidden bg-cover bg-center bg-no-repeat py-12 sm:py-16 lg:min-h-168 lg:py-24"
     >
       {/* Responsive overlay: vertical fade on mobile/tablet, horizontal fade on desktop */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-fadezone-background/95 via-fadezone-background/85 to-fadezone-background/75 lg:bg-gradient-to-r lg:from-fadezone-background/95 lg:via-fadezone-background/80 lg:to-fadezone-background/55" />
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-fadezone-background/95 via-fadezone-background/85 to-fadezone-background/75 lg:bg-linear-to-r lg:from-fadezone-background/95 lg:via-fadezone-background/80 lg:to-fadezone-background/55" />
 
       <Container className="relative z-10 grid w-full grid-cols-1 items-center gap-10 sm:gap-12 lg:grid-cols-12 lg:gap-10">
         {/* Left: Editorial Copy & Actions (6 cols) */}
