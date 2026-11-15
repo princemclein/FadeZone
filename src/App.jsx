@@ -4,6 +4,7 @@ import Stats from "./components/Stats";
 import About from "./components/About";
 import Gallery from "./components/Gallery";
 import Barbers from "./components/Barbers";
+import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
       <About />
       <Gallery />
       <Barbers />
+      <Contact />
       <Footer />
     </>
   );
