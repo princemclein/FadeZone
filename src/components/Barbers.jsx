@@ -7,7 +7,7 @@ const BARBERS = [
   {
     chair: "CHAIR 01",
     name: "Melben Jay",
-    role: "Master Barber",
+    role: "Barber",
     image: barber1,
   },
   {

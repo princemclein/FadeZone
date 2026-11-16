@@ -9,17 +9,17 @@ const ALL_BARBERS = [
   {
     chair: "CHAIR 01",
     name: "Melben Jay",
-    role: "Master Barber",
+    role: "Barber",
     specialty: "Skin Fades & Razor Line-Ups",
     experience: "8+ Years Behind The Chair",
     schedule: "Daily • 10 AM – 10 PM",
-    bio: "Founder and lead blade specialist known for razor-sharp skin fades, clean beard sculpting, and classic scissor finishes.",
+    bio: "Lead blade specialist known for razor-sharp skin fades, clean beard sculpting, and classic scissor finishes.",
     image: barber1,
   },
   {
     chair: "CHAIR 02",
     name: "Siegfred Opiana",
-    role: "Senior Barber",
+    role: "Barber",
     specialty: "Mid Fades & Textured Crops",
     experience: "5+ Years Behind The Chair",
     schedule: "Daily • 10 AM – 10 PM",
@@ -37,8 +37,6 @@ const ALL_BARBERS = [
     image: barber3,
   },
 ];
-
-const ROLES = ["All", "Master Barber", "Senior Barber", "Barber"];
 
 function BarberRosterCard({ barber, onPreview }) {
   return (
@@ -108,13 +106,7 @@ function BarberRosterCard({ barber, onPreview }) {
 }
 
 export default function AllBarbers() {
-  const [activeRole, setActiveRole] = useState("All");
   const [selectedBarber, setSelectedBarber] = useState(null);
-
-  const filteredBarbers =
-    activeRole === "All"
-      ? ALL_BARBERS
-      : ALL_BARBERS.filter((barber) => barber.role === activeRole);
 
   return (
     <main className="min-h-screen border-t border-fadezone-accent/30 bg-fadezone-texture py-14 text-fadezone-text sm:py-20 lg:py-24">
@@ -132,7 +124,7 @@ export default function AllBarbers() {
           </Link>
 
           <span className="font-body text-[11px] font-bold uppercase tracking-[0.25em] text-fadezone-accent">
-            SHOP ROSTER • {filteredBarbers.length} BARBERS
+            SHOP ROSTER • {ALL_BARBERS.length} BARBERS
           </span>
         </div>
 
@@ -158,42 +150,9 @@ export default function AllBarbers() {
           </p>
         </div>
 
-        {/* Vintage Role Filter Bar */}
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-b border-dashed border-fadezone-text/25 pb-6">
-          <div
-            role="tablist"
-            aria-label="Filter barbers by rank"
-            className="flex flex-wrap gap-2.5"
-          >
-            {ROLES.map((role) => {
-              const isActive = activeRole === role;
-              return (
-                <button
-                  key={role}
-                  type="button"
-                  role="tab"
-                  aria-selected={isActive}
-                  onClick={() => setActiveRole(role)}
-                  className={`border px-4 py-2 font-body text-xs font-bold uppercase tracking-[0.2em] transition-colors ${
-                    isActive
-                      ? "border-fadezone-accent bg-fadezone-accent text-fadezone-text"
-                      : "border-fadezone-accent/40 bg-fadezone-surface/80 text-fadezone-text/80 hover:border-fadezone-accent hover:text-fadezone-text"
-                  }`}
-                >
-                  {role}
-                </button>
-              );
-            })}
-          </div>
-
-          <span className="font-body text-[11px] uppercase tracking-[0.22em] text-fadezone-text/60">
-            Subic, Zambales • Open 10 AM – 10 PM
-          </span>
-        </div>
-
         {/* Roster Grid */}
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {filteredBarbers.map((barber) => (
+          {ALL_BARBERS.map((barber) => (
             <BarberRosterCard
               key={barber.chair}
               barber={barber}
