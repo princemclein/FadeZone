@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import highFade from "../assets/gallery-section-images/high-fade.jpg";
 import midFade from "../assets/gallery-section-images/mid-fade.jpg";
 import taperFade from "../assets/gallery-section-images/taper-fade.jpg";
@@ -107,15 +108,15 @@ export default function GallerySection() {
               FLAT RATE ₱150 • WALK-INS WELCOME
             </p>
 
-            <a
-              href="/gallery"
+            <Link
+              to="/gallery"
               className="group flex w-full items-center justify-center gap-3 border border-fadezone-accent bg-fadezone-surface px-7 py-3.5 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-text sm:w-auto"
             >
               <span>View Full Lookbook</span>
               <span className="transition-transform duration-300 group-hover:translate-x-1">
                 →
               </span>
-            </a>
+            </Link>
           </div>
         </div>
       </Container>

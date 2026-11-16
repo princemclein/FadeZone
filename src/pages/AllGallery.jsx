@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import highFade from "../assets/gallery-section-images/high-fade.jpg";
 import midFade from "../assets/gallery-section-images/mid-fade.jpg";
 import taperFade from "../assets/gallery-section-images/taper-fade.jpg";
@@ -127,15 +128,15 @@ export default function AllGallery() {
       <Container>
         {/* Top Breadcrumb / Back Navigation */}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-dashed border-fadezone-text/25 pb-5">
-          <a
-            href="/#gallery"
+          <Link
+            to="/#gallery"
             className="group inline-flex items-center gap-2.5 font-body text-xs font-bold uppercase tracking-[0.22em] text-fadezone-text/80 transition-colors hover:text-fadezone-accent"
           >
             <span className="transition-transform duration-300 group-hover:-translate-x-1">
               ←
             </span>
-            <span>Back to Home</span>
-          </a>
+            <span>Back to Gallery</span>
+          </Link>
 
           <span className="font-body text-[11px] font-bold uppercase tracking-[0.25em] text-fadezone-accent">
             CATALOG ARCHIVE • {filteredHaircuts.length} STYLES
