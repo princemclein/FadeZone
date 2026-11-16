@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Stats from "./components/Stats";
@@ -7,8 +8,6 @@ import Gallery from "./components/Gallery";
 import Barbers from "./components/Barbers";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-
-// Pages;
 import AllGallery from "./pages/AllGallery";
 
 function ScrollToTop() {
@@ -16,12 +15,15 @@ function ScrollToTop() {
 
   useEffect(() => {
     if (hash) {
-      const target = document.querySelector(hash);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
-        return;
-      }
+      const timer = setTimeout(() => {
+        const target = document.querySelector(hash);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 60);
+      return () => clearTimeout(timer);
     }
+
     window.scrollTo(0, 0);
   }, [pathname, hash]);
 
@@ -44,6 +46,7 @@ function Home() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

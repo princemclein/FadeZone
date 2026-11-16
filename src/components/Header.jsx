@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Container from "./Container";
 
 const links = ["home", "about", "gallery", "barbers", "contact"];
@@ -45,8 +46,8 @@ export default function Header() {
       <div className="relative border-b border-fadezone-accent/40 bg-fadezone-surface/95 backdrop-blur-md">
         <Container className="flex h-19 items-center justify-between gap-6">
           {/* Brand Wordmark */}
-          <a
-            href="/"
+          <Link
+            to="/"
             aria-label="FadeZone home"
             className="group flex shrink-0 items-center gap-3"
           >
@@ -56,7 +57,7 @@ export default function Header() {
             <span className="hidden border-l border-dashed border-fadezone-text/25 pl-3 font-body text-[10px] font-bold uppercase tracking-[0.25em] text-fadezone-accent sm:inline-block">
               Est. 2026
             </span>
-          </a>
+          </Link>
 
           {/* Mobile Menu Toggle */}
           <button
@@ -77,30 +78,30 @@ export default function Header() {
             <ul className="flex items-center gap-7">
               {links.map((item, idx) => (
                 <li key={item}>
-                  <a
-                    href={item === "home" ? "/" : `#${item}`}
+                  <Link
+                    to={item === "home" ? "/" : `/#${item}`}
                     className="group relative inline-flex items-baseline gap-1.5 pb-1 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:text-fadezone-accent after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-fadezone-accent after:transition-transform after:duration-300 hover:after:scale-x-100"
                   >
                     <span className="text-[10px] text-fadezone-accent/80">
                       0{idx + 1}
                     </span>
                     <span>{item}</span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
           {/* Desktop CTA Button */}
-          <a
-            href="/booking"
+          <Link
+            to="/booking"
             className="group hidden items-center gap-3 border border-fadezone-accent bg-fadezone-accent px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent min-[900px]:inline-flex"
           >
             <span>Book Now</span>
             <span className="transition-transform duration-300 group-hover:translate-x-1">
               →
             </span>
-          </a>
+          </Link>
         </Container>
 
         {/* Mobile Drawer Backdrop */}
@@ -135,8 +136,8 @@ export default function Header() {
             <ul className="flex flex-col divide-y divide-dashed divide-fadezone-text/20">
               {links.map((item, idx) => (
                 <li key={item}>
-                  <a
-                    href={item === "home" ? "/" : `#${item}`}
+                  <Link
+                    to={item === "home" ? "/" : `/#${item}`}
                     onClick={() => setIsMenuOpen(false)}
                     className="group flex items-center justify-between px-6 py-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background/50 hover:text-fadezone-accent"
                   >
@@ -149,7 +150,7 @@ export default function Header() {
                     <span className="text-fadezone-accent/70 transition-transform duration-300 group-hover:translate-x-1">
                       →
                     </span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -157,8 +158,8 @@ export default function Header() {
 
           {/* Drawer Footer & Booking CTA */}
           <div className="border-t border-dashed border-fadezone-text/25 p-6">
-            <a
-              href="/booking"
+            <Link
+              to="/booking"
               onClick={() => setIsMenuOpen(false)}
               className="group flex w-full items-center justify-between border border-fadezone-accent bg-fadezone-accent px-5 py-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent"
             >
@@ -166,7 +167,7 @@ export default function Header() {
               <span className="transition-transform duration-300 group-hover:translate-x-1">
                 →
               </span>
-            </a>
+            </Link>
 
             <p className="mt-4 text-center font-body text-[10px] uppercase tracking-[0.22em] text-fadezone-text/50">
               Open Daily • 10 AM – 10 PM
