@@ -1,3 +1,4 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Stats from "./components/Stats";
@@ -7,17 +8,48 @@ import Barbers from "./components/Barbers";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
-export default function App() {
+// Pages;
+import AllGallery from "./pages/AllGallery";
+
+function ScrollToTop() {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const target = document.querySelector(hash);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+    }
+    window.scrollTo(0, 0);
+  }, [pathname, hash]);
+
+  return null;
+}
+
+function Home() {
   return (
     <>
-      <Header />
       <Hero />
       <Stats />
       <About />
       <Gallery />
       <Barbers />
       <Contact />
-      <Footer />
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/gallery" element={<AllGallery />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   );
 }
