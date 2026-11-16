@@ -3,7 +3,7 @@ import highFade from "../assets/gallery-section-images/high-fade.jpg";
 import midFade from "../assets/gallery-section-images/mid-fade.jpg";
 import taperFade from "../assets/gallery-section-images/taper-fade.jpg";
 import buzzcut from "../assets/gallery-section-images/buzz-cut.jpg";
-import Container from "./Container";
+import Container from "../components/Container";
 
 const ALL_HAIRCUTS = [
   {
@@ -41,42 +41,6 @@ const ALL_HAIRCUTS = [
     description:
       "Gradual blend focused cleanly around the sideburns and nape while keeping side fullness.",
     image: taperFade,
-  },
-  {
-    code: "STYLE 05",
-    name: "Low Taper",
-    category: "Tapers",
-    length: "Subtle Blend",
-    description:
-      "Classic low-profile taper around the ears and neckline for an effortless everyday finish.",
-    image: taperFade,
-  },
-  {
-    code: "STYLE 06",
-    name: "Textured Crop",
-    category: "Fades",
-    length: "Choppy Fringe",
-    description:
-      "Forward-styled textured top paired with a crisp mid-skin fade.",
-    image: midFade,
-  },
-  {
-    code: "STYLE 07",
-    name: "Crew Cut",
-    category: "Classic",
-    length: "Short & Structured",
-    description:
-      "Timeless barbershop staple—tapered sides with slightly longer, brushed-up front.",
-    image: buzzcut,
-  },
-  {
-    code: "STYLE 08",
-    name: "Skin Fade",
-    category: "Fades",
-    length: "Zero-Gap Blend",
-    description:
-      "Razor-close foil transition blended seamlessly into your preferred top style.",
-    image: highFade,
   },
 ];
 
