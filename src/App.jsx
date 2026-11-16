@@ -10,6 +10,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import AllGallery from "./pages/AllGallery";
 import AllBarbers from "./pages/AllBarbers";
+import Booking from "./pages/Booking";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -53,6 +54,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<AllGallery />} />
         <Route path="/barbers" element={<AllBarbers />} />
+        <Route path="/booking" element={<Booking />} />
       </Routes>
       <Footer />
     </BrowserRouter>
