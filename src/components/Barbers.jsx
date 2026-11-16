@@ -123,7 +123,7 @@ export default function BarbersSection() {
               href="/booking"
               className="group flex w-full items-center justify-center gap-3 border border-fadezone-accent bg-fadezone-surface px-7 py-3.5 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-text sm:w-auto"
             >
-              <span>Book Your Session</span>
+              <span>Meet All Barbers</span>
               <span className="transition-transform duration-300 group-hover:translate-x-1">
                 →
               </span>
