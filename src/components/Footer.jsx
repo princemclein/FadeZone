@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import Container from "./Container";
 
-const OPEN_HOUR = 10; // 10 AM
-const CLOSE_HOUR = 22; // 10 PM
+const OPEN_HOUR = 7; // 10 AM
+const CLOSE_HOUR = 21; // 10 PM
 const TIMEZONE = "Asia/Manila"; // status follows the shop's time, not the visitor's
 const PHONE_DISPLAY = "09461803476";
 const PHONE_TEL = "+639461803476";
@@ -106,9 +106,6 @@ export default function Footer() {
                 <span className="font-heading text-3xl uppercase tracking-wide text-fadezone-text">
                   Next!
                 </span>
-                <span className="font-body text-[11px] font-bold uppercase tracking-[0.25em] text-fadezone-accent">
-                  TICKET NO. 150
-                </span>
               </div>
 
               {/* Live Shop Status */}
@@ -125,8 +122,8 @@ export default function Footer() {
                   />
                   <span>
                     {isOpen
-                      ? "Open Now · Closes 10 PM"
-                      : "Closed · Opens 10 AM"}
+                      ? "Open Now · Closes 9:00PM"
+                      : "Closed · Opens 7:00AM"}
                   </span>
                 </div>
               </div>
@@ -138,7 +135,7 @@ export default function Footer() {
                 <div className="flex justify-between text-fadezone-text/70">
                   <span>Mon – Sun</span>
                   <span className="font-bold text-fadezone-text">
-                    10 AM – 10 PM
+                    7:00AM – 9:00PM
                   </span>
                 </div>
                 <div className="flex justify-between text-fadezone-text/70">
