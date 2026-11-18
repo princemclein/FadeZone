@@ -139,7 +139,7 @@ export default function Contact() {
                       {CONTACT.address}
                     </p>
                     <span className="mt-3 inline-flex items-center gap-2 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-accent">
-                      Open in Google Maps
+                      See Our Location
                       <span className="transition-transform duration-300 group-hover:translate-x-1">
                         ↗
                       </span>
