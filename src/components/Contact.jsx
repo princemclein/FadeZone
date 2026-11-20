@@ -28,7 +28,7 @@ export default function Contact() {
             </div>
 
             <h2 className="font-heading text-4xl uppercase leading-[0.95] sm:text-5xl md:text-6xl lg:text-7xl">
-              Your Next Cut{" "}
+              Your Next Cut
               <span className="text-fadezone-accent">Starts Here.</span>
             </h2>
           </div>
@@ -55,7 +55,7 @@ export default function Contact() {
               {/* Top Ticket Stub Header */}
               <div className="flex items-center justify-between gap-2 border-b border-dashed border-fadezone-text/25 pb-4">
                 <span className="font-body text-[11px] font-bold uppercase tracking-[0.25em] text-fadezone-accent">
-                  SHOP PASS • EST. 2026
+                  SHOP PASS • EST. 2027
                 </span>
                 <span className="inline-flex items-center gap-2 border border-fadezone-accent/50 bg-fadezone-background/60 px-2.5 py-1 font-body text-[10px] font-bold uppercase tracking-widest text-fadezone-accent">
                   <span className="h-1.5 w-1.5 bg-fadezone-accent" />
