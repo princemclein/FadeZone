@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Container from "./Container";
 
 const links = ["home", "about", "gallery", "barbers", "contact"];
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
     if (!isMenuOpen) {
@@ -35,6 +36,27 @@ export default function Header() {
     };
   }, [isMenuOpen]);
 
+  const handleNavClick = (item, e) => {
+    setIsMenuOpen(false);
+
+    if (item === "home") {
+      if (pathname === "/") {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      return;
+    }
+
+    const targetHash = `#${item}`;
+    if (pathname === "/" && hash === targetHash) {
+      e.preventDefault();
+      const target = document.querySelector(targetHash);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50">
       {/* Top Announcement / Dispatch Strip */}
@@ -48,6 +70,7 @@ export default function Header() {
           {/* Brand Wordmark */}
           <Link
             to="/"
+            onClick={(e) => handleNavClick("home", e)}
             aria-label="FadeZone home"
             className="group flex shrink-0 items-center gap-3"
           >
@@ -80,6 +103,7 @@ export default function Header() {
                 <li key={item}>
                   <Link
                     to={item === "home" ? "/" : `/#${item}`}
+                    onClick={(e) => handleNavClick(item, e)}
                     className="group relative inline-flex items-baseline gap-1.5 pb-1 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:text-fadezone-accent after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-fadezone-accent after:transition-transform after:duration-300 hover:after:scale-x-100"
                   >
                     <span className="text-[10px] text-fadezone-accent/80">
@@ -138,7 +162,7 @@ export default function Header() {
                 <li key={item}>
                   <Link
                     to={item === "home" ? "/" : `/#${item}`}
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => handleNavClick(item, e)}
                     className="group flex items-center justify-between px-6 py-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background/50 hover:text-fadezone-accent"
                   >
                     <span className="flex items-center gap-3">
