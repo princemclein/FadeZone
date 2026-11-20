@@ -122,9 +122,6 @@ export default function Header() {
             className="group hidden items-center gap-3 border border-fadezone-accent bg-fadezone-accent px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent min-[900px]:inline-flex"
           >
             <span>Book Now</span>
-            <span className="transition-transform duration-300 group-hover:translate-x-1">
-              →
-            </span>
           </Link>
         </Container>
 
@@ -171,9 +168,6 @@ export default function Header() {
                       </span>
                       <span>{item}</span>
                     </span>
-                    <span className="text-fadezone-accent/70 transition-transform duration-300 group-hover:translate-x-1">
-                      →
-                    </span>
                   </Link>
                 </li>
               ))}
@@ -185,12 +179,9 @@ export default function Header() {
             <Link
               to="/booking"
               onClick={() => setIsMenuOpen(false)}
-              className="group flex w-full items-center justify-between border border-fadezone-accent bg-fadezone-accent px-5 py-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent"
+              className="group flex w-full items-center justify-center border border-fadezone-accent bg-fadezone-accent px-5 py-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent"
             >
               <span>Book Now</span>
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
             </Link>
 
             <p className="mt-4 text-center font-body text-[10px] uppercase tracking-[0.22em] text-fadezone-text/50">
