@@ -1,9 +1,9 @@
 const STATS = [
   {
     index: "01",
-    value: "2026",
+    value: "2027",
     label: "Established",
-    description: "Since June 12, 2026",
+    description: "Since June 12, 2027",
   },
   {
     index: "02",
