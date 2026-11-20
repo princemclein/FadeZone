@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import AllGallery from "./pages/AllGallery";
 import AllBarbers from "./pages/AllBarbers";
 import Booking from "./pages/Booking";
+import AdminDashboard from "./Dashboard/AdminDashboard" 
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -45,18 +46,30 @@ function Home() {
   );
 }
 
-export default function App() {
+function AppContent() {
+  const {pathname} = useLocation();
+  const isAdmin = pathname.startsWith("/admin");
+
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <Header />
+    <>
+    <ScrollToTop />
+      {!isAdmin && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<AllGallery />} />
         <Route path="/barbers" element={<AllBarbers />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
-      <Footer />
+      {!isAdmin && <Footer />}
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
