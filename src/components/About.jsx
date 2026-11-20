@@ -19,7 +19,7 @@ export default function About() {
             </div>
 
             <h2 className="font-heading text-4xl uppercase leading-[0.95] text-fadezone-text sm:text-5xl md:text-6xl">
-              More Than Just{" "}
+              More Than Just
               <span className="text-fadezone-accent">A Haircut.</span>
             </h2>
           </div>
@@ -50,7 +50,7 @@ export default function About() {
                   The Barber Shop
                 </span>
                 <span className="font-body text-[11px] uppercase tracking-[0.2em] text-fadezone-text/60">
-                  Est. June 12, 2026
+                  Est. June 12, 2027
                 </span>
               </div>
             </div>
@@ -68,7 +68,7 @@ export default function About() {
 
               <div className="mt-6 space-y-4 font-body text-sm leading-7 text-fadezone-text/80 sm:text-base sm:leading-8">
                 <p>
-                  Founded on June 12, 2026, FadeZone was established with a
+                  Founded on June 12, 2027, FadeZone was established with a
                   passion for barbering and personal style. What started as a
                   vision to provide quality haircuts became a place where
                   customers can express themselves through their look.
