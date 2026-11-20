@@ -98,12 +98,9 @@ export default function Contact() {
               </p>
               <a
                 href="/booking"
-                className="group flex w-full items-center justify-between border border-fadezone-accent bg-fadezone-accent px-6 py-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent"
+                className="group flex w-full items-center justify-center border border-fadezone-accent bg-fadezone-accent px-6 py-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent"
               >
                 <span>Book Your Appointment</span>
-                <span className="transition-transform duration-300 group-hover:translate-x-1">
-                  →
-                </span>
               </a>
             </div>
           </div>
