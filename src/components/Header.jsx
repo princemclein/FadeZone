@@ -78,7 +78,7 @@ export default function Header() {
               FadeZone.
             </span>
             <span className="hidden border-l border-dashed border-fadezone-text/25 pl-3 font-body text-[10px] font-bold uppercase tracking-[0.25em] text-fadezone-accent sm:inline-block">
-              Est. 2026
+              Est. 2027
             </span>
           </Link>
 
