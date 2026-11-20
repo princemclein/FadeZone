@@ -47,7 +47,7 @@ export default function About() {
               {/* Bottom corner stamp */}
               <div className="flex items-center justify-between border-t border-fadezone-text/15 bg-fadezone-surface/95 px-5 py-3">
                 <span className="font-body text-[11px] font-bold uppercase tracking-[0.25em] text-fadezone-accent">
-                  The Shop
+                  The Barber Shop
                 </span>
                 <span className="font-body text-[11px] uppercase tracking-[0.2em] text-fadezone-text/60">
                   Est. June 12, 2026
