@@ -85,7 +85,7 @@ export default function Contact() {
                     Monday – Sunday
                   </span>
                   <span className="font-heading text-xl tracking-wide text-fadezone-text sm:text-2xl">
-                    10 AM – 10 PM
+                    7:00AM – 9:00PM
                   </span>
                 </div>
               </div>
