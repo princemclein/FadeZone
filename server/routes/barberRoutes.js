@@ -150,4 +150,76 @@ router.patch("/:id/activate", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { full_name, chair_code, chair_label, display_name } = req.body;
+
+  // Validate barber ID
+  if (!Number.isInteger(Number(id)) || Number(id) <= 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid barber ID.",
+    });
+  }
+
+  // Validate required fields
+  const requiredFields = [full_name, chair_code, chair_label, display_name];
+
+  if (
+    requiredFields.some((field) => typeof field !== "string" || !field.trim())
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: "All barber fields are required.",
+    });
+  }
+
+  try {
+    const [result] = await db.query(
+      `UPDATE barbers
+       SET full_name = ?, chair_code = ?, chair_label = ?, display_name = ?
+       WHERE id = ?`,
+      [
+        full_name.trim(),
+        chair_code.trim(),
+        chair_label.trim(),
+        display_name.trim(),
+        id,
+      ],
+    );
+
+    if (result.affectedRows === 0) {
+      const [barbers] = await db.query("SELECT id FROM barbers WHERE id = ?", [
+        id,
+      ]);
+
+      if (barbers.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Barber not found.",
+        });
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Barber updated successfully.",
+    });
+  } catch (error) {
+    console.error("Failed to update barber:", error);
+
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({
+        success: false,
+        message: "This chair code is already assigned.",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to update barber.",
+    });
+  }
+});
+
 module.exports = router;
