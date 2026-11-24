@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Container from "../components/Container";
 import AdminLogin from "./AdminLogin";
@@ -13,17 +13,6 @@ const FILTER_TABS = [
   { key: "all", label: "All Records" },
 ];
 
-const INITIAL_BARBERS = [
-  { id: 1, fullName: "Melben Jay", chairLabel: "Chair 01", isActive: true },
-  {
-    id: 2,
-    fullName: "Siegfred Opiana",
-    chairLabel: "Chair 02",
-    isActive: true,
-  },
-  { id: 3, fullName: "Mark Eito", chairLabel: "Chair 03", isActive: true },
-];
-
 function formatBarberOption(barber) {
   return `${barber.fullName} (${barber.chairLabel})`;
 }
@@ -31,7 +20,7 @@ function formatBarberOption(barber) {
 export default function AdminDashboard() {
   const [adminUser, setAdminUser] = useState(null);
   const [bookings, setBookings] = useState(INITIAL_BOOKINGS);
-  const [barbers, setBarbers] = useState(INITIAL_BARBERS);
+  const [barbers, setBarbers] = useState([]);
 
   const [newBarberName, setNewBarberName] = useState("");
   const [newChairLabel, setNewChairLabel] = useState("");
@@ -41,6 +30,35 @@ export default function AdminDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [barberFilter, setBarberFilter] = useState("All Chairs");
   const [selectedReceiptBooking, setSelectedReceiptBooking] = useState(null);
+
+  useEffect(() => {
+    const fetchBarbers = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/barbers`);
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Failed to fetch barbers.");
+        }
+
+        const formattedBarbers = result.data.map((barber) => ({
+          id: barber.id,
+          fullName: barber.full_name,
+          chairCode: barber.chair_code,
+          chairLabel: barber.chair_label,
+          displayName: barber.display_name,
+          isActive: Boolean(barber.is_active),
+        }));
+
+        setBarbers(formattedBarbers);
+      } catch (error) {
+        console.error("Error fetching barbers:", error);
+        setBarberFeedback("Unable to load barbers.");
+      }
+    };
+
+    fetchBarbers();
+  }, []);
 
   const barberOptions = useMemo(() => {
     const activeLabels = barbers
