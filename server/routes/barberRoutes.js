@@ -74,4 +74,42 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  // Validate barber ID
+  if (!Number.isInteger(Number(id)) || Number(id) <= 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid barber ID.",
+    });
+  }
+
+  try {
+    const [result] = await db.query(
+      "UPDATE barbers SET is_active = FALSE WHERE id = ? AND is_active = TRUE",
+      [id],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Barber not found or already inactive.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Barber deactivated successfully.",
+    });
+  } catch (error) {
+    console.error("Failed to deactivate barber:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to deactivate barber.",
+    });
+  }
+});
+
 module.exports = router;
