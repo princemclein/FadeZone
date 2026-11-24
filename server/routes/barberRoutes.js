@@ -112,4 +112,42 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.patch("/:id/activate", async (req, res) => {
+  const { id } = req.params;
+
+  // Validate barber ID
+  if (!Number.isInteger(Number(id)) || Number(id) <= 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid barber ID.",
+    });
+  }
+
+  try {
+    const [result] = await db.query(
+      "UPDATE barbers SET is_active = TRUE WHERE id = ? AND is_active = FALSE",
+      [id],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Barber not found or already active.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Barber reactivated successfully.",
+    });
+  } catch (error) {
+    console.error("Failed to reactivate barber:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to reactivate barber.",
+    });
+  }
+});
+
 module.exports = router;
