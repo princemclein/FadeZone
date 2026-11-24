@@ -23,6 +23,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/all", async (req, res) => {
+  try {
+    const [barbers] = await db.query("SELECT * FROM barbers ORDER BY id ASC");
+
+    res.status(200).json({
+      success: true,
+      data: barbers,
+    });
+  } catch (error) {
+    console.error("Failed to fetch all barbers:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve barbers.",
+    });
+  }
+});
+
 router.post("/", async (req, res) => {
   // 1. Extract request data
   const { full_name, chair_code, chair_label, display_name } = req.body;

@@ -111,8 +111,9 @@ export default function AdminDashboard() {
     });
   }, [bookings, activeTab, barberFilter, searchQuery]);
 
-  const handleAddBarber = (e) => {
+  const handleAddBarber = async (e) => {
     e.preventDefault();
+
     const trimmedName = newBarberName.trim();
     const nextChairNumber = String(barbers.length + 1).padStart(2, "0");
     const trimmedChair = newChairLabel.trim() || `Chair ${nextChairNumber}`;
@@ -122,53 +123,117 @@ export default function AdminDashboard() {
       return;
     }
 
-    const duplicate = barbers.some(
-      (b) =>
-        b.isActive &&
-        formatBarberOption(b).toLowerCase() ===
-          `${trimmedName} (${trimmedChair})`.toLowerCase(),
-    );
+    const chairMatch = trimmedChair.match(/^Chair\s+(\d+)$/i);
 
-    if (duplicate) {
-      setBarberFeedback("That barber and chair is already active.");
+    if (!chairMatch) {
+      setBarberFeedback("Use the chair format: Chair 05.");
       return;
     }
 
-    const nextBarber = {
-      id: Date.now(),
-      fullName: trimmedName,
-      chairLabel: trimmedChair,
-      isActive: true,
-    };
+    const chairCode = `CHAIR-${chairMatch[1].padStart(2, "0")}`;
 
-    setBarbers((prev) => [...prev, nextBarber]);
-    setNewBarberName("");
-    setNewChairLabel("");
-    setBarberFeedback(`Added ${formatBarberOption(nextBarber)}.`);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/barbers`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          full_name: trimmedName,
+          chair_code: chairCode,
+          chair_label: trimmedChair,
+          display_name: `${trimmedName} - ${trimmedChair}`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to add barber.");
+      }
+
+      const newBarber = {
+        id: result.barberId,
+        fullName: trimmedName,
+        chairCode,
+        chairLabel: trimmedChair,
+        displayName: `${trimmedName} - ${trimmedChair}`,
+        isActive: true,
+      };
+
+      setBarbers((prev) => [...prev, newBarber]);
+      setNewBarberName("");
+      setNewChairLabel("");
+      setBarberFeedback(`Added ${formatBarberOption(newBarber)}.`);
+    } catch (error) {
+      console.error("Error adding barber:", error);
+      setBarberFeedback(error.message || "Unable to add barber.");
+    }
   };
 
-  const handleRemoveBarber = (barberId) => {
+  const handleRemoveBarber = async (barberId) => {
     const target = barbers.find((b) => b.id === barberId);
     if (!target) return;
 
     const formatted = formatBarberOption(target);
-    if (barberFilter === formatted) {
-      setBarberFilter("All Chairs");
-    }
 
-    setBarbers((prev) =>
-      prev.map((b) => (b.id === barberId ? { ...b, isActive: false } : b)),
-    );
-    setBarberFeedback(`Removed ${formatted} from active chairs.`);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/barbers/${barberId}`,
+        {
+          method: "DELETE",
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to remove barber.");
+      }
+
+      if (barberFilter === formatted) {
+        setBarberFilter("All Chairs");
+      }
+
+      setBarbers((prev) =>
+        prev.map((b) => (b.id === barberId ? { ...b, isActive: false } : b)),
+      );
+
+      setBarberFeedback(`Removed ${formatted} from active chairs.`);
+    } catch (error) {
+      console.error("Error removing barber:", error);
+      setBarberFeedback(error.message || "Unable to remove barber.");
+    }
   };
 
-  const handleRestoreBarber = (barberId) => {
+  const handleRestoreBarber = async (barberId) => {
     const target = barbers.find((b) => b.id === barberId);
-    setBarbers((prev) =>
-      prev.map((b) => (b.id === barberId ? { ...b, isActive: true } : b)),
-    );
-    if (target) {
-      setBarberFeedback(`Restored ${formatBarberOption(target)}.`);
+    if (!target) return;
+
+    const formatted = formatBarberOption(target);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/barbers/${barberId}/activate`,
+        {
+          method: "PATCH",
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to restore barber.");
+      }
+
+      setBarbers((prev) =>
+        prev.map((b) => (b.id === barberId ? { ...b, isActive: true } : b)),
+      );
+
+      setBarberFeedback(`Restored ${formatted}.`);
+    } catch (error) {
+      console.error("Error restoring barber:", error);
+      setBarberFeedback(error.message || "Unable to restore barber.");
     }
   };
 
