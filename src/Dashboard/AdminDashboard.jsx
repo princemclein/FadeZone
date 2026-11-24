@@ -26,6 +26,10 @@ export default function AdminDashboard() {
   const [newChairLabel, setNewChairLabel] = useState("");
   const [barberFeedback, setBarberFeedback] = useState("");
 
+  const [editingBarberId, setEditingBarberId] = useState(null);
+  const [editBarberName, setEditBarberName] = useState("");
+  const [editChairLabel, setEditChairLabel] = useState("");
+
   const [activeTab, setActiveTab] = useState("pending");
   const [searchQuery, setSearchQuery] = useState("");
   const [barberFilter, setBarberFilter] = useState("All Chairs");
@@ -117,8 +121,19 @@ export default function AdminDashboard() {
     e.preventDefault();
 
     const trimmedName = newBarberName.trim();
-    const nextChairNumber = String(barbers.length + 1).padStart(2, "0");
-    const trimmedChair = newChairLabel.trim() || `Chair ${nextChairNumber}`;
+    const usedChairNumbers = barbers
+      .map((barber) => Number(barber.chairCode?.replace("CHAIR-", "")))
+      .filter(Number.isInteger);
+
+    let nextChairNumber = 1;
+
+    while (usedChairNumbers.includes(nextChairNumber)) {
+      nextChairNumber++;
+    }
+
+    const formattedChairNumber = String(nextChairNumber).padStart(2, "0");
+    const trimmedChair =
+      newChairLabel.trim() || `Chair ${formattedChairNumber}`;
 
     if (!trimmedName) {
       setBarberFeedback("Enter a barber name first.");
@@ -236,6 +251,69 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error("Error restoring barber:", error);
       setBarberFeedback(error.message || "Unable to restore barber.");
+    }
+  };
+
+  const handleEditBarber = async (barberId) => {
+    const trimmedName = editBarberName.trim();
+    const trimmedChair = editChairLabel.trim();
+
+    if (!trimmedName || !trimmedChair) {
+      setBarberFeedback("Name and chair assignment are required.");
+      return;
+    }
+
+    const chairMatch = trimmedChair.match(/^Chair\s+(\d+)$/i);
+
+    if (!chairMatch) {
+      setBarberFeedback("Use the chair format: Chair 05.");
+      return;
+    }
+
+    const chairCode = `CHAIR-${chairMatch[1].padStart(2, "0")}`;
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/barbers/${barberId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            full_name: trimmedName,
+            chair_code: chairCode,
+            chair_label: trimmedChair,
+            display_name: `${trimmedName} - ${trimmedChair}`,
+          }),
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to update barber.");
+      }
+
+      setBarbers((prev) =>
+        prev.map((barber) =>
+          barber.id === barberId
+            ? {
+                ...barber,
+                fullName: trimmedName,
+                chairCode,
+                chairLabel: trimmedChair,
+                displayName: `${trimmedName} - ${trimmedChair}`,
+              }
+            : barber,
+        ),
+      );
+
+      setEditingBarberId(null);
+      setBarberFeedback("Barber updated successfully.");
+    } catch (error) {
+      console.error("Error updating barber:", error);
+      setBarberFeedback(error.message || "Unable to update barber.");
     }
   };
 
@@ -391,7 +469,57 @@ export default function AdminDashboard() {
                     : "border-dashed border-fadezone-text/20 bg-fadezone-background/40 text-fadezone-text/45 line-through"
                 }`}
               >
-                <span>{formatBarberOption(barber)}</span>
+                {editingBarberId === barber.id ? (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <input
+                      type="text"
+                      value={editBarberName}
+                      onChange={(e) => setEditBarberName(e.target.value)}
+                      placeholder="Barber name"
+                      className="w-36 border border-fadezone-text/25 bg-fadezone-surface px-2 py-1 text-xs"
+                    />
+
+                    <input
+                      type="text"
+                      value={editChairLabel}
+                      onChange={(e) => setEditChairLabel(e.target.value)}
+                      placeholder="Chair 05"
+                      className="w-24 border border-fadezone-text/25 bg-fadezone-surface px-2 py-1 text-xs"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => handleEditBarber(barber.id)}
+                      className="border border-fadezone-accent px-2 py-1 text-[10px] font-bold"
+                    >
+                      Save
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setEditingBarberId(null)}
+                      className="border border-fadezone-text/25 px-2 py-1 text-[10px] font-bold"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <span>{formatBarberOption(barber)}</span>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingBarberId(barber.id);
+                    setEditBarberName(barber.fullName);
+                    setEditChairLabel(barber.chairLabel);
+                    setBarberFeedback("");
+                  }}
+                  className="border border-fadezone-accent/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-fadezone-accent transition-colors hover:bg-fadezone-accent hover:text-fadezone-text"
+                >
+                  Edit
+                </button>
+
                 {barber.isActive ? (
                   <button
                     type="button"
