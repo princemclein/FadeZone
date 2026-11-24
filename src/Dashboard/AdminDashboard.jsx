@@ -13,21 +13,41 @@ const FILTER_TABS = [
   { key: "all", label: "All Records" },
 ];
 
-const BARBER_OPTIONS = [
-  "All Chairs",
-  "Melben Jay (Chair 01)",
-  "Siegfred Opiana (Chair 02)",
-  "Mark Eito (Chair 03)",
-  "Any Available Barber",
+const INITIAL_BARBERS = [
+  { id: 1, fullName: "Melben Jay", chairLabel: "Chair 01", isActive: true },
+  {
+    id: 2,
+    fullName: "Siegfred Opiana",
+    chairLabel: "Chair 02",
+    isActive: true,
+  },
+  { id: 3, fullName: "Mark Eito", chairLabel: "Chair 03", isActive: true },
 ];
+
+function formatBarberOption(barber) {
+  return `${barber.fullName} (${barber.chairLabel})`;
+}
 
 export default function AdminDashboard() {
   const [adminUser, setAdminUser] = useState(null);
   const [bookings, setBookings] = useState(INITIAL_BOOKINGS);
+  const [barbers, setBarbers] = useState(INITIAL_BARBERS);
+
+  const [newBarberName, setNewBarberName] = useState("");
+  const [newChairLabel, setNewChairLabel] = useState("");
+  const [barberFeedback, setBarberFeedback] = useState("");
+
   const [activeTab, setActiveTab] = useState("pending");
   const [searchQuery, setSearchQuery] = useState("");
   const [barberFilter, setBarberFilter] = useState("All Chairs");
   const [selectedReceiptBooking, setSelectedReceiptBooking] = useState(null);
+
+  const barberOptions = useMemo(() => {
+    const activeLabels = barbers
+      .filter((b) => b.isActive)
+      .map(formatBarberOption);
+    return ["All Chairs", ...activeLabels, "Any Available Barber"];
+  }, [barbers]);
 
   const stats = useMemo(() => {
     const pending = bookings.filter((b) => b.status === "pending").length;
@@ -35,11 +55,11 @@ export default function AdminDashboard() {
     const rejected = bookings.filter((b) => b.status === "rejected").length;
     const verifiedDeposits = approvedList.reduce(
       (sum, b) => sum + b.downpayment,
-      0
+      0,
     );
     const expectedShopBalance = approvedList.reduce(
       (sum, b) => sum + b.balanceDue,
-      0
+      0,
     );
 
     return {
@@ -73,15 +93,76 @@ export default function AdminDashboard() {
     });
   }, [bookings, activeTab, barberFilter, searchQuery]);
 
+  const handleAddBarber = (e) => {
+    e.preventDefault();
+    const trimmedName = newBarberName.trim();
+    const nextChairNumber = String(barbers.length + 1).padStart(2, "0");
+    const trimmedChair = newChairLabel.trim() || `Chair ${nextChairNumber}`;
+
+    if (!trimmedName) {
+      setBarberFeedback("Enter a barber name first.");
+      return;
+    }
+
+    const duplicate = barbers.some(
+      (b) =>
+        b.isActive &&
+        formatBarberOption(b).toLowerCase() ===
+          `${trimmedName} (${trimmedChair})`.toLowerCase(),
+    );
+
+    if (duplicate) {
+      setBarberFeedback("That barber and chair is already active.");
+      return;
+    }
+
+    const nextBarber = {
+      id: Date.now(),
+      fullName: trimmedName,
+      chairLabel: trimmedChair,
+      isActive: true,
+    };
+
+    setBarbers((prev) => [...prev, nextBarber]);
+    setNewBarberName("");
+    setNewChairLabel("");
+    setBarberFeedback(`Added ${formatBarberOption(nextBarber)}.`);
+  };
+
+  const handleRemoveBarber = (barberId) => {
+    const target = barbers.find((b) => b.id === barberId);
+    if (!target) return;
+
+    const formatted = formatBarberOption(target);
+    if (barberFilter === formatted) {
+      setBarberFilter("All Chairs");
+    }
+
+    setBarbers((prev) =>
+      prev.map((b) => (b.id === barberId ? { ...b, isActive: false } : b)),
+    );
+    setBarberFeedback(`Removed ${formatted} from active chairs.`);
+  };
+
+  const handleRestoreBarber = (barberId) => {
+    const target = barbers.find((b) => b.id === barberId);
+    setBarbers((prev) =>
+      prev.map((b) => (b.id === barberId ? { ...b, isActive: true } : b)),
+    );
+    if (target) {
+      setBarberFeedback(`Restored ${formatBarberOption(target)}.`);
+    }
+  };
+
   const handleApprove = (bookingId) => {
     setBookings((prev) =>
-      prev.map((b) => (b.id === bookingId ? { ...b, status: "approved" } : b))
+      prev.map((b) => (b.id === bookingId ? { ...b, status: "approved" } : b)),
     );
   };
 
   const handleReject = (bookingId) => {
     setBookings((prev) =>
-      prev.map((b) => (b.id === bookingId ? { ...b, status: "rejected" } : b))
+      prev.map((b) => (b.id === bookingId ? { ...b, status: "rejected" } : b)),
     );
   };
 
@@ -171,6 +252,83 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        {/* Barber & Chair Management */}
+        <div className="mt-8 border border-dashed border-fadezone-text/25 bg-fadezone-surface p-4 sm:p-5">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-dashed border-fadezone-text/20 pb-3">
+            <div>
+              <p className="font-body text-[10px] font-bold uppercase tracking-[0.22em] text-fadezone-accent">
+                Roster & Chair Assignment
+              </p>
+              <h2 className="font-heading text-2xl uppercase tracking-wide">
+                Manage Barbers
+              </h2>
+            </div>
+            {barberFeedback && (
+              <p className="font-body text-xs uppercase tracking-[0.14em] text-fadezone-accent">
+                {barberFeedback}
+              </p>
+            )}
+          </div>
+
+          <form
+            onSubmit={handleAddBarber}
+            className="mt-4 grid gap-3 sm:grid-cols-[1fr_180px_auto]"
+          >
+            <input
+              type="text"
+              value={newBarberName}
+              onChange={(e) => setNewBarberName(e.target.value)}
+              placeholder="New barber full name (e.g., Carlo Reyes)"
+              className="border border-fadezone-text/25 bg-fadezone-background px-4 py-2.5 font-body text-xs tracking-[0.12em] text-fadezone-text placeholder:text-fadezone-text/40 focus:border-fadezone-accent focus:outline-none"
+            />
+            <input
+              type="text"
+              value={newChairLabel}
+              onChange={(e) => setNewChairLabel(e.target.value)}
+              placeholder="Chair (e.g., Chair 04)"
+              className="border border-fadezone-text/25 bg-fadezone-background px-4 py-2.5 font-body text-xs tracking-[0.12em] text-fadezone-text placeholder:text-fadezone-text/40 focus:border-fadezone-accent focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="border border-fadezone-accent bg-fadezone-accent px-5 py-2.5 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent"
+            >
+              + Add Barber
+            </button>
+          </form>
+
+          <div className="mt-4 flex flex-wrap gap-2.5">
+            {barbers.map((barber) => (
+              <div
+                key={barber.id}
+                className={`flex items-center gap-3 border px-3.5 py-2 font-body text-xs uppercase tracking-[0.14em] ${
+                  barber.isActive
+                    ? "border-fadezone-text/25 bg-fadezone-background text-fadezone-text"
+                    : "border-dashed border-fadezone-text/20 bg-fadezone-background/40 text-fadezone-text/45 line-through"
+                }`}
+              >
+                <span>{formatBarberOption(barber)}</span>
+                {barber.isActive ? (
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveBarber(barber.id)}
+                    className="border border-fadezone-text/25 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-fadezone-text/75 transition-colors hover:border-red-400 hover:text-red-400"
+                  >
+                    Remove
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleRestoreBarber(barber.id)}
+                    className="border border-fadezone-accent/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-fadezone-accent no-underline transition-colors hover:bg-fadezone-accent hover:text-fadezone-text"
+                  >
+                    Restore
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Filter Tabs + Search & Chair Filter */}
         <div className="mt-8 border border-dashed border-fadezone-text/25 bg-fadezone-surface p-4 sm:p-5">
           {/* Status Tabs */}
@@ -231,7 +389,7 @@ export default function AdminDashboard() {
                 onChange={(e) => setBarberFilter(e.target.value)}
                 className="w-full border border-fadezone-text/25 bg-fadezone-background px-4 py-2.5 font-body text-xs font-bold uppercase tracking-[0.15em] text-fadezone-text focus:border-fadezone-accent focus:outline-none"
               >
-                {BARBER_OPTIONS.map((option) => (
+                {barberOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
