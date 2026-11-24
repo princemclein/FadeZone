@@ -60,5 +60,9 @@ CREATE TABLE bookings (
         FOREIGN KEY (barber_id)
         REFERENCES barbers(id)
         ON DELETE RESTRICT
-        ON UPDATE CASCADE
+        ON UPDATE CASCADE,
+
+    INDEX idx_booking_schedule (booking_date, booking_time, barber_id),
+    INDEX idx_booking_status (status),
+    INDEX idx_booking_barber_date (barber_id, booking_date)
 );
