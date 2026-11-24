@@ -34,7 +34,9 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchBarbers = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/barbers`);
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/barbers/all`,
+        );
         const result = await response.json();
 
         if (!response.ok) {
