@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Container from "./Container";
 import Haircut1 from "../assets/home-images/haircut1.jpeg";
 import Haircut2 from "../assets/home-images/haircut2.jpeg";
@@ -47,22 +48,22 @@ export default function Hero() {
 
           {/* Primary & Secondary CTAs */}
           <div className="flex w-full flex-col gap-3 pt-1 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-            <a
-              href="/booking"
+            <Link
+              to="/booking"
               className="group flex w-full items-center justify-center gap-3 bg-fadezone-accent px-6 py-3.5 text-xs font-body font-bold uppercase tracking-[0.18em] text-fadezone-text transition-colors hover:bg-fadezone-surface hover:ring-1 hover:ring-fadezone-accent sm:w-auto sm:px-7 sm:py-4 sm:tracking-[0.2em]"
             >
               <span>Book Appointment</span>
               <span className="transition-transform duration-300 group-hover:translate-x-1">
                 →
               </span>
-            </a>
+            </Link>
 
-            <a
-              href="#barbers"
+            <Link
+              to="/#barbers"
               className="w-full border border-fadezone-text/30 bg-fadezone-surface/40 px-6 py-3.5 text-center text-xs font-body font-bold uppercase tracking-[0.18em] text-fadezone-text transition-colors hover:border-fadezone-accent hover:text-fadezone-accent sm:w-auto sm:px-7 sm:py-4 sm:tracking-[0.2em]"
             >
               Meet Our Barbers
-            </a>
+            </Link>
           </div>
         </div>
 
