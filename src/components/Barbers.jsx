@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import barber1 from "../assets/barbers-section-images/MelbenJay.jpg";
 import barber2 from "../assets/barbers-section-images/SiegfredOpiana.jpg";
 import barber3 from "../assets/barbers-section-images/MarkEito.jpg";
@@ -119,12 +120,12 @@ export default function BarbersSection() {
               PRECISION CUTS • DAILY 10 AM – 10 PM
             </p>
 
-            <a
-              href="/barbers"
+            <Link
+              to="/barbers"
               className="group flex w-full items-center justify-center gap-3 border border-fadezone-accent bg-fadezone-surface px-7 py-3.5 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-text sm:w-auto"
             >
               <span>Meet All Barbers</span>
-            </a>
+            </Link>
           </div>
         </div>
       </Container>
