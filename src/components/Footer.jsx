@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import Container from "./Container";
@@ -80,12 +81,12 @@ export default function Footer() {
             </p>
 
             <div className="pt-2">
-              <a
-                href="/booking"
+              <Link
+                to="/booking"
                 className="group inline-flex items-center gap-4 border border-fadezone-accent bg-fadezone-surface px-8 py-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fadezone-text"
               >
                 <span>Claim Your Chair</span>
-              </a>
+              </Link>
             </div>
           </div>
 
