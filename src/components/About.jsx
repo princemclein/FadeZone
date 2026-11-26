@@ -19,7 +19,7 @@ export default function About() {
             </div>
 
             <h2 className="font-heading text-4xl uppercase leading-[0.95] text-fadezone-text sm:text-5xl md:text-6xl">
-              More Than Just
+              <span className="block">More Than Just</span>
               <span className="text-fadezone-accent">A Haircut.</span>
             </h2>
           </div>
@@ -60,7 +60,7 @@ export default function About() {
           <div className="flex flex-col justify-between lg:col-span-7">
             <div>
               <h3 className="font-heading text-3xl uppercase leading-[0.98] text-fadezone-text sm:text-4xl lg:text-5xl">
-                Built on style.{" "}
+                <span className="block">Built on style.</span>
                 <span className="block text-fadezone-accent sm:inline">
                   Defined by precision.
                 </span>
