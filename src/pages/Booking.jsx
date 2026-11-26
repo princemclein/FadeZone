@@ -316,11 +316,13 @@ export default function Booking() {
           </p>
         </div>
 
+     
         {/* Step Indicator */}
-        <div className="mx-auto mt-8 flex max-w-3xl items-center justify-between border border-fadezone-accent/35 bg-fadezone-surface/80 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-2">
+        <div className="mx-auto mt-8 grid max-w-3xl grid-cols-3 items-center border border-fadezone-accent/35 bg-fadezone-surface/80 px-2 py-3 sm:px-6">
+          {/* Step 1 */}
+          <div className="flex min-w-0 flex-col items-center gap-1.5 sm:flex-row sm:justify-center sm:gap-2">
             <span
-              className={`flex h-6 w-6 items-center justify-center border font-body text-xs font-bold ${
+              className={`flex h-6 w-6 shrink-0 items-center justify-center border font-body text-xs font-bold ${
                 step === "details"
                   ? "border-fadezone-accent bg-fadezone-accent text-fadezone-text"
                   : "border-fadezone-accent/60 text-fadezone-accent"
@@ -329,16 +331,15 @@ export default function Booking() {
               1
             </span>
 
-            <span className="font-body text-[11px] font-bold uppercase tracking-[0.18em]">
+            <span className="text-center font-body text-[9px] font-bold uppercase leading-tight tracking-[0.08em] sm:text-[11px] sm:tracking-[0.18em]">
               Details
             </span>
           </div>
 
-          <span className="mx-3 h-px flex-1 bg-fadezone-text/20" />
-
-          <div className="flex items-center gap-2">
+          {/* Step 2 */}
+          <div className="flex min-w-0 flex-col items-center gap-1.5 sm:flex-row sm:justify-center sm:gap-2">
             <span
-              className={`flex h-6 w-6 items-center justify-center border font-body text-xs font-bold ${
+              className={`flex h-6 w-6 shrink-0 items-center justify-center border font-body text-xs font-bold ${
                 step === "payment"
                   ? "border-fadezone-accent bg-fadezone-accent text-fadezone-text"
                   : step === "submitted"
@@ -350,7 +351,7 @@ export default function Booking() {
             </span>
 
             <span
-              className={`font-body text-[11px] font-bold uppercase tracking-[0.18em] ${
+              className={`text-center font-body text-[9px] font-bold uppercase leading-tight tracking-[0.08em] sm:text-[11px] sm:tracking-[0.18em] ${
                 step === "details"
                   ? "text-fadezone-text/50"
                   : "text-fadezone-text"
@@ -360,11 +361,10 @@ export default function Booking() {
             </span>
           </div>
 
-          <span className="mx-3 h-px flex-1 bg-fadezone-text/20" />
-
-          <div className="flex items-center gap-2">
+          {/* Step 3 */}
+          <div className="flex min-w-0 flex-col items-center gap-1.5 sm:flex-row sm:justify-center sm:gap-2">
             <span
-              className={`flex h-6 w-6 items-center justify-center border font-body text-xs font-bold ${
+              className={`flex h-6 w-6 shrink-0 items-center justify-center border font-body text-xs font-bold ${
                 step === "submitted"
                   ? "border-fadezone-accent bg-fadezone-accent text-fadezone-text"
                   : "border-fadezone-text/30 text-fadezone-text/50"
@@ -374,7 +374,7 @@ export default function Booking() {
             </span>
 
             <span
-              className={`font-body text-[11px] font-bold uppercase tracking-[0.18em] ${
+              className={`max-w-full text-center font-body text-[9px] font-bold uppercase leading-tight tracking-[0.08em] sm:text-[11px] sm:tracking-[0.18em] ${
                 step === "submitted"
                   ? "text-fadezone-text"
                   : "text-fadezone-text/50"
@@ -384,6 +384,7 @@ export default function Booking() {
             </span>
           </div>
         </div>
+
 
         {/* STEP 3: SUBMITTED PREVIEW */}
         {step === "submitted" && ticketCode && (
