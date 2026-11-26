@@ -60,13 +60,12 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50">
       {/* Top Announcement / Dispatch Strip */}
-      <div className="border-b border-dashed border-fadezone-text/30 bg-fadezone-accent px-4 py-2 text-center font-body text-[11px] font-bold uppercase tracking-[0.22em] text-fadezone-text sm:text-xs">
+      <div className="border-b border-dashed border-fadezone-text/30 bg-fadezone-accent px-3 py-2 text-center font-body text-[9px] font-bold uppercase tracking-[0.12em] text-fadezone-text sm:px-4 sm:text-xs sm:tracking-[0.22em]">
         NOW ACCEPTING BOOKINGS • FLAT RATE ₱150 • WALK-INS WELCOME
       </div>
 
       {/* Main Navigation Bar */}
-      <div className="relative border-b border-fadezone-accent/40 bg-fadezone-surface/95 backdrop-blur-md">
-        <Container className="flex h-19 items-center justify-between gap-6">
+<div className="relative overflow-x-clip border-b border-fadezone-accent/40 bg-fadezone-surface/95 backdrop-blur-md">        <Container className="flex h-19 items-center justify-between gap-6">
           {/* Brand Wordmark */}
           <Link
             to="/"
