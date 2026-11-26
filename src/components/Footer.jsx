@@ -71,7 +71,7 @@ export default function Footer() {
             </div>
 
             <p className="font-heading text-5xl uppercase leading-[0.95] tracking-wide sm:text-6xl lg:text-7xl">
-              Stay Sharp.{" "}
+              Stay Sharp.
               <span className="block text-fadezone-accent">Book Your Cut.</span>
             </p>
 
