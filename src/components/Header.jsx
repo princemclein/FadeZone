@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Container from "./Container";
 
@@ -6,15 +7,16 @@ const links = ["home", "about", "gallery", "barbers", "contact"];
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuButtonRef = useRef(null);
   const { pathname, hash } = useLocation();
 
+  // Lock background scrolling while the mobile menu is open.
   useEffect(() => {
-    if (!isMenuOpen) {
-      return undefined;
-    }
+    if (!isMenuOpen) return undefined;
 
     const { body } = document;
     const scrollY = window.scrollY;
+
     const previousStyles = {
       overflow: body.style.overflow,
       position: body.style.position,
@@ -36,37 +38,58 @@ export default function Header() {
     };
   }, [isMenuOpen]);
 
+  // Handle homepage section navigation after route/hash changes.
+  useEffect(() => {
+    if (pathname !== "/") return;
+
+    const scrollToTarget = () => {
+      if (!hash) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+
+      const target = document.getElementById(hash.slice(1));
+
+      target?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    };
+
+    requestAnimationFrame(scrollToTarget);
+  }, [pathname, hash]);
+
+  const closeMenu = () => {
+    menuButtonRef.current?.focus();
+    setIsMenuOpen(false);
+  };
+
   const handleNavClick = (item, e) => {
     setIsMenuOpen(false);
 
-    if (item === "home") {
-      if (pathname === "/") {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-      return;
-    }
-
-    const targetHash = `#${item}`;
-    if (pathname === "/" && hash === targetHash) {
+    // When already on the homepage at the top, ensure Home still scrolls up.
+    if (item === "home" && pathname === "/" && !hash) {
       e.preventDefault();
-      const target = document.querySelector(targetHash);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
-      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
+  };
+
+  const handleMobileNavClick = (item, e) => {
+    menuButtonRef.current?.focus();
+    handleNavClick(item, e);
   };
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Top Announcement / Dispatch Strip */}
+      {/* Announcement Strip */}
       <div className="border-b border-dashed border-fadezone-text/30 bg-fadezone-accent px-3 py-2 text-center font-body text-[9px] font-bold uppercase tracking-[0.12em] text-fadezone-text sm:px-4 sm:text-xs sm:tracking-[0.22em]">
         NOW ACCEPTING BOOKINGS • FLAT RATE ₱150 • WALK-INS WELCOME
       </div>
 
-      {/* Main Navigation Bar */}
-<div className="relative overflow-x-clip border-b border-fadezone-accent/40 bg-fadezone-surface/95 backdrop-blur-md">        <Container className="flex h-19 items-center justify-between gap-6">
-          {/* Brand Wordmark */}
+      {/* Main Navigation */}
+      <div className="relative overflow-x-clip border-b border-fadezone-accent/40 bg-fadezone-surface/95 backdrop-blur-md">
+        <Container className="flex h-19 items-center justify-between gap-6">
+          {/* Brand */}
           <Link
             to="/"
             onClick={(e) => handleNavClick("home", e)}
@@ -76,6 +99,7 @@ export default function Header() {
             <span className="font-heading text-3xl uppercase tracking-wide text-fadezone-text transition-colors group-hover:text-fadezone-accent">
               FadeZone.
             </span>
+
             <span className="hidden border-l border-dashed border-fadezone-text/25 pl-3 font-body text-[10px] font-bold uppercase tracking-[0.25em] text-fadezone-accent sm:inline-block">
               Est. 2027
             </span>
@@ -83,6 +107,7 @@ export default function Header() {
 
           {/* Mobile Menu Toggle */}
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="flex h-11 w-11 items-center justify-center border border-fadezone-accent/50 bg-fadezone-background/60 text-2xl leading-none text-fadezone-text transition-colors hover:border-fadezone-accent hover:text-fadezone-accent min-[900px]:hidden"
@@ -115,7 +140,7 @@ export default function Header() {
             </ul>
           </nav>
 
-          {/* Desktop CTA Button */}
+          {/* Desktop Booking Button */}
           <Link
             to="/booking"
             className="group hidden items-center gap-3 border border-fadezone-accent bg-fadezone-accent px-6 py-3 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent min-[900px]:inline-flex"
@@ -124,17 +149,17 @@ export default function Header() {
           </Link>
         </Container>
 
-        {/* Mobile Drawer Backdrop */}
+        {/* Mobile Backdrop */}
         {isMenuOpen && (
           <button
             type="button"
             aria-label="Close navigation"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={closeMenu}
             className="fixed inset-0 top-full z-40 h-dvh w-full bg-fadezone-background/70 backdrop-blur-xs min-[900px]:hidden"
           />
         )}
 
-        {/* Mobile Vintage Ticket Drawer */}
+        {/* Mobile Navigation Drawer */}
         <nav
           className={`absolute right-0 top-full z-50 flex h-[calc(100dvh-100%-2rem)] w-[72vw] max-w-xs flex-col justify-between overflow-y-auto border-l border-fadezone-accent/50 bg-fadezone-surface text-fadezone-text transition-transform duration-300 ease-out min-[900px]:hidden ${
             isMenuOpen ? "visible translate-x-0" : "invisible translate-x-full"
@@ -143,7 +168,7 @@ export default function Header() {
           aria-hidden={!isMenuOpen}
         >
           <div>
-            {/* Drawer Stub Header */}
+            {/* Drawer Header */}
             <div className="flex items-center justify-between border-b border-dashed border-fadezone-text/25 px-6 py-4">
               <span className="font-body text-[10px] font-bold uppercase tracking-[0.25em] text-fadezone-accent">
                 Shop Directory
@@ -153,12 +178,13 @@ export default function Header() {
               </span>
             </div>
 
+            {/* Navigation Links */}
             <ul className="flex flex-col divide-y divide-dashed divide-fadezone-text/20">
               {links.map((item, idx) => (
                 <li key={item}>
                   <Link
                     to={item === "home" ? "/" : `/#${item}`}
-                    onClick={(e) => handleNavClick(item, e)}
+                    onClick={(e) => handleMobileNavClick(item, e)}
                     className="group flex items-center justify-between px-6 py-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background/50 hover:text-fadezone-accent"
                   >
                     <span className="flex items-center gap-3">
@@ -173,18 +199,18 @@ export default function Header() {
             </ul>
           </div>
 
-          {/* Drawer Footer & Booking CTA */}
+          {/* Drawer Footer */}
           <div className="border-t border-dashed border-fadezone-text/25 p-6">
             <Link
               to="/booking"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={closeMenu}
               className="group flex w-full items-center justify-center border border-fadezone-accent bg-fadezone-accent px-5 py-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent"
             >
               <span>Book Now</span>
             </Link>
 
             <p className="mt-4 text-center font-body text-[10px] uppercase tracking-[0.22em] text-fadezone-text/50">
-              Open Daily • 10 AM – 10 PM
+              Open Daily • 7:00 AM – 9:00 PM
             </p>
           </div>
         </nav>
