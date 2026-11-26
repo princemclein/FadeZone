@@ -1,46 +1,63 @@
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import gcashQr from "../assets/gcash-qr.png"; // Uncomment once you add your QR image
 import Container from "../components/Container";
 
-const BARBERS = [
-  "Any Available Barber",
-  "Melben Jay (Chair 01)",
-  "Siegfred Opiana (Chair 02)",
-  "Mark Eito (Chair 03)",
-];
-
-const TIME_SLOTS = [
-  "10:00 AM",
-  "11:00 AM",
-  "12:00 PM",
-  "01:00 PM",
-  "02:00 PM",
-  "03:00 PM",
-  "04:00 PM",
-  "05:00 PM",
-  "06:00 PM",
-  "07:00 PM",
-  "08:00 PM",
-  "09:00 PM",
-];
+const API_URL = import.meta.env.VITE_API_URL;
 
 const TOTAL_PRICE = 150;
 const DOWNPAYMENT_RATE = 0.4;
-const DOWNPAYMENT_AMOUNT = TOTAL_PRICE * DOWNPAYMENT_RATE; // ₱60
-const BALANCE_AMOUNT = TOTAL_PRICE - DOWNPAYMENT_AMOUNT; // ₱90
+const DOWNPAYMENT_AMOUNT = TOTAL_PRICE * DOWNPAYMENT_RATE;
+const BALANCE_AMOUNT = TOTAL_PRICE - DOWNPAYMENT_AMOUNT;
+
+// Current reservation setting: 90 minutes.
+// Last available start time is 7:30 PM to finish by 9:00 PM.
+const RESERVATION_MINUTES = 90;
+
+function generateTimeSlots() {
+  const slots = [];
+
+  const startMinutes = 7 * 60;
+  const closingMinutes = 21 * 60;
+  const lastStartMinutes = closingMinutes - RESERVATION_MINUTES;
+
+  for (
+    let minutes = startMinutes;
+    minutes <= lastStartMinutes;
+    minutes += 30
+  ) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    const period = hours >= 12 ? "PM" : "AM";
+    const displayHour = hours % 12 || 12;
+
+    slots.push(
+      `${String(displayHour).padStart(2, "0")}:${String(
+        remainingMinutes,
+      ).padStart(2, "0")} ${period}`,
+    );
+  }
+
+  return slots;
+}
+
+const TIME_SLOTS = generateTimeSlots();
 
 function getTodayString() {
   const now = new Date();
   const offset = now.getTimezoneOffset();
   const local = new Date(now.getTime() - offset * 60 * 1000);
+
   return local.toISOString().split("T")[0];
 }
 
 function formatReadableDate(dateStr) {
   if (!dateStr) return "Select Date";
+
   const [year, month, day] = dateStr.split("-").map(Number);
   const date = new Date(year, month - 1, day);
+
   return date.toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
@@ -49,28 +66,92 @@ function formatReadableDate(dateStr) {
   });
 }
 
+function formatBarberName(barber) {
+  return (
+    barber.display_name ||
+    `${barber.full_name}${barber.chair_label ? ` - ${barber.chair_label}` : ""}`
+  );
+}
+
 export default function Booking() {
   const today = getTodayString();
 
-  // Step control: "details" | "payment" | "submitted"
+  // Step control: details | payment | submitted
   const [step, setStep] = useState("details");
 
-  // Step 1 fields
+  // Appointment details
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [haircutStyle, setHaircutStyle] = useState("");
-  const [barber, setBarber] = useState(BARBERS[0]);
+
+  // Barber data from API
+  const [barbers, setBarbers] = useState([]);
+  const [barberId, setBarberId] = useState("any");
+  const [barbersLoading, setBarbersLoading] = useState(true);
+  const [barberLoadError, setBarberLoadError] = useState("");
+
   const [date, setDate] = useState(today);
   const [timeSlot, setTimeSlot] = useState("02:00 PM");
   const [notes, setNotes] = useState("");
 
-  // Step 2 (GCash Screenshot) fields
+  // GCash receipt details
   const [receiptFile, setReceiptFile] = useState(null);
   const [receiptPreview, setReceiptPreview] = useState(null);
   const [gcashRef, setGcashRef] = useState("");
 
   const [error, setError] = useState("");
   const [ticketCode, setTicketCode] = useState(null);
+
+  // Resolve the selected barber's display name.
+  const selectedBarber = barbers.find(
+    (barber) => String(barber.id) === String(barberId),
+  );
+
+  const selectedBarberName =
+    barberId === "any"
+      ? "Any Available Barber"
+      : selectedBarber
+        ? formatBarberName(selectedBarber)
+        : "Select a Barber";
+
+  // Fetch active barbers from the backend.
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchBarbers() {
+      try {
+        const response = await fetch(`${API_URL}/barbers`);
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "Failed to load barbers.");
+        }
+
+        if (isMounted) {
+          setBarbers(result.data || []);
+          setBarberLoadError("");
+        }
+      } catch (error) {
+        console.error("Failed to fetch barbers:", error);
+
+        if (isMounted) {
+          setBarberLoadError(
+            "Unable to load barbers. Please refresh the page.",
+          );
+        }
+      } finally {
+        if (isMounted) {
+          setBarbersLoading(false);
+        }
+      }
+    }
+
+    fetchBarbers();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   function handleProceedToPayment(e) {
     e.preventDefault();
@@ -79,36 +160,62 @@ export default function Booking() {
       setError("Please enter your full name.");
       return;
     }
+
     if (!phone.trim()) {
       setError("Please enter your mobile number.");
       return;
     }
+
     if (!haircutStyle.trim()) {
       setError("Please enter the haircut style you want.");
       return;
     }
+
     if (!date || !timeSlot) {
       setError("Please select a preferred date and time.");
       return;
     }
 
+    if (barbersLoading) {
+      setError("Please wait while we load the available barbers.");
+      return;
+    }
+
+    if (barberLoadError) {
+      setError("Unable to load barbers. Please refresh the page.");
+      return;
+    }
+
+    if (barberId !== "any" && !selectedBarber) {
+      setError("Please select a valid barber.");
+      return;
+    }
+
     setError("");
     setStep("payment");
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleFileChange(e) {
     const file = e.target.files?.[0];
+
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
       setError("Please upload a valid image screenshot (JPG, PNG, or WEBP).");
+      e.target.value = "";
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
       setError("Screenshot must be smaller than 5MB.");
+      e.target.value = "";
       return;
+    }
+
+    if (receiptPreview) {
+      URL.revokeObjectURL(receiptPreview);
     }
 
     setError("");
@@ -117,7 +224,10 @@ export default function Booking() {
   }
 
   function handleRemoveReceipt() {
-    if (receiptPreview) URL.revokeObjectURL(receiptPreview);
+    if (receiptPreview) {
+      URL.revokeObjectURL(receiptPreview);
+    }
+
     setReceiptFile(null);
     setReceiptPreview(null);
   }
@@ -130,18 +240,33 @@ export default function Booking() {
       return;
     }
 
+    if (gcashRef.trim().length > 100) {
+      setError("The GCash reference number is too long.");
+      return;
+    }
+
     setError("");
-    // Ready to wire into FormData -> POST /api/bookings with MySQL + Multer
+
+    // Temporary frontend preview only.
+    // Actual booking submission will be connected to POST /api/bookings.
     const randomNum = Math.floor(1000 + Math.random() * 9000);
+
     setTicketCode(`FZ-${randomNum}`);
     setStep("submitted");
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleReset() {
     handleRemoveReceipt();
+
     setTicketCode(null);
+    setFullName("");
+    setPhone("");
     setHaircutStyle("");
+    setBarberId("any");
+    setDate(today);
+    setTimeSlot("02:00 PM");
     setGcashRef("");
     setNotes("");
     setError("");
@@ -151,7 +276,7 @@ export default function Booking() {
   return (
     <main className="min-h-screen border-t border-fadezone-accent/30 bg-fadezone-texture py-14 text-fadezone-text sm:py-20 lg:py-24">
       <Container>
-        {/* Top Breadcrumb / Back Navigation */}
+        {/* Breadcrumb */}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-dashed border-fadezone-text/25 pb-5">
           <Link
             to="/"
@@ -168,11 +293,12 @@ export default function Booking() {
           </span>
         </div>
 
-        {/* Editorial Vintage Header */}
+        {/* Header */}
         <div className="flex flex-col justify-between gap-6 border-b border-fadezone-text/15 pb-10 lg:flex-row lg:items-end">
           <div className="max-w-2xl">
             <div className="mb-4 flex items-center gap-3">
               <span className="h-px w-8 bg-fadezone-accent" />
+
               <p className="font-body text-xs font-bold uppercase tracking-[0.3em] text-fadezone-accent">
                 Dispatch Desk • Subic, Zambales
               </p>
@@ -190,7 +316,7 @@ export default function Booking() {
           </p>
         </div>
 
-        {/* Step Indicator Bar */}
+        {/* Step Indicator */}
         <div className="mx-auto mt-8 flex max-w-3xl items-center justify-between border border-fadezone-accent/35 bg-fadezone-surface/80 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-2">
             <span
@@ -202,12 +328,13 @@ export default function Booking() {
             >
               1
             </span>
+
             <span className="font-body text-[11px] font-bold uppercase tracking-[0.18em]">
               Details
             </span>
           </div>
 
-          <span className="h-px flex-1 mx-3 bg-fadezone-text/20" />
+          <span className="mx-3 h-px flex-1 bg-fadezone-text/20" />
 
           <div className="flex items-center gap-2">
             <span
@@ -221,6 +348,7 @@ export default function Booking() {
             >
               2
             </span>
+
             <span
               className={`font-body text-[11px] font-bold uppercase tracking-[0.18em] ${
                 step === "details"
@@ -232,7 +360,7 @@ export default function Booking() {
             </span>
           </div>
 
-          <span className="h-px flex-1 mx-3 bg-fadezone-text/20" />
+          <span className="mx-3 h-px flex-1 bg-fadezone-text/20" />
 
           <div className="flex items-center gap-2">
             <span
@@ -244,6 +372,7 @@ export default function Booking() {
             >
               3
             </span>
+
             <span
               className={`font-body text-[11px] font-bold uppercase tracking-[0.18em] ${
                 step === "submitted"
@@ -256,7 +385,7 @@ export default function Booking() {
           </div>
         </div>
 
-        {/* STEP 3: PENDING APPROVAL TICKET */}
+        {/* STEP 3: SUBMITTED PREVIEW */}
         {step === "submitted" && ticketCode && (
           <div className="mx-auto mt-10 max-w-2xl">
             <div className="relative border border-fadezone-accent bg-fadezone-surface p-6 text-fadezone-text sm:p-10">
@@ -267,8 +396,9 @@ export default function Booking() {
 
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-dashed border-fadezone-text/25 pb-4">
                 <span className="border border-amber-400/50 bg-amber-500/15 px-2.5 py-1 font-body text-[11px] font-bold uppercase tracking-[0.22em] text-amber-300">
-                  ● PENDING RECEIPT APPROVAL
+                  ● DEMO SUBMISSION
                 </span>
+
                 <span className="border border-fadezone-accent/60 bg-fadezone-background px-3 py-1 font-body text-xs font-bold uppercase tracking-[0.22em] text-fadezone-accent">
                   TICKET #{ticketCode}
                 </span>
@@ -278,11 +408,10 @@ export default function Booking() {
                 Receipt Received,{" "}
                 <span className="text-fadezone-accent">{fullName}.</span>
               </h2>
+
               <p className="mt-2 font-body text-sm leading-7 text-fadezone-text/75">
-                Your slot is temporarily held while our shop verifies your ₱
-                {DOWNPAYMENT_AMOUNT} GCash screenshot. Save your ticket code{" "}
-                <strong className="text-fadezone-text">#{ticketCode}</strong>{" "}
-                and show it at the counter upon arrival.
+                This is currently a frontend preview. Your booking has not yet
+                been saved to the database or submitted to the shop.
               </p>
 
               <div className="my-6 border-t border-dashed border-fadezone-text/25" />
@@ -292,6 +421,7 @@ export default function Booking() {
                   <dt className="font-body text-[10px] font-bold uppercase tracking-[0.22em] text-fadezone-text/60">
                     Requested Style
                   </dt>
+
                   <dd className="mt-1 font-heading text-xl uppercase tracking-wide">
                     {haircutStyle}
                   </dd>
@@ -299,10 +429,11 @@ export default function Booking() {
 
                 <div className="border border-fadezone-text/15 bg-fadezone-background/60 p-3.5">
                   <dt className="font-body text-[10px] font-bold uppercase tracking-[0.22em] text-fadezone-text/60">
-                    Barber
+                    Barber Preference
                   </dt>
+
                   <dd className="mt-1 font-heading text-xl uppercase tracking-wide">
-                    {barber}
+                    {selectedBarberName}
                   </dd>
                 </div>
 
@@ -310,6 +441,7 @@ export default function Booking() {
                   <dt className="font-body text-[10px] font-bold uppercase tracking-[0.22em] text-fadezone-text/60">
                     Date & Time
                   </dt>
+
                   <dd className="mt-1 font-body text-xs font-bold uppercase tracking-[0.18em] text-fadezone-accent">
                     {formatReadableDate(date)} • {timeSlot}
                   </dd>
@@ -319,6 +451,7 @@ export default function Booking() {
                   <dt className="font-body text-[10px] font-bold uppercase tracking-[0.22em] text-fadezone-text/60">
                     Payment Breakdown
                   </dt>
+
                   <dd className="mt-1 font-body text-xs font-bold uppercase tracking-[0.18em]">
                     ₱{DOWNPAYMENT_AMOUNT} Sent • ₱{BALANCE_AMOUNT} Due at Shop
                   </dd>
@@ -332,10 +465,12 @@ export default function Booking() {
                     alt="Uploaded GCash receipt"
                     className="h-16 w-14 shrink-0 border border-fadezone-accent/40 object-cover"
                   />
+
                   <div>
                     <p className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-fadezone-accent">
                       Screenshot Attached
                     </p>
+
                     <p className="mt-0.5 font-body text-xs text-fadezone-text/75">
                       {receiptFile?.name}
                       {gcashRef.trim() ? ` • Ref: ${gcashRef.trim()}` : ""}
@@ -350,6 +485,7 @@ export default function Booking() {
                   className="group flex flex-1 items-center justify-center gap-3 border border-fadezone-accent bg-fadezone-accent px-6 py-3.5 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent"
                 >
                   <span>Return Home</span>
+
                   <span className="transition-transform duration-300 group-hover:translate-x-1">
                     →
                   </span>
@@ -367,7 +503,7 @@ export default function Booking() {
           </div>
         )}
 
-        {/* STEP 1: APPOINTMENT DETAILS FORM */}
+        {/* STEP 1: APPOINTMENT DETAILS */}
         {step === "details" && (
           <div className="mx-auto mt-10 max-w-3xl">
             <form
@@ -384,12 +520,14 @@ export default function Booking() {
                 <span className="font-body text-xs font-bold uppercase tracking-[0.25em] text-fadezone-accent">
                   Step 01 • Appointment Details
                 </span>
+
                 <span className="font-body text-[11px] uppercase tracking-[0.2em] text-fadezone-text/60">
-                  Open Daily • 10 AM – 10 PM
+                  Open Daily • 7:00 AM – 9:00 PM
                 </span>
               </div>
 
               <div className="mt-7 space-y-6">
+                {/* Name and Phone */}
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <div>
                     <label
@@ -398,9 +536,12 @@ export default function Booking() {
                     >
                       Full Name *
                     </label>
+
                     <input
                       id="client-name"
                       type="text"
+                      maxLength={100}
+                      autoComplete="name"
                       placeholder="LastName, FirstName"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
@@ -415,9 +556,12 @@ export default function Booking() {
                     >
                       Mobile Number *
                     </label>
+
                     <input
                       id="client-phone"
                       type="tel"
+                      maxLength={20}
+                      autoComplete="tel"
                       placeholder="0912 345 6789"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
@@ -426,6 +570,7 @@ export default function Booking() {
                   </div>
                 </div>
 
+                {/* Haircut and Barber */}
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <div>
                     <label
@@ -434,9 +579,11 @@ export default function Booking() {
                     >
                       Haircut / Style *
                     </label>
+
                     <input
                       id="haircut-style"
                       type="text"
+                      maxLength={100}
                       placeholder="e.g. Mid Fade, Buzz Cut, Taper..."
                       value={haircutStyle}
                       onChange={(e) => setHaircutStyle(e.target.value)}
@@ -451,21 +598,38 @@ export default function Booking() {
                     >
                       Preferred Barber
                     </label>
+
                     <select
                       id="barber-select"
-                      value={barber}
-                      onChange={(e) => setBarber(e.target.value)}
-                      className="mt-2 w-full border border-fadezone-text/25 bg-fadezone-background px-4 py-3 font-body text-sm text-fadezone-text focus:border-fadezone-accent focus:outline-none"
+                      value={barberId}
+                      onChange={(e) => setBarberId(e.target.value)}
+                      disabled={barbersLoading || Boolean(barberLoadError)}
+                      className="mt-2 w-full border border-fadezone-text/25 bg-fadezone-background px-4 py-3 font-body text-sm text-fadezone-text focus:border-fadezone-accent focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      {BARBERS.map((name) => (
-                        <option key={name} value={name}>
-                          {name}
+                      <option value="any">Any Available Barber</option>
+
+                      {barbers.map((barber) => (
+                        <option key={barber.id} value={String(barber.id)}>
+                          {formatBarberName(barber)}
                         </option>
                       ))}
                     </select>
+
+                    {barbersLoading && (
+                      <p className="mt-2 font-body text-[10px] uppercase tracking-[0.15em] text-fadezone-text/55">
+                        Loading barbers...
+                      </p>
+                    )}
+
+                    {barberLoadError && (
+                      <p className="mt-2 font-body text-xs text-red-400">
+                        {barberLoadError}
+                      </p>
+                    )}
                   </div>
                 </div>
 
+                {/* Date and Time */}
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <div>
                     <label
@@ -474,6 +638,7 @@ export default function Booking() {
                     >
                       Preferred Date *
                     </label>
+
                     <input
                       id="booking-date"
                       type="date"
@@ -491,6 +656,7 @@ export default function Booking() {
                     >
                       Preferred Time *
                     </label>
+
                     <select
                       id="booking-time"
                       value={timeSlot}
@@ -506,6 +672,7 @@ export default function Booking() {
                   </div>
                 </div>
 
+                {/* Notes */}
                 <div>
                   <label
                     htmlFor="client-notes"
@@ -513,9 +680,11 @@ export default function Booking() {
                   >
                     Notes / Instructions (Optional)
                   </label>
+
                   <textarea
                     id="client-notes"
                     rows={3}
+                    maxLength={2000}
                     placeholder="Guard size, lineup preference, or any extra details..."
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
@@ -538,6 +707,7 @@ export default function Booking() {
                   <span className="font-body text-[10px] font-bold uppercase tracking-[0.22em] text-fadezone-text/60">
                     40% GCash Downpayment • ₱{TOTAL_PRICE} Total
                   </span>
+
                   <p className="font-heading text-3xl tracking-wide text-fadezone-accent">
                     ₱{DOWNPAYMENT_AMOUNT}{" "}
                     <span className="font-body text-xs uppercase tracking-[0.16em] text-fadezone-text/65">
@@ -548,9 +718,11 @@ export default function Booking() {
 
                 <button
                   type="submit"
-                  className="group flex w-full items-center justify-center gap-3 border border-fadezone-accent bg-fadezone-accent px-8 py-4 font-body text-xs font-bold uppercase tracking-[0.22em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent sm:w-auto"
+                  disabled={barbersLoading || Boolean(barberLoadError)}
+                  className="group flex w-full items-center justify-center gap-3 border border-fadezone-accent bg-fadezone-accent px-8 py-4 font-body text-xs font-bold uppercase tracking-[0.22em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
                 >
                   <span>Proceed to GCash QR</span>
+
                   <span className="transition-transform duration-300 group-hover:translate-x-1">
                     →
                   </span>
@@ -560,7 +732,7 @@ export default function Booking() {
           </div>
         )}
 
-        {/* STEP 2: GCASH QR & SCREENSHOT UPLOAD */}
+        {/* STEP 2: GCASH PAYMENT */}
         {step === "payment" && (
           <div className="mx-auto mt-10 max-w-3xl">
             <form
@@ -573,7 +745,7 @@ export default function Booking() {
               <span className="pointer-events-none absolute bottom-3 left-3 h-3 w-3 border-b border-l border-fadezone-accent" />
               <span className="pointer-events-none absolute bottom-3 right-3 h-3 w-3 border-b border-r border-fadezone-accent" />
 
-              {/* Top Stub Bar */}
+              {/* Payment Header */}
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-dashed border-fadezone-text/25 pb-4">
                 <button
                   type="button"
@@ -585,49 +757,53 @@ export default function Booking() {
                 >
                   ← Edit Details
                 </button>
+
                 <span className="font-body text-[11px] font-bold uppercase tracking-[0.22em] text-fadezone-accent">
                   Step 02 • Verify Downpayment
                 </span>
               </div>
 
-              {/* Compact Summary Strip */}
+              {/* Booking Summary */}
               <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border border-fadezone-text/15 bg-fadezone-background/70 px-4 py-3">
                 <div>
                   <p className="font-heading text-lg uppercase tracking-wide">
-                    {haircutStyle} • {barber}
+                    {haircutStyle} • {selectedBarberName}
                   </p>
+
                   <p className="font-body text-[11px] uppercase tracking-[0.18em] text-fadezone-text/65">
                     {formatReadableDate(date)} at {timeSlot} ({fullName})
                   </p>
                 </div>
+
                 <div className="text-right">
                   <span className="block font-body text-[10px] font-bold uppercase tracking-[0.2em] text-fadezone-text/60">
                     Pay Via GCash
                   </span>
+
                   <span className="font-heading text-2xl text-fadezone-accent">
                     ₱{DOWNPAYMENT_AMOUNT}.00
                   </span>
                 </div>
               </div>
 
-              {/* Split: GCash QR Code + Screenshot Upload */}
+              {/* QR and Receipt */}
               <div className="mt-7 grid grid-cols-1 gap-8 md:grid-cols-2">
-                {/* Left: GCash QR Frame */}
+                {/* GCash QR */}
                 <div className="flex flex-col items-center border border-fadezone-accent/40 bg-fadezone-background/80 p-5 text-center">
                   <span className="font-body text-[11px] font-bold uppercase tracking-[0.25em] text-sky-400">
                     GCash Express Send
                   </span>
 
-                  {/* Replace this placeholder frame with your actual GCash QR <img> */}
                   <div className="mt-4 flex aspect-square w-52 items-center justify-center border-2 border-dashed border-sky-400/60 bg-white p-3 text-neutral-900">
-                    {/* <img src={gcashQr} alt="FadeZone GCash QR Code" className="h-full w-full object-contain" /> */}
                     <div className="space-y-1.5">
                       <p className="font-heading text-xl uppercase tracking-wider text-sky-600">
                         GCASH QR
                       </p>
+
                       <p className="font-body text-[11px] font-bold uppercase tracking-wider text-neutral-700">
                         FadeZone Barbershop
                       </p>
+
                       <p className="font-body text-[10px] text-neutral-500">
                         Scan to pay ₱{DOWNPAYMENT_AMOUNT}
                       </p>
@@ -638,9 +814,11 @@ export default function Booking() {
                     <p className="font-body text-xs font-bold uppercase tracking-[0.18em] text-fadezone-text">
                       FadeZone Subic
                     </p>
+
                     <p className="mt-0.5 font-body text-xs tracking-[0.18em] text-fadezone-accent">
                       0917 000 0000
                     </p>
+
                     <p className="mt-2 font-body text-[11px] leading-5 text-fadezone-text/65">
                       Total Cut: ₱{TOTAL_PRICE} • Downpayment (40%): ₱
                       {DOWNPAYMENT_AMOUNT} • Balance at Shop: ₱{BALANCE_AMOUNT}
@@ -648,12 +826,13 @@ export default function Booking() {
                   </div>
                 </div>
 
-                {/* Right: Upload Receipt Screenshot */}
+                {/* Receipt Upload */}
                 <div className="flex flex-col justify-between space-y-5">
                   <div>
                     <label className="block font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text/85">
                       Upload GCash Screenshot *
                     </label>
+
                     <p className="mt-1 font-body text-xs leading-5 text-fadezone-text/60">
                       Attach a clear screenshot showing the ₱
                       {DOWNPAYMENT_AMOUNT} payment, date, and GCash reference
@@ -668,16 +847,19 @@ export default function Booking() {
                         <span className="font-heading text-2xl text-fadezone-accent">
                           + UPLOAD RECEIPT
                         </span>
+
                         <span className="mt-1.5 font-body text-[11px] uppercase tracking-[0.18em] text-fadezone-text/70">
                           Tap to choose screenshot
                         </span>
+
                         <span className="mt-1 font-body text-[10px] uppercase tracking-[0.15em] text-fadezone-text/45">
                           JPG, PNG, or WEBP (Max 5MB)
                         </span>
+
                         <input
                           id="gcash-receipt-upload"
                           type="file"
-                          accept="image/*"
+                          accept="image/jpeg,image/png,image/webp"
                           onChange={handleFileChange}
                           className="sr-only"
                         />
@@ -691,10 +873,12 @@ export default function Booking() {
                             className="h-full w-full object-contain"
                           />
                         </div>
+
                         <div className="mt-2.5 flex items-center justify-between gap-2">
                           <span className="truncate font-body text-[11px] text-fadezone-text/75">
                             {receiptFile?.name}
                           </span>
+
                           <button
                             type="button"
                             onClick={handleRemoveReceipt}
@@ -707,6 +891,7 @@ export default function Booking() {
                     )}
                   </div>
 
+                  {/* GCash Reference */}
                   <div>
                     <label
                       htmlFor="gcash-ref"
@@ -714,9 +899,11 @@ export default function Booking() {
                     >
                       GCash Reference No. (Optional)
                     </label>
+
                     <input
                       id="gcash-ref"
                       type="text"
+                      maxLength={100}
                       placeholder="e.g. 0012 345 678901"
                       value={gcashRef}
                       onChange={(e) => setGcashRef(e.target.value)}
@@ -735,7 +922,7 @@ export default function Booking() {
                 </p>
               )}
 
-              {/* Submit for Approval Bar */}
+              {/* Submit */}
               <div className="mt-8 flex flex-col items-start justify-between gap-5 border-t border-dashed border-fadezone-text/25 pt-6 sm:flex-row sm:items-center">
                 <p className="max-w-sm font-body text-xs leading-5 text-fadezone-text/65">
                   Bookings are reviewed manually by our shop. Once approved,
@@ -747,6 +934,7 @@ export default function Booking() {
                   className="group flex w-full items-center justify-center gap-3 border border-fadezone-accent bg-fadezone-accent px-8 py-4 font-body text-xs font-bold uppercase tracking-[0.22em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent sm:w-auto"
                 >
                   <span>Submit Receipt for Approval</span>
+
                   <span className="transition-transform duration-300 group-hover:translate-x-1">
                     →
                   </span>
