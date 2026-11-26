@@ -28,9 +28,9 @@ export default function Contact() {
             </div>
 
             <h2 className="font-heading text-4xl uppercase leading-[0.95] sm:text-5xl md:text-6xl lg:text-7xl">
-  <span className="block">Your Next Cut</span>
-  <span className="block text-fadezone-accent">Starts Here.</span>
-</h2>
+              <span className="block">Your Next Cut</span>
+              <span className="block text-fadezone-accent">Starts Here.</span>
+            </h2>
           </div>
 
           <div className="max-w-md lg:text-right">

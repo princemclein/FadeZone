@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Header from "./components/Header";
+import { HashRouter, Routes, Route, useLocation } from "react-router-dom";import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Stats from "./components/Stats";
 import About from "./components/About";
@@ -68,8 +67,8 @@ function AppContent() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AppContent />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
