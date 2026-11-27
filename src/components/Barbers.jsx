@@ -65,7 +65,7 @@ function BarberCard({ chair, name, role, image }) {
         </div>
 
         <Link
-          href="/booking"
+          to="/booking"
           className="group/btn flex items-center justify-between border border-fadezone-accent/60 bg-fadezone-background/60 px-3 py-2.5 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-accent hover:text-fadezone-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fadezone-text sm:px-4 sm:text-xs"
         >
           <span>Book Barber</span>
