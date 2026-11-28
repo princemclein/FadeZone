@@ -241,6 +241,105 @@ router.patch("/:bookingCode/approve", async (req, res) => {
   }
 });
 
+// PATCH start booking
+router.patch("/:bookingCode/start", async (req, res) => {
+  try {
+    const { bookingCode } = req.params;
+
+    const [result] = await db.execute(
+      `UPDATE bookings
+       SET status = 'in_progress'
+       WHERE booking_code = ?
+         AND status = 'approved'`,
+      [bookingCode],
+    );
+
+    if (result.affectedRows === 0) {
+      const [bookings] = await db.execute(
+        `SELECT status
+         FROM bookings
+         WHERE booking_code = ?`,
+        [bookingCode],
+      );
+
+      if (bookings.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Booking not found.",
+        });
+      }
+
+      return res.status(409).json({
+        success: false,
+        message: "Only approved bookings can be started.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Booking started successfully.",
+    });
+  } catch (error) {
+    console.error("Booking start error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to start booking.",
+    });
+  }
+});
+
+// PATCH complete booking
+router.patch("/:bookingCode/complete", async (req, res) => {
+  try {
+    const { bookingCode } = req.params;
+
+    const [result] = await db.execute(
+      `UPDATE bookings
+       SET
+         status = 'completed',
+         completed_at = CURRENT_TIMESTAMP
+       WHERE booking_code = ?
+         AND status = 'in_progress'`,
+      [bookingCode],
+    );
+
+    if (result.affectedRows === 0) {
+      const [bookings] = await db.execute(
+        `SELECT status
+         FROM bookings
+         WHERE booking_code = ?`,
+        [bookingCode],
+      );
+
+      if (bookings.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Booking not found.",
+        });
+      }
+
+      return res.status(409).json({
+        success: false,
+        message: "Only in-progress bookings can be completed.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Booking completed successfully.",
+    });
+  } catch (error) {
+    console.error("Booking completion error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to complete booking.",
+    });
+  }
+});
+
+
 // POST create booking
 router.post("/", uploadReceipt, async (req, res) => {
   let connection;
