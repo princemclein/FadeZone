@@ -14,6 +14,7 @@ export default function AdminLogin({ onLoginSuccess }) {
     setError("");
 
     const trimmedUser = username.trim();
+
     if (!trimmedUser || !password) {
       setError("Enter both shop ID and dispatch passcode.");
       return;
@@ -21,22 +22,39 @@ export default function AdminLogin({ onLoginSuccess }) {
 
     setIsSubmitting(true);
 
-    // STEP 1 (Frontend UI Preview): Temporary check so you can test the flow.
-    // STEP 2 (Express + MySQL): Replace this block with:
-    //   const res = await fetch("/api/admin/login", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     credentials: "include",
-    //     body: JSON.stringify({ username: trimmedUser, password }),
-    //   });
-    setTimeout(() => {
-      if (trimmedUser.toLowerCase() === "admin" && password === "fadezone150") {
-        onLoginSuccess({ username: trimmedUser });
-      } else {
-        setError("Invalid credentials. Access to Shop Dispatch denied.");
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/admin/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            username: trimmedUser,
+            password,
+          }),
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(
+          result.message ||
+            "Invalid credentials. Access to Shop Dispatch denied.",
+        );
+        return;
       }
+
+      onLoginSuccess(result.user);
+    } catch (error) {
+      console.error("Admin login error:", error);
+      setError("Unable to connect to the server. Please try again.");
+    } finally {
       setIsSubmitting(false);
-    }, 300);
+    }
   };
 
   return (

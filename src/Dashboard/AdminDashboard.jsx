@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Container from "../components/Container";
@@ -5,12 +6,22 @@ import AdminLogin from "./AdminLogin";
 import BookingCard from "./BookingCard";
 import ReceiptModal from "./ReceiptModal";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const FILTER_TABS = [
   { key: "pending", label: "Pending Verification" },
   { key: "approved", label: "Approved" },
   { key: "rejected", label: "Rejected" },
   { key: "all", label: "All Records" },
 ];
+
+// Include the HttpOnly authentication cookie in admin requests.
+async function adminFetch(endpoint, options = {}) {
+  return fetch(`${API_URL}${endpoint}`, {
+    ...options,
+    credentials: "include",
+  });
+}
 
 function formatBarberOption(barber) {
   return `${barber.fullName} (${barber.chairLabel})`;
@@ -78,6 +89,8 @@ function formatBooking(booking) {
 
 export default function AdminDashboard() {
   const [adminUser, setAdminUser] = useState(null);
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
+
   const [bookings, setBookings] = useState([]);
   const [barbers, setBarbers] = useState([]);
 
@@ -97,12 +110,37 @@ export default function AdminDashboard() {
   const [barberFilter, setBarberFilter] = useState("All Chairs");
   const [selectedReceiptBooking, setSelectedReceiptBooking] = useState(null);
 
+  // Restore an existing admin session when the dashboard loads.
   useEffect(() => {
+    const checkAdminSession = async () => {
+      try {
+        const response = await adminFetch("/admin/me");
+        const result = await response.json();
+
+        if (!response.ok) {
+          setAdminUser(null);
+          return;
+        }
+
+        setAdminUser(result.user);
+      } catch (error) {
+        console.error("Error checking admin session:", error);
+        setAdminUser(null);
+      } finally {
+        setIsCheckingSession(false);
+      }
+    };
+
+    checkAdminSession();
+  }, []);
+
+  // Load protected dashboard data only after authentication succeeds.
+  useEffect(() => {
+    if (isCheckingSession || !adminUser) return;
+
     const fetchBarbers = async () => {
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/barbers/all`,
-        );
+        const response = await adminFetch("/barbers/all");
         const result = await response.json();
 
         if (!response.ok) {
@@ -121,7 +159,7 @@ export default function AdminDashboard() {
         setBarbers(formattedBarbers);
       } catch (error) {
         console.error("Error fetching barbers:", error);
-        setBarberFeedback("Unable to load barbers.");
+        setBarberFeedback(error.message || "Unable to load barbers.");
       }
     };
 
@@ -130,10 +168,7 @@ export default function AdminDashboard() {
         setIsLoadingBookings(true);
         setBookingError("");
 
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/bookings/all`,
-        );
-
+        const response = await adminFetch("/bookings/all");
         const result = await response.json();
 
         if (!response.ok) {
@@ -153,12 +188,13 @@ export default function AdminDashboard() {
 
     fetchBarbers();
     fetchBookings();
-  }, []);
+  }, [adminUser, isCheckingSession]);
 
   const barberOptions = useMemo(() => {
     const activeLabels = barbers
       .filter((b) => b.isActive)
       .map(formatBarberOption);
+
     return ["All Chairs", ...activeLabels, "Any Available Barber"];
   }, [barbers]);
 
@@ -166,10 +202,12 @@ export default function AdminDashboard() {
     const pending = bookings.filter((b) => b.status === "pending").length;
     const approvedList = bookings.filter((b) => b.status === "approved");
     const rejected = bookings.filter((b) => b.status === "rejected").length;
+
     const verifiedDeposits = approvedList.reduce(
       (sum, b) => sum + b.downpayment,
       0,
     );
+
     const expectedShopBalance = approvedList.reduce(
       (sum, b) => sum + b.balanceDue,
       0,
@@ -210,6 +248,7 @@ export default function AdminDashboard() {
     e.preventDefault();
 
     const trimmedName = newBarberName.trim();
+
     const usedChairNumbers = barbers
       .map((barber) => Number(barber.chairCode?.replace("CHAIR-", "")))
       .filter(Number.isInteger);
@@ -221,6 +260,7 @@ export default function AdminDashboard() {
     }
 
     const formattedChairNumber = String(nextChairNumber).padStart(2, "0");
+
     const trimmedChair =
       newChairLabel.trim() || `Chair ${formattedChairNumber}`;
 
@@ -239,7 +279,7 @@ export default function AdminDashboard() {
     const chairCode = `CHAIR-${chairMatch[1].padStart(2, "0")}`;
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/barbers`, {
+      const response = await adminFetch("/barbers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -284,12 +324,9 @@ export default function AdminDashboard() {
     const formatted = formatBarberOption(target);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/barbers/${barberId}`,
-        {
-          method: "DELETE",
-        },
-      );
+      const response = await adminFetch(`/barbers/${barberId}`, {
+        method: "DELETE",
+      });
 
       const result = await response.json();
 
@@ -302,7 +339,9 @@ export default function AdminDashboard() {
       }
 
       setBarbers((prev) =>
-        prev.map((b) => (b.id === barberId ? { ...b, isActive: false } : b)),
+        prev.map((b) =>
+          b.id === barberId ? { ...b, isActive: false } : b,
+        ),
       );
 
       setBarberFeedback(`Removed ${formatted} from active chairs.`);
@@ -319,12 +358,9 @@ export default function AdminDashboard() {
     const formatted = formatBarberOption(target);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/barbers/${barberId}/activate`,
-        {
-          method: "PATCH",
-        },
-      );
+      const response = await adminFetch(`/barbers/${barberId}/activate`, {
+        method: "PATCH",
+      });
 
       const result = await response.json();
 
@@ -333,7 +369,9 @@ export default function AdminDashboard() {
       }
 
       setBarbers((prev) =>
-        prev.map((b) => (b.id === barberId ? { ...b, isActive: true } : b)),
+        prev.map((b) =>
+          b.id === barberId ? { ...b, isActive: true } : b,
+        ),
       );
 
       setBarberFeedback(`Restored ${formatted}.`);
@@ -362,21 +400,18 @@ export default function AdminDashboard() {
     const chairCode = `CHAIR-${chairMatch[1].padStart(2, "0")}`;
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/barbers/${barberId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            full_name: trimmedName,
-            chair_code: chairCode,
-            chair_label: trimmedChair,
-            display_name: `${trimmedName} - ${trimmedChair}`,
-          }),
+      const response = await adminFetch(`/barbers/${barberId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          full_name: trimmedName,
+          chair_code: chairCode,
+          chair_label: trimmedChair,
+          display_name: `${trimmedName} - ${trimmedChair}`,
+        }),
+      });
 
       const result = await response.json();
 
@@ -408,11 +443,9 @@ export default function AdminDashboard() {
 
   const handleApprove = async (bookingId) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/bookings/${bookingId}/approve`,
-        {
-          method: "PATCH",
-        },
+      const response = await adminFetch(
+        `/bookings/${bookingId}/approve`,
+        { method: "PATCH" },
       );
 
       const result = await response.json();
@@ -436,11 +469,9 @@ export default function AdminDashboard() {
 
   const handleReject = async (bookingId) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/bookings/${bookingId}/reject`,
-        {
-          method: "PATCH",
-        },
+      const response = await adminFetch(
+        `/bookings/${bookingId}/reject`,
+        { method: "PATCH" },
       );
 
       const result = await response.json();
@@ -464,11 +495,9 @@ export default function AdminDashboard() {
 
   const handleComplete = async (bookingId) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/bookings/${bookingId}/complete`,
-        {
-          method: "PATCH",
-        },
+      const response = await adminFetch(
+        `/bookings/${bookingId}/complete`,
+        { method: "PATCH" },
       );
 
       const result = await response.json();
@@ -492,11 +521,9 @@ export default function AdminDashboard() {
 
   const handleStart = async (bookingId) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/bookings/${bookingId}/start`,
-        {
-          method: "PATCH",
-        },
+      const response = await adminFetch(
+        `/bookings/${bookingId}/start`,
+        { method: "PATCH" },
       );
 
       const result = await response.json();
@@ -517,6 +544,40 @@ export default function AdminDashboard() {
       window.alert(error.message || "Unable to start booking.");
     }
   };
+
+  // End the server-side session before returning to the login screen.
+  const handleLogout = async () => {
+    try {
+      const response = await adminFetch("/admin/logout", {
+        method: "POST",
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Unable to log out.");
+      }
+
+      setAdminUser(null);
+      setBookings([]);
+      setBarbers([]);
+      setSelectedReceiptBooking(null);
+    } catch (error) {
+      console.error("Admin logout error:", error);
+      window.alert(error.message || "Unable to log out.");
+    }
+  };
+
+  // Avoid briefly showing the login screen while checking the cookie.
+  if (isCheckingSession) {
+    return (
+      <section className="flex min-h-screen items-center justify-center bg-fadezone-background text-fadezone-text">
+        <p className="font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-accent">
+          Verifying Admin Session...
+        </p>
+      </section>
+    );
+  }
 
   if (!adminUser) {
     return <AdminLogin onLoginSuccess={(user) => setAdminUser(user)} />;
@@ -543,9 +604,10 @@ export default function AdminDashboard() {
             >
               View Public Site
             </Link>
+
             <button
               type="button"
-              onClick={() => setAdminUser(null)}
+              onClick={handleLogout}
               className="border border-fadezone-accent bg-fadezone-accent px-5 py-2.5 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent"
             >
               Lock Dispatch
@@ -615,6 +677,7 @@ export default function AdminDashboard() {
                 Manage Barbers
               </h2>
             </div>
+
             {barberFeedback && (
               <p className="font-body text-xs uppercase tracking-[0.14em] text-fadezone-accent">
                 {barberFeedback}
@@ -633,6 +696,7 @@ export default function AdminDashboard() {
               placeholder="New barber full name (e.g., Carlo Reyes)"
               className="border border-fadezone-text/25 bg-fadezone-background px-4 py-2.5 font-body text-xs tracking-[0.12em] text-fadezone-text placeholder:text-fadezone-text/40 focus:border-fadezone-accent focus:outline-none"
             />
+
             <input
               type="text"
               value={newChairLabel}
@@ -640,6 +704,7 @@ export default function AdminDashboard() {
               placeholder="Chair (e.g., Chair 04)"
               className="border border-fadezone-text/25 bg-fadezone-background px-4 py-2.5 font-body text-xs tracking-[0.12em] text-fadezone-text placeholder:text-fadezone-text/40 focus:border-fadezone-accent focus:outline-none"
             />
+
             <button
               type="submit"
               className="border border-fadezone-accent bg-fadezone-accent px-5 py-2.5 font-body text-xs font-bold uppercase tracking-[0.2em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent"
@@ -733,7 +798,6 @@ export default function AdminDashboard() {
 
         {/* Filter Tabs + Search & Chair Filter */}
         <div className="mt-8 border border-dashed border-fadezone-text/25 bg-fadezone-surface p-4 sm:p-5">
-          {/* Status Tabs */}
           <div className="flex flex-wrap gap-2 border-b border-dashed border-fadezone-text/20 pb-4">
             {FILTER_TABS.map((tab) => {
               const count = stats[tab.key];
@@ -765,12 +829,12 @@ export default function AdminDashboard() {
             })}
           </div>
 
-          {/* Search & Barber Filter Row */}
           <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_260px]">
             <div>
               <label htmlFor="dispatch-search" className="sr-only">
                 Search bookings
               </label>
+
               <input
                 id="dispatch-search"
                 type="text"
@@ -785,6 +849,7 @@ export default function AdminDashboard() {
               <label htmlFor="chair-filter" className="sr-only">
                 Filter by chair or barber
               </label>
+
               <select
                 id="chair-filter"
                 value={barberFilter}
@@ -803,7 +868,22 @@ export default function AdminDashboard() {
 
         {/* Booking Ticket Queue */}
         <div className="mt-6 space-y-5">
-          {filteredBookings.length > 0 ? (
+          {isLoadingBookings ? (
+            <div className="border border-dashed border-fadezone-text/25 bg-fadezone-surface px-6 py-14 text-center">
+              <p className="font-body text-xs font-bold uppercase tracking-[0.25em] text-fadezone-accent">
+                Loading Booking Records...
+              </p>
+            </div>
+          ) : bookingError ? (
+            <div className="border border-dashed border-red-400/40 bg-fadezone-surface px-6 py-14 text-center">
+              <p className="font-body text-xs font-bold uppercase tracking-[0.25em] text-red-400">
+                Unable to Load Booking Records
+              </p>
+              <p className="mt-2 font-body text-xs text-fadezone-text/60">
+                {bookingError}
+              </p>
+            </div>
+          ) : filteredBookings.length > 0 ? (
             filteredBookings.map((booking) => (
               <BookingCard
                 key={booking.id}
