@@ -462,6 +462,62 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleComplete = async (bookingId) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/bookings/${bookingId}/complete`,
+        {
+          method: "PATCH",
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to complete booking.");
+      }
+
+      setBookings((prev) =>
+        prev.map((booking) =>
+          booking.id === bookingId
+            ? { ...booking, status: "completed" }
+            : booking,
+        ),
+      );
+    } catch (error) {
+      console.error("Error completing booking:", error);
+      window.alert(error.message || "Unable to complete booking.");
+    }
+  };
+
+  const handleStart = async (bookingId) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/bookings/${bookingId}/start`,
+        {
+          method: "PATCH",
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to start booking.");
+      }
+
+      setBookings((prev) =>
+        prev.map((booking) =>
+          booking.id === bookingId
+            ? { ...booking, status: "in_progress" }
+            : booking,
+        ),
+      );
+    } catch (error) {
+      console.error("Error starting booking:", error);
+      window.alert(error.message || "Unable to start booking.");
+    }
+  };
+
   if (!adminUser) {
     return <AdminLogin onLoginSuccess={(user) => setAdminUser(user)} />;
   }
@@ -754,6 +810,8 @@ export default function AdminDashboard() {
                 booking={booking}
                 onApprove={handleApprove}
                 onReject={handleReject}
+                onStart={handleStart}
+                onComplete={handleComplete}
                 onInspectReceipt={(item) => setSelectedReceiptBooking(item)}
               />
             ))

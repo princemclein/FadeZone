@@ -12,12 +12,23 @@ const STATUS_CONFIG = {
     label: "Rejected • Slot Freed",
     badgeClass: "border-red-500/60 bg-red-950/40 text-red-300",
   },
+  in_progress: {
+    label: "In Progress • Chair Occupied",
+    badgeClass: "border-blue-500/60 bg-blue-950/40 text-blue-300",
+  },
+  completed: {
+    label: "Completed • Chair Released",
+    badgeClass:
+      "border-fadezone-accent/60 bg-fadezone-accent/15 text-fadezone-accent",
+  },
 };
 
 export default function BookingCard({
   booking,
   onApprove,
   onReject,
+  onStart,
+  onComplete,
   onInspectReceipt,
 }) {
   const statusMeta = STATUS_CONFIG[booking.status] || STATUS_CONFIG.pending;
@@ -145,6 +156,7 @@ export default function BookingCard({
               >
                 Approve
               </button>
+
               <button
                 type="button"
                 onClick={() => onReject(booking.id)}
@@ -153,19 +165,29 @@ export default function BookingCard({
                 Reject
               </button>
             </div>
+          ) : booking.status === "approved" ? (
+            <button
+              type="button"
+              onClick={() => onStart(booking.id)}
+              className="w-full border border-blue-500/60 bg-blue-950/40 px-3 py-2.5 font-body text-xs font-bold uppercase tracking-[0.18em] text-blue-300 transition-colors hover:bg-blue-900/50"
+            >
+              Start Haircut
+            </button>
+          ) : booking.status === "in_progress" ? (
+            <button
+              type="button"
+              onClick={() => onComplete(booking.id)}
+              className="w-full border border-fadezone-accent bg-fadezone-accent px-3 py-2.5 font-body text-xs font-bold uppercase tracking-[0.18em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent"
+            >
+              Complete Haircut
+            </button>
           ) : (
-            <div className="flex items-center justify-between border border-dashed border-fadezone-text/20 bg-fadezone-background/60 px-3 py-2">
-              ...
-              <button
-                type="button"
-                onClick={() =>
-                  booking.status === "approved"
-                    ? onReject(booking.id)
-                    : onApprove(booking.id)
-                }
-              >
-                {booking.status === "approved" ? "Revoke" : "Re-Approve"}
-              </button>
+            <div className="border border-dashed border-fadezone-text/20 bg-fadezone-background/60 px-3 py-2 text-center">
+              <span className="font-body text-[10px] font-bold uppercase tracking-[0.18em] text-fadezone-text/60">
+                {booking.status === "completed"
+                  ? "Service Completed"
+                  : "Booking Rejected"}
+              </span>
             </div>
           )}
         </div>
