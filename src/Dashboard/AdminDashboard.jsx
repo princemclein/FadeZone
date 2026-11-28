@@ -4,7 +4,6 @@ import Container from "../components/Container";
 import AdminLogin from "./AdminLogin";
 import BookingCard from "./BookingCard";
 import ReceiptModal from "./ReceiptModal";
-import { INITIAL_BOOKINGS } from "./mockBookings";
 
 const FILTER_TABS = [
   { key: "pending", label: "Pending Verification" },
@@ -17,10 +16,73 @@ function formatBarberOption(barber) {
   return `${barber.fullName} (${barber.chairLabel})`;
 }
 
+function formatBookingDate(value) {
+  if (!value) return "";
+
+  const date = new Date(value);
+
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Manila",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+}
+
+function formatBookingTime(value) {
+  if (!value) return "";
+
+  const [hours, minutes] = value.split(":").map(Number);
+
+  const date = new Date();
+  date.setHours(hours, minutes, 0, 0);
+
+  return date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function formatSubmittedAt(value) {
+  if (!value) return "";
+
+  return new Date(value).toLocaleString("en-US", {
+    timeZone: "Asia/Manila",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function formatBooking(booking) {
+  return {
+    id: booking.booking_code,
+    fullName: booking.customer_name,
+    phone: booking.customer_mobile,
+    haircutStyle: booking.haircut_style,
+    barber: booking.barber_name
+      ? `${booking.barber_name} (${booking.barber_chair})`
+      : "Unassigned",
+    date: formatBookingDate(booking.booking_date),
+    timeSlot: formatBookingTime(booking.booking_time),
+    downpayment: Number(booking.downpayment_amount),
+    balanceDue: Number(booking.remaining_balance),
+    gcashRef: booking.gcash_reference || "",
+    receiptUrl: null,
+    status: booking.status,
+    notes: booking.customer_notes || "",
+    submittedAt: formatSubmittedAt(booking.created_at),
+  };
+}
+
 export default function AdminDashboard() {
   const [adminUser, setAdminUser] = useState(null);
-  const [bookings, setBookings] = useState(INITIAL_BOOKINGS);
+  const [bookings, setBookings] = useState([]);
   const [barbers, setBarbers] = useState([]);
+
+  const [isLoadingBookings, setIsLoadingBookings] = useState(true);
+  const [bookingError, setBookingError] = useState("");
 
   const [newBarberName, setNewBarberName] = useState("");
   const [newChairLabel, setNewChairLabel] = useState("");
@@ -35,36 +97,63 @@ export default function AdminDashboard() {
   const [barberFilter, setBarberFilter] = useState("All Chairs");
   const [selectedReceiptBooking, setSelectedReceiptBooking] = useState(null);
 
-  useEffect(() => {
-    const fetchBarbers = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/barbers/all`,
-        );
-        const result = await response.json();
+useEffect(() => {
+  const fetchBarbers = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/barbers/all`,
+      );
+      const result = await response.json();
 
-        if (!response.ok) {
-          throw new Error(result.message || "Failed to fetch barbers.");
-        }
-
-        const formattedBarbers = result.data.map((barber) => ({
-          id: barber.id,
-          fullName: barber.full_name,
-          chairCode: barber.chair_code,
-          chairLabel: barber.chair_label,
-          displayName: barber.display_name,
-          isActive: Boolean(barber.is_active),
-        }));
-
-        setBarbers(formattedBarbers);
-      } catch (error) {
-        console.error("Error fetching barbers:", error);
-        setBarberFeedback("Unable to load barbers.");
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to fetch barbers.");
       }
-    };
 
-    fetchBarbers();
-  }, []);
+      const formattedBarbers = result.data.map((barber) => ({
+        id: barber.id,
+        fullName: barber.full_name,
+        chairCode: barber.chair_code,
+        chairLabel: barber.chair_label,
+        displayName: barber.display_name,
+        isActive: Boolean(barber.is_active),
+      }));
+
+      setBarbers(formattedBarbers);
+    } catch (error) {
+      console.error("Error fetching barbers:", error);
+      setBarberFeedback("Unable to load barbers.");
+    }
+  };
+
+  const fetchBookings = async () => {
+    try {
+      setIsLoadingBookings(true);
+      setBookingError("");
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/bookings/all`,
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to fetch bookings.");
+      }
+
+      const formattedBookings = result.data.map(formatBooking);
+
+      setBookings(formattedBookings);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+      setBookingError(error.message || "Unable to load bookings.");
+    } finally {
+      setIsLoadingBookings(false);
+    }
+  };
+
+  fetchBarbers();
+  fetchBookings();
+}, []);
 
   const barberOptions = useMemo(() => {
     const activeLabels = barbers
