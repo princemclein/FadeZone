@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
+const uploadReceipt = require("../middleware/uploadReceipt");
 
 router.get("/", (req, res) => {
   res.status(200).json({
@@ -9,32 +10,16 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/", async (req, res) => {
-  const {
-    customer_name,
-    customer_mobile,
-    haircut_style,
-    booking_date,
-    booking_time,
-  } = req.body;
 
-  if (
-    !customer_name ||
-    !customer_mobile ||
-    !haircut_style ||
-    !booking_date ||
-    !booking_time
-  ) {
-    return res.status(400).json({
-      success: false,
-      message: "Please provide all required booking details.",
-    });
-  }
+router.post("/", uploadReceipt, async (req, res) => {
+  console.log("Receipt uploaded:", req.file.receiptPath);
 
   res.status(200).json({
     success: true,
-    message: "Booking details validated successfully.",
+    message: "Receipt uploaded and validated successfully.",
+    receiptPath: req.file.receiptPath,
   });
 });
+
 
 module.exports = router;
