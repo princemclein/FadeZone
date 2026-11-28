@@ -4,6 +4,7 @@ const db = require("../config/db");
 const uploadReceipt = require("../middleware/uploadReceipt");
 const fs = require("fs");
 const crypto = require("crypto");
+const requireAdmin = require("../middleware/requireAdmin");
 
 const HAIRCUT_PRICE = 150;
 const DOWNPAYMENT_AMOUNT = 60;
@@ -104,7 +105,7 @@ const generateBookingCode = () => {
   return `FZ-${crypto.randomInt(1000, 10000)}`;
 };
 
-router.get("/all", async (req, res) => {
+router.get("/all", requireAdmin, async (req, res) => {
   try {
     const [bookings] = await db.query(`
       SELECT
@@ -132,7 +133,7 @@ router.get("/all", async (req, res) => {
 });
 
 // PATCH reject booking
-router.patch("/:bookingCode/reject", async (req, res) => {
+router.patch("/:bookingCode/reject", requireAdmin, async (req, res) => {
   try {
     const { bookingCode } = req.params;
     const rejectionReason = req.body?.reason?.trim() || null;
@@ -191,7 +192,7 @@ router.patch("/:bookingCode/reject", async (req, res) => {
 });
 
 // PATCH approve booking
-router.patch("/:bookingCode/approve", async (req, res) => {
+router.patch("/:bookingCode/approve", requireAdmin, async (req, res) => {
   try {
     const { bookingCode } = req.params;
 
@@ -242,7 +243,7 @@ router.patch("/:bookingCode/approve", async (req, res) => {
 });
 
 // PATCH start booking
-router.patch("/:bookingCode/start", async (req, res) => {
+router.patch("/:bookingCode/start", requireAdmin, async (req, res) => {
   try {
     const { bookingCode } = req.params;
 
@@ -290,7 +291,7 @@ router.patch("/:bookingCode/start", async (req, res) => {
 });
 
 // PATCH complete booking
-router.patch("/:bookingCode/complete", async (req, res) => {
+router.patch("/:bookingCode/complete", requireAdmin, async (req, res) => {
   try {
     const { bookingCode } = req.params;
 

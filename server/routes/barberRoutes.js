@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("../config/db");
+const requireAdmin = require("../middleware/requireAdmin");
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/all", async (req, res) => {
+router.get("/all", requireAdmin, async (req, res) => {
   try {
     const [barbers] = await db.query("SELECT * FROM barbers ORDER BY id ASC");
 
@@ -41,7 +42,7 @@ router.get("/all", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", requireAdmin, async (req, res) => {
   // 1. Extract request data
   const { full_name, chair_code, chair_label, display_name } = req.body;
 
@@ -92,7 +93,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", requireAdmin, async (req, res) => {
   const { id } = req.params;
 
   // Validate barber ID
@@ -130,7 +131,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.patch("/:id/activate", async (req, res) => {
+router.patch("/:id/activate", requireAdmin, async (req, res) => {
   const { id } = req.params;
 
   // Validate barber ID
@@ -168,7 +169,7 @@ router.patch("/:id/activate", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", requireAdmin, async (req, res) => {
   const { id } = req.params;
   const { full_name, chair_code, chair_label, display_name } = req.body;
 
