@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Container from "../components/Container";
@@ -21,11 +20,7 @@ function generateTimeSlots() {
   const closingMinutes = 21 * 60;
   const lastStartMinutes = closingMinutes - RESERVATION_MINUTES;
 
-  for (
-    let minutes = startMinutes;
-    minutes <= lastStartMinutes;
-    minutes += 30
-  ) {
+  for (let minutes = startMinutes; minutes <= lastStartMinutes; minutes += 30) {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
 
@@ -101,6 +96,8 @@ export default function Booking() {
 
   const [error, setError] = useState("");
   const [ticketCode, setTicketCode] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [assignedBarberId, setAssignedBarberId] = useState(null);
 
   // Resolve the selected barber's display name.
   const selectedBarber = barbers.find(
@@ -232,8 +229,10 @@ export default function Booking() {
     setReceiptPreview(null);
   }
 
-  function handleFinalSubmit(e) {
+  async function handleFinalSubmit(e) {
     e.preventDefault();
+
+    if (isSubmitting) return;
 
     if (!receiptFile) {
       setError("Please upload a screenshot of your ₱60 GCash payment receipt.");
@@ -246,15 +245,46 @@ export default function Booking() {
     }
 
     setError("");
+    setIsSubmitting(true);
 
-    // Temporary frontend preview only.
-    // Actual booking submission will be connected to POST /api/bookings.
-    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    try {
+      const formData = new FormData();
 
-    setTicketCode(`FZ-${randomNum}`);
-    setStep("submitted");
+      formData.append("fullName", fullName.trim());
+      formData.append("phone", phone.trim());
+      formData.append("haircutStyle", haircutStyle.trim());
+      formData.append("barberId", barberId);
+      formData.append("date", date);
+      formData.append("timeSlot", timeSlot);
+      formData.append("notes", notes.trim());
+      formData.append("gcashRef", gcashRef.trim());
+      formData.append("receipt", receiptFile);
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+      const response = await fetch(`${API_URL}/bookings`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Unable to submit your booking.");
+      }
+
+      setTicketCode(result.data.bookingCode);
+      setAssignedBarberId(result.data.barberId);
+      setStep("submitted");
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (error) {
+      console.error("Booking submission error:", error);
+
+      setError(
+        error.message || "Unable to submit your booking. Please try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function handleReset() {
@@ -271,6 +301,8 @@ export default function Booking() {
     setNotes("");
     setError("");
     setStep("details");
+    setAssignedBarberId(null);
+    setIsSubmitting(false);
   }
 
   return (
@@ -316,7 +348,6 @@ export default function Booking() {
           </p>
         </div>
 
-     
         {/* Step Indicator */}
         <div className="mx-auto mt-8 grid max-w-3xl grid-cols-3 items-center border border-fadezone-accent/35 bg-fadezone-surface/80 px-2 py-3 sm:px-6">
           {/* Step 1 */}
@@ -385,7 +416,6 @@ export default function Booking() {
           </div>
         </div>
 
-
         {/* STEP 3: SUBMITTED PREVIEW */}
         {step === "submitted" && ticketCode && (
           <div className="mx-auto mt-10 max-w-2xl">
@@ -397,7 +427,7 @@ export default function Booking() {
 
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-dashed border-fadezone-text/25 pb-4">
                 <span className="border border-amber-400/50 bg-amber-500/15 px-2.5 py-1 font-body text-[11px] font-bold uppercase tracking-[0.22em] text-amber-300">
-                  ● DEMO SUBMISSION
+                  ● PENDING APPROVAL
                 </span>
 
                 <span className="border border-fadezone-accent/60 bg-fadezone-background px-3 py-1 font-body text-xs font-bold uppercase tracking-[0.22em] text-fadezone-accent">
@@ -411,8 +441,8 @@ export default function Booking() {
               </h2>
 
               <p className="mt-2 font-body text-sm leading-7 text-fadezone-text/75">
-                This is currently a frontend preview. Your booking has not yet
-                been saved to the database or submitted to the shop.
+                Your booking has been successfully submitted. Our shop will
+                review your payment receipt and booking details.
               </p>
 
               <div className="my-6 border-t border-dashed border-fadezone-text/25" />
@@ -434,7 +464,11 @@ export default function Booking() {
                   </dt>
 
                   <dd className="mt-1 font-heading text-xl uppercase tracking-wide">
-                    {selectedBarberName}
+                    {formatBarberName(
+                      barbers.find(
+                        (barber) => barber.id === assignedBarberId,
+                      ) || {},
+                    ) || "Assigned Barber"}
                   </dd>
                 </div>
 
@@ -719,14 +753,20 @@ export default function Booking() {
 
                 <button
                   type="submit"
-                  disabled={barbersLoading || Boolean(barberLoadError)}
+                  disabled={isSubmitting}
                   className="group flex w-full items-center justify-center gap-3 border border-fadezone-accent bg-fadezone-accent px-8 py-4 font-body text-xs font-bold uppercase tracking-[0.22em] text-fadezone-text transition-colors hover:bg-fadezone-background hover:text-fadezone-accent disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
                 >
-                  <span>Proceed to GCash QR</span>
-
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
+                  <span>
+                    {isSubmitting
+                      ? "Submitting Booking..."
+                      : "Submit Receipt for Approval"}
                   </span>
+
+                  {!isSubmitting && (
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">
+                      →
+                    </span>
+                  )}
                 </button>
               </div>
             </form>
