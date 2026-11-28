@@ -112,6 +112,33 @@ const generateBookingCode = () => {
   return `FZ-${crypto.randomInt(1000, 10000)}`;
 };
 
+router.get("/all", async (req, res) => {
+  try {
+    const [bookings] = await db.query(`
+      SELECT
+        b.*,
+        barbers.full_name AS barber_name,
+        barbers.chair_label AS barber_chair
+      FROM bookings b
+      LEFT JOIN barbers
+        ON b.barber_id = barbers.id
+      ORDER BY b.created_at DESC
+    `);
+
+    res.status(200).json({
+      success: true,
+      data: bookings,
+    });
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Unable to retrieve bookings.",
+    });
+  }
+});
+
 // POST create booking
 router.post("/", uploadReceipt, async (req, res) => {
   let connection;
