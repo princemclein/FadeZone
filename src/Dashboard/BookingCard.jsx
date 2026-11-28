@@ -155,9 +155,7 @@ export default function BookingCard({
             </div>
           ) : (
             <div className="flex items-center justify-between border border-dashed border-fadezone-text/20 bg-fadezone-background/60 px-3 py-2">
-              <span className="font-body text-[10px] uppercase tracking-[0.18em] text-fadezone-text/60">
-                {booking.status === "approved" ? "Seat Confirmed" : "Slot Open"}
-              </span>
+              ...
               <button
                 type="button"
                 onClick={() =>
@@ -165,7 +163,6 @@ export default function BookingCard({
                     ? onReject(booking.id)
                     : onApprove(booking.id)
                 }
-                className="font-body text-[10px] font-bold uppercase tracking-[0.18em] text-fadezone-accent hover:underline"
               >
                 {booking.status === "approved" ? "Revoke" : "Re-Approve"}
               </button>
