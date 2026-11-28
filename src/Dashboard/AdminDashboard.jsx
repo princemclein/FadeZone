@@ -97,63 +97,63 @@ export default function AdminDashboard() {
   const [barberFilter, setBarberFilter] = useState("All Chairs");
   const [selectedReceiptBooking, setSelectedReceiptBooking] = useState(null);
 
-useEffect(() => {
-  const fetchBarbers = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/barbers/all`,
-      );
-      const result = await response.json();
+  useEffect(() => {
+    const fetchBarbers = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/barbers/all`,
+        );
+        const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(result.message || "Failed to fetch barbers.");
+        if (!response.ok) {
+          throw new Error(result.message || "Failed to fetch barbers.");
+        }
+
+        const formattedBarbers = result.data.map((barber) => ({
+          id: barber.id,
+          fullName: barber.full_name,
+          chairCode: barber.chair_code,
+          chairLabel: barber.chair_label,
+          displayName: barber.display_name,
+          isActive: Boolean(barber.is_active),
+        }));
+
+        setBarbers(formattedBarbers);
+      } catch (error) {
+        console.error("Error fetching barbers:", error);
+        setBarberFeedback("Unable to load barbers.");
       }
+    };
 
-      const formattedBarbers = result.data.map((barber) => ({
-        id: barber.id,
-        fullName: barber.full_name,
-        chairCode: barber.chair_code,
-        chairLabel: barber.chair_label,
-        displayName: barber.display_name,
-        isActive: Boolean(barber.is_active),
-      }));
+    const fetchBookings = async () => {
+      try {
+        setIsLoadingBookings(true);
+        setBookingError("");
 
-      setBarbers(formattedBarbers);
-    } catch (error) {
-      console.error("Error fetching barbers:", error);
-      setBarberFeedback("Unable to load barbers.");
-    }
-  };
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/bookings/all`,
+        );
 
-  const fetchBookings = async () => {
-    try {
-      setIsLoadingBookings(true);
-      setBookingError("");
+        const result = await response.json();
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/bookings/all`,
-      );
+        if (!response.ok) {
+          throw new Error(result.message || "Failed to fetch bookings.");
+        }
 
-      const result = await response.json();
+        const formattedBookings = result.data.map(formatBooking);
 
-      if (!response.ok) {
-        throw new Error(result.message || "Failed to fetch bookings.");
+        setBookings(formattedBookings);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+        setBookingError(error.message || "Unable to load bookings.");
+      } finally {
+        setIsLoadingBookings(false);
       }
+    };
 
-      const formattedBookings = result.data.map(formatBooking);
-
-      setBookings(formattedBookings);
-    } catch (error) {
-      console.error("Error fetching bookings:", error);
-      setBookingError(error.message || "Unable to load bookings.");
-    } finally {
-      setIsLoadingBookings(false);
-    }
-  };
-
-  fetchBarbers();
-  fetchBookings();
-}, []);
+    fetchBarbers();
+    fetchBookings();
+  }, []);
 
   const barberOptions = useMemo(() => {
     const activeLabels = barbers
@@ -406,16 +406,60 @@ useEffect(() => {
     }
   };
 
-  const handleApprove = (bookingId) => {
-    setBookings((prev) =>
-      prev.map((b) => (b.id === bookingId ? { ...b, status: "approved" } : b)),
-    );
+  const handleApprove = async (bookingId) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/bookings/${bookingId}/approve`,
+        {
+          method: "PATCH",
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to approve booking.");
+      }
+
+      setBookings((prev) =>
+        prev.map((booking) =>
+          booking.id === bookingId
+            ? { ...booking, status: "approved" }
+            : booking,
+        ),
+      );
+    } catch (error) {
+      console.error("Error approving booking:", error);
+      window.alert(error.message || "Unable to approve booking.");
+    }
   };
 
-  const handleReject = (bookingId) => {
-    setBookings((prev) =>
-      prev.map((b) => (b.id === bookingId ? { ...b, status: "rejected" } : b)),
-    );
+  const handleReject = async (bookingId) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/bookings/${bookingId}/reject`,
+        {
+          method: "PATCH",
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to reject booking.");
+      }
+
+      setBookings((prev) =>
+        prev.map((booking) =>
+          booking.id === bookingId
+            ? { ...booking, status: "rejected" }
+            : booking,
+        ),
+      );
+    } catch (error) {
+      console.error("Error rejecting booking:", error);
+      window.alert(error.message || "Unable to reject booking.");
+    }
   };
 
   if (!adminUser) {

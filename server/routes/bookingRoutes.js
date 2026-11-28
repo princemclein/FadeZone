@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
@@ -27,9 +26,7 @@ router.get("/", (req, res) => {
 
 // Convert frontend time (02:00 PM) into MySQL time (14:00:00)
 const convertTime = (timeSlot) => {
-  const match = timeSlot.match(
-    /^(0?[1-9]|1[0-2]):([0-5]\d)\s?(AM|PM)$/i
-  );
+  const match = timeSlot.match(/^(0?[1-9]|1[0-2]):([0-5]\d)\s?(AM|PM)$/i);
 
   if (!match) return null;
 
@@ -69,7 +66,7 @@ const isBarberAvailable = async (
   connection,
   barberId,
   bookingDate,
-  bookingTime
+  bookingTime,
 ) => {
   const requestedStart = `${bookingDate} ${bookingTime}`;
 
@@ -96,12 +93,7 @@ const isBarberAvailable = async (
          )
        ) > ?
      LIMIT 1`,
-    [
-      barberId,
-      requestedStart,
-      RESERVATION_MINUTES,
-      requestedStart,
-    ]
+    [barberId, requestedStart, RESERVATION_MINUTES, requestedStart],
   );
 
   return conflicts.length === 0;
@@ -135,6 +127,116 @@ router.get("/all", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Unable to retrieve bookings.",
+    });
+  }
+});
+
+// PATCH reject booking
+router.patch("/:bookingCode/reject", async (req, res) => {
+  try {
+    const { bookingCode } = req.params;
+    const rejectionReason = req.body?.reason?.trim() || null;
+    
+    if (rejectionReason && rejectionReason.length > 2000) {
+      return res.status(400).json({
+        success: false,
+        message: "Rejection reason is too long.",
+      });
+    }
+
+    const [result] = await db.execute(
+      `UPDATE bookings
+       SET
+         status = 'rejected',
+         rejection_reason = ?,
+         reviewed_at = CURRENT_TIMESTAMP
+       WHERE booking_code = ?
+         AND status = 'pending'`,
+      [rejectionReason, bookingCode],
+    );
+
+    if (result.affectedRows === 0) {
+      const [bookings] = await db.execute(
+        `SELECT status
+         FROM bookings
+         WHERE booking_code = ?`,
+        [bookingCode],
+      );
+
+      if (bookings.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Booking not found.",
+        });
+      }
+
+      return res.status(409).json({
+        success: false,
+        message: "Only pending bookings can be rejected.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Booking rejected successfully.",
+    });
+  } catch (error) {
+    console.error("Booking rejection error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to reject booking.",
+    });
+  }
+});
+
+// PATCH approve booking
+router.patch("/:bookingCode/approve", async (req, res) => {
+  try {
+    const { bookingCode } = req.params;
+
+    const [result] = await db.execute(
+      `UPDATE bookings
+       SET
+         status = 'approved',
+         rejection_reason = NULL,
+         reviewed_at = CURRENT_TIMESTAMP
+       WHERE booking_code = ?
+         AND status = 'pending'`,
+      [bookingCode],
+    );
+
+    if (result.affectedRows === 0) {
+      const [bookings] = await db.execute(
+        `SELECT status
+         FROM bookings
+         WHERE booking_code = ?`,
+        [bookingCode],
+      );
+
+      if (bookings.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Booking not found.",
+        });
+      }
+
+      return res.status(409).json({
+        success: false,
+        message: "Only pending bookings can be approved.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Booking approved successfully.",
+    });
+  } catch (error) {
+    console.error("Booking approval error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to approve booking.",
     });
   }
 });
@@ -225,7 +327,7 @@ router.post("/", uploadReceipt, async (req, res) => {
          FROM barbers
          WHERE is_active = TRUE
          ORDER BY id
-         FOR UPDATE`
+         FOR UPDATE`,
       );
 
       availableBarbers = barbers;
@@ -241,7 +343,7 @@ router.post("/", uploadReceipt, async (req, res) => {
          FROM barbers
          WHERE id = ? AND is_active = TRUE
          FOR UPDATE`,
-        [selectedId]
+        [selectedId],
       );
 
       if (barbers.length === 0) {
@@ -259,7 +361,7 @@ router.post("/", uploadReceipt, async (req, res) => {
         connection,
         barber.id,
         date,
-        bookingTime
+        bookingTime,
       );
 
       if (available) {
@@ -271,7 +373,7 @@ router.post("/", uploadReceipt, async (req, res) => {
     if (!assignedBarberId) {
       throw createError(
         "No barber is available for the selected time slot.",
-        409
+        409,
       );
     }
 
@@ -319,7 +421,7 @@ router.post("/", uploadReceipt, async (req, res) => {
             paymentReference,
             req.file.receiptPath,
             "pending",
-          ]
+          ],
         );
 
         inserted = true;
@@ -334,7 +436,7 @@ router.post("/", uploadReceipt, async (req, res) => {
     if (!inserted) {
       throw createError(
         "Unable to generate a booking ticket. Please try again.",
-        500
+        500,
       );
     }
 
